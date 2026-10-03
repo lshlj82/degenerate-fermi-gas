@@ -49,6 +49,11 @@ p{margin:0 0 1rem}
 .note{font-size:.95rem;color:var(--muted)}
 
 .eq{display:block;text-align:center;margin:1.25rem 0;overflow-x:auto;overflow-y:hidden;padding:.25rem 0}
+.eq.multi{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:2.2em;row-gap:.65rem}
+.boxed.multi{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:2em;row-gap:.6rem;max-width:100%}
+.eqp{max-width:100%}
+.eqp.sep{margin-left:1.85em}
+.multi:not(.chain) > .eqp.cont{margin-left:-1.85em}
 mjx-container{color:inherit}
 mjx-container[display="true"]{margin:0 !important}
 .stats mjx-container,.legend mjx-container,.cap mjx-container,.ctl small mjx-container{font-size:105%}
@@ -114,7 +119,7 @@ window.MathJax = {
   <div class="prose">
     <p>The most familiar degenerate gas is the conduction electrons inside a chunk of metal. At room temperature an electron’s quantum volume is \(v_Q \approx (4.3\ \mathrm{nm})^3\), while a typical metal has about one conduction electron per \((0.2\ \mathrm{nm})^3\). So \(V/N \ll v_Q\): the opposite of the Boltzmann limit, even though room temperature isn’t especially cold.</p>
     <p>At \(T = 0\) the Fermi–Dirac distribution becomes a step function. Every state below \(\mu\) is occupied and every state above it is empty, and the Fermi energy is defined as \(\varepsilon_F \equiv \mu(T=0)\). Build the gas by adding one electron at a time into the lowest available state. For a box of side \(L\), the allowed energies are</p>
-    <div class="eq">\[ \varepsilon = \frac{|\vec{p}|^2}{2m} = \frac{h^2}{8mL^2}\left(n_x^2 + n_y^2 + n_z^2\right), \qquad n_x, n_y, n_z = 1, 2, 3, \ldots \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle \varepsilon = \frac{|\vec{p}|^2}{2m} = \frac{h^2}{8mL^2}\left(n_x^2 + n_y^2 + n_z^2\right), \)</span><span class="eqp">\( \displaystyle n_x, n_y, n_z = 1, 2, 3, \ldots \)</span></div>
     <p>so the energy grows with the squared distance from the origin in “\(n\)-space.” Each lattice point takes two electrons (spin up and down). In three dimensions the filled region is an eighth of a sphere. Drag the view to turn it, or switch to the flat two-dimensional version, a quarter of a disk.</p>
   </div>
 
@@ -157,10 +162,10 @@ window.MathJax = {
   <h3>The three-dimensional results</h3>
   <div class="prose">
     <p>Counting the lattice points inside an eighth-sphere of radius \(n_{\max}\), with two spin orientations each,</p>
-    <div class="eq">\[ N = 2 \cdot \frac18 \cdot \frac43 \pi n_{\max}^3 = \frac{\pi n_{\max}^3}{3}, \qquad n_{\max} = \left(\frac{3N}{\pi}\right)^{1/3} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle N = 2 \cdot \frac18 \cdot \frac43 \pi n_{\max}^3 = \frac{\pi n_{\max}^3}{3}, \)</span><span class="eqp">\( \displaystyle n_{\max} = \left(\frac{3N}{\pi}\right)^{1/3} \)</span></div>
     <div class="eq"><span class="boxed">\( \displaystyle \varepsilon_F = \frac{h^2 n_{\max}^2}{8mL^2} = \frac{h^2}{8m}\left(\frac{3N}{\pi V}\right)^{2/3} \)</span></div>
     <p>This is an intensive quantity: it depends only on the number density \(N/V\). Integrating \(\varepsilon(\vec n)\) over the eighth-sphere in spherical coordinates gives the total energy and the average energy per electron:</p>
-    <div class="eq">\[ U = 2 \cdot \frac{\pi}{2}\int_0^{n_{\max}} \varepsilon(n)\, n^2\, dn = \frac{\pi h^2}{40 m L^2}\, n_{\max}^5 = \frac35 N \varepsilon_F, \qquad \frac{U}{N} = \frac35\varepsilon_F \]</div>
+    <div class="eq multi chain"><span class="eqp">\( \displaystyle U = 2 \cdot \frac{\pi}{2}\int_0^{n_{\max}} \varepsilon(n)\, n^2\, dn \)</span><span class="eqp">\( \displaystyle = \frac{\pi h^2}{40 m L^2}\, n_{\max}^5 \)</span><span class="eqp">\( \displaystyle = \frac35 N \varepsilon_F, \)</span><span class="eqp sep">\( \displaystyle \frac{U}{N} = \frac35\varepsilon_F \)</span></div>
   </div>
 </section>
 
@@ -169,7 +174,7 @@ window.MathJax = {
   <h2 id="h-metals">Electrons in metals</h2>
   <div class="prose">
     <p>Because \(U\) depends on \(V\) through \(\varepsilon_F \propto V^{-2/3}\), the electrons push outward. This degeneracy pressure has nothing to do with electrostatic repulsion between the electrons; it exists purely by virtue of the exclusion principle. Compressing the gas shortens every wavelength, which raises every energy:</p>
-    <div class="eq">\[ P = -\left(\frac{\partial U}{\partial V}\right)_{S,N} = \frac{2}{5}\frac{N\varepsilon_F}{V} = \frac{2U}{3V}, \qquad B = -V\left(\frac{\partial P}{\partial V}\right)_T = \frac{10}{9}\frac{U}{V} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle P = -\left(\frac{\partial U}{\partial V}\right)_{S,N} = \frac{2}{5}\frac{N\varepsilon_F}{V} = \frac{2U}{3V}, \)</span><span class="eqp">\( \displaystyle B = -V\left(\frac{\partial P}{\partial V}\right)_T = \frac{10}{9}\frac{U}{V} \)</span></div>
     <p>The pressure itself is largely canceled by the electrostatic forces that hold the electrons inside the metal, but the bulk modulus is not, and the free-electron formula agrees with experiment within a factor of 3 or so for most metals. Pick a metal to check.</p>
   </div>
 
@@ -204,7 +209,7 @@ window.MathJax = {
   <h2 id="h-stars">Stars held up by the exclusion principle</h2>
   <div class="prose">
     <p>Problems 7.23 and 7.24. A white dwarf is essentially a degenerate electron gas, with nuclei mixed in to balance the charge and provide the gravitational attraction. Treat it as a uniform sphere with one proton and one neutron per electron, so \(N = M/2m_p\). The gravitational energy (from assembling the sphere shell by shell) and the kinetic energy of the electrons are</p>
-    <div class="eq">\[ U_{\text{grav}} = -\frac35\frac{GM^2}{R}, \qquad U_{\text{kinetic}} = \frac35 N\varepsilon_F = (0.0088)\,\frac{h^2 M^{5/3}}{m_e m_p^{5/3} R^2} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle U_{\text{grav}} = -\frac35\frac{GM^2}{R}, \)</span><span class="eqp">\( \displaystyle U_{\text{kinetic}} = \frac35 N\varepsilon_F = (0.0088)\,\frac{h^2 M^{5/3}}{m_e m_p^{5/3} R^2} \)</span></div>
     <p>The total, \(A/R^2 - B/R\), has a minimum at \(R_{\text{eq}} = 2A/B \propto M^{-1/3}\): heavier white dwarfs are smaller. A neutron star is the same calculation with \(N = M/m_n\) and the neutron mass in place of \(m_e\).</p>
   </div>
 
@@ -245,7 +250,7 @@ window.MathJax = {
   <h3>Why relativity ends the story</h3>
   <div class="prose">
     <p>Problem 7.22. If the particles are highly relativistic, \(\varepsilon = pc = (hc/2L)\sqrt{n_x^2+n_y^2+n_z^2}\), and the same counting gives</p>
-    <div class="eq">\[ \mu = \varepsilon_F = hc\left(\frac{3N}{8\pi V}\right)^{1/3}, \qquad U = \frac34 N\mu \propto \frac1R \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle \mu = \varepsilon_F = hc\left(\frac{3N}{8\pi V}\right)^{1/3}, \)</span><span class="eqp">\( \displaystyle U = \frac34 N\mu \propto \frac1R \)</span></div>
     <p>Now both \(U_{\text{kinetic}}\) and \(U_{\text{grav}}\) scale as \(1/R\), so \(U_{\text{total}} = C/R\) has no stable equilibrium radius, whatever the sign of \(C\). Since \(\varepsilon_F \propto M^{4/3}\), the average kinetic energy reaches \(mc^2\) at about 3 solar masses for a white dwarf and about 12 for a neutron star in this simple model.</p>
   </div>
   <p class="prose note">A fuller relativistic treatment brings the white-dwarf limit down to the Chandrasekhar mass of about 1.4 \(M_\odot\). Real neutron stars also need general relativity and nuclear forces, and have radii of roughly 10 to 15 km.</p>
@@ -259,7 +264,7 @@ window.MathJax = {
     <p>To be quantitative, rewrite the energy integral in terms of \(\varepsilon\) to find the density of states, the number of single-particle states per unit energy:</p>
     <div class="eq"><span class="boxed">\( \displaystyle g(\varepsilon) = \frac{\pi (8m)^{3/2}}{2h^3}\, V\sqrt{\varepsilon} = \frac{3N}{2\varepsilon_F^{3/2}}\sqrt{\varepsilon} \)</span></div>
     <p>At any temperature, multiply by the probability that each state is occupied:</p>
-    <div class="eq">\[ N = \int_0^\infty g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \qquad U = \int_0^\infty \varepsilon\, g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \qquad \bar{n}_{\mathrm{FD}} = \frac{1}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle N = \int_0^\infty g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle U = \int_0^\infty \varepsilon\, g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle \bar{n}_{\mathrm{FD}} = \frac{1}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1} \)</span></div>
     <p>Because \(\bar{n}_{\mathrm{FD}}\) is symmetric about \(\mu\) but \(g(\varepsilon)\) increases with \(\varepsilon\), keeping the area (that is, \(N\)) fixed forces \(\mu\) to drop below \(\varepsilon_F\) as the gas warms. The demo solves these integrals numerically and compares them with the Sommerfeld expansion.</p>
   </div>
 
@@ -314,9 +319,9 @@ window.MathJax = {
   <h3>The Sommerfeld expansion</h3>
   <div class="prose">
     <p>Integrate by parts so that \(d\bar{n}_{\mathrm{FD}}/d\varepsilon\), sharply peaked at \(\mu\), appears in the integrand. With \(x = (\varepsilon-\mu)/k_{\mathrm{B}}T\), extend the lower limit to \(-\infty\) and expand \(\varepsilon^{3/2}\) about \(\mu\). Three integrals are needed:</p>
-    <div class="eq">\[ \int_{-\infty}^{\infty}\frac{e^x}{(e^x+1)^2}\,dx = 1, \qquad \int_{-\infty}^{\infty}\frac{x\,e^x}{(e^x+1)^2}\,dx = 0, \qquad \int_{-\infty}^{\infty}\frac{x^2 e^x}{(e^x+1)^2}\,dx = \frac{\pi^2}{3} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{e^x}{(e^x+1)^2}\,dx = 1, \)</span><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{x\,e^x}{(e^x+1)^2}\,dx = 0, \)</span><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{x^2 e^x}{(e^x+1)^2}\,dx = \frac{\pi^2}{3} \)</span></div>
     <p>They give</p>
-    <div class="eq">\[ \frac{\mu}{\varepsilon_F} = 1 - \frac{\pi^2}{12}\left(\frac{k_{\mathrm{B}}T}{\varepsilon_F}\right)^2 + \cdots, \qquad U = \frac35 N\varepsilon_F + \frac{\pi^2}{4}\frac{N(k_{\mathrm{B}}T)^2}{\varepsilon_F} + \cdots \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle \frac{\mu}{\varepsilon_F} = 1 - \frac{\pi^2}{12}\left(\frac{k_{\mathrm{B}}T}{\varepsilon_F}\right)^2 + \cdots, \)</span><span class="eqp">\( \displaystyle U = \frac35 N\varepsilon_F + \frac{\pi^2}{4}\frac{N(k_{\mathrm{B}}T)^2}{\varepsilon_F} + \cdots \)</span></div>
     <div class="eq"><span class="boxed h">\( \displaystyle C_V = \left(\frac{\partial U}{\partial T}\right)_V = \frac{\pi^2 N k_{\mathrm{B}}^2 T}{2\varepsilon_F} \)</span></div>
     <p>That is a lot of work for a factor of \(\pi^2/4\) already guessed by dimensional analysis, but it is typical of how physicists make controlled approximations.</p>
   </div>
@@ -324,7 +329,7 @@ window.MathJax = {
   <h3>The two-dimensional gas</h3>
   <div class="prose">
     <p>Problems 7.28 and 7.31. For fermions confined to an area \(A = L^2\), a quarter-disk in \(n\)-space gives</p>
-    <div class="eq">\[ \varepsilon_F = \frac{h^2}{4\pi m}\frac{N}{A}, \qquad \frac{U}{N} = \frac12\varepsilon_F, \qquad g(\varepsilon) = \frac{4\pi m A}{h^2} = \frac{N}{\varepsilon_F} \]</div>
+    <div class="eq multi"><span class="eqp">\( \displaystyle \varepsilon_F = \frac{h^2}{4\pi m}\frac{N}{A}, \)</span><span class="eqp">\( \displaystyle \frac{U}{N} = \frac12\varepsilon_F, \)</span><span class="eqp">\( \displaystyle g(\varepsilon) = \frac{4\pi m A}{h^2} = \frac{N}{\varepsilon_F} \)</span></div>
     <p>The density of states is a constant, so the number integral can be done exactly:</p>
     <div class="eq">\[ \mu = k_{\mathrm{B}}T \ln\!\left[e^{\varepsilon_F/k_{\mathrm{B}}T} - 1\right] \]</div>
     <p>For \(k_{\mathrm{B}}T \ll \varepsilon_F\) this is \(\mu \approx \varepsilon_F\), and for \(k_{\mathrm{B}}T \gg \varepsilon_F\) it becomes \(\mu \approx k_{\mathrm{B}}T\ln(\varepsilon_F/k_{\mathrm{B}}T) = -k_{\mathrm{B}}T\ln(2A/NA_Q)\), the ordinary ideal gas result with the quantum area \(A_Q = h^2/2\pi m k_{\mathrm{B}}T\) and \(Z_{\text{int}} = 2\) for spin. The energy integral still needs the Sommerfeld approach, giving \(C_V = \pi^2 N k_{\mathrm{B}}^2 T/3\varepsilon_F\) at low temperature and \(C_V = Nk_{\mathrm{B}}\), the classical equipartition value for two degrees of freedom, at high temperature. Switch the demo to <em>2D gas</em> to compare.</p>
