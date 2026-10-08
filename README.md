@@ -60,7 +60,7 @@ python3 -m http.server 8000
 - Equations are typeset with [MathJax 3](https://www.mathjax.org/) (SVG output, loaded from cdnjs), so they need no extra web fonts.
 - The only other external resources are the Newsreader and Instrument Sans fonts from Google Fonts, with system font fallbacks if they fail to load.
 - Opening the page requires an internet connection for MathJax; offline, the equations appear as raw TeX.
-- Supports light and dark mode via `prefers-color-scheme`, and is responsive down to phone widths.
+- Supports light and dark mode: it follows `prefers-color-scheme`, and a sun/moon button in the top-right corner switches by hand (the choice is remembered across pages); and is responsive down to phone widths.
 - Constants used: h = 6.626 × 10<sup>−34</sup> J s, k<sub>B</sub> = 1.381 × 10<sup>−23</sup> J/K, G = 6.674 × 10<sup>−11</sup> N m²/kg², M<sub>⊙</sub> = 2 × 10<sup>30</sup> kg.
 
 ## Caveats
