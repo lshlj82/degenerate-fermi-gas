@@ -295,7 +295,7 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
       </div>
       <div class="ctl">
         <label for="tS"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon_F = T/T_F\)</span> <output id="tSOut"></output></label>
-        <input type="range" id="tS" min="0.005" max="2" step="0.005" value="0.1">
+        <input type="range" id="tS" aria-label="Temperature k_B T / ε_F = T / T_F" min="0.005" max="2" step="0.005" value="0.1">
         <small id="cuNote"></small>
       </div>
       <dl class="stats">
@@ -657,16 +657,39 @@ function simpson(f, a, b, n){ if (b<=a) return 0; const hh=(b-a)/n; let s=f(a)+f
 // 3D: g = (3/2) sqrt(e), with e = s^2: g de = 3 s^2 ds
 function N3(mu, t){ const smax = Math.sqrt(Math.max(mu,0) + 40*t); return simpson(s => 3*s*s*fd(s*s,mu,t), 0, smax, 600); }
 function U3(mu, t){ const smax = Math.sqrt(Math.max(mu,0) + 40*t); return simpson(s => 3*s*s*s*s*fd(s*s,mu,t), 0, smax, 600); }
-function mu3(t){ let lo = -30 - 15*t, hi = 1.2; for (let k=0;k<60;k++){ const mid=(lo+hi)/2; (N3(mid,t) > 1) ? hi=mid : lo=mid; } return (lo+hi)/2; }
+function mu3(t, guess){
+  if (guess === undefined){ let lo = -30 - 15*t, hi = 1.2; for (let k=0;k<60;k++){ const mid=(lo+hi)/2; (N3(mid,t) > 1) ? hi=mid : lo=mid; } return (lo+hi)/2; }
+  // warm start from a nearby temperature: bracket the root, then Illinois (regula falsi); ~8 integrals instead of 60
+  const f = m => N3(m,t) - 1, floor = -30 - 15*t;
+  let d = 0.01 + 0.05*t, lo = Math.max(floor, guess - d), hi = guess + d, flo = f(lo), fhi = f(hi);
+  while (flo > 0 && lo > floor){ hi = lo; fhi = flo; d *= 2; lo = Math.max(floor, hi - d); flo = f(lo); }
+  while (fhi < 0){ lo = hi; flo = fhi; d *= 2; hi = lo + d; fhi = f(hi); }
+  for (let k=0, side=0; k<60 && hi-lo > 1e-13; k++){
+    const m = (lo*fhi - hi*flo)/(fhi - flo), fm = f(m);
+    if (fm === 0) return m;
+    if (fm > 0){ hi = m; fhi = fm; if (side === 1) flo /= 2; side = 1; }
+    else { lo = m; flo = fm; if (side === -1) fhi /= 2; side = -1; }
+  }
+  return (lo*fhi - hi*flo)/(fhi - flo);
+}
 // 2D: g = 1
 function mu2(t){ const a = 1/t; return a > 30 ? 1 + t*Math.log1p(-Math.exp(-a)) : t*Math.log(Math.expm1(a)); }
 function U2(mu, t){ const emax = Math.max(mu,0) + 40*t; return simpson(e => e*fd(e,mu,t), 0, emax, 1200); }
 const TGRID = []; for (let t=0.005; t<=2.5001; t+=0.005) TGRID.push(+t.toFixed(3));
 const TAB = {3:null, 2:null};
 function buildTable(dim){
+  // computed once per dimension; slider moves only look values up
   const mus = [], us = [];
-  TGRID.forEach(t => { const m = dim===3 ? mu3(t) : mu2(t); mus.push(m); us.push(dim===3 ? U3(m,t) : U2(m,t)); });
-  const cs = us.map((u,i) => { const i0=Math.max(0,i-1), i1=Math.min(us.length-1,i+1); return (us[i1]-us[i0])/(TGRID[i1]-TGRID[i0]); });
+  let g = 1;
+  TGRID.forEach(t => { const m = dim===3 ? mu3(t, g) : mu2(t); g = m; mus.push(m); us.push(dim===3 ? U3(m,t) : U2(m,t)); });
+  // C = dU/dt by second-order differences: central in the interior; at the first grid point
+  // the exact t = 0 energy (3/5 in 3D, 1/2 in 2D) serves as the left neighbour; one-sided at the right end
+  const n = us.length, U0 = dim===3 ? 0.6 : 0.5;
+  const cs = us.map((u,i) => {
+    if (i === 0) return (us[1] - U0)/TGRID[1];
+    if (i === n-1) return (3*us[i] - 4*us[i-1] + us[i-2])/(TGRID[i] - TGRID[i-2]);
+    return (us[i+1]-us[i-1])/(TGRID[i+1]-TGRID[i-1]);
+  });
   TAB[dim] = {mus, us, cs};
 }
 const SOM = {
@@ -682,7 +705,7 @@ function heatRender(){
   $('tSOut').textContent = t.toFixed(3);
   const TK = t*81600;
   $('cuNote').innerHTML = 'For copper (<i>T<sub>F</sub></i> ≈ 81,600 K) this is <i>T</i> ≈ ' + (TK >= 1e4 ? Math.round(TK/1000).toLocaleString('en-US')+',000' : Math.round(TK).toLocaleString('en-US')) + ' K.';
-  const mu = HT.dim===3 ? mu3(t) : mu2(t);
+  const mu = lookup(tab.mus, t);
   const U = lookup(tab.us, t), Cv = lookup(tab.cs, t);
   $('hMu').textContent = signed(mu,4); $('hMuS').textContent = signed(som.mu(t),4);
   $('hU').textContent = U.toFixed(4); $('hUS').textContent = som.u(t).toFixed(4);
@@ -753,7 +776,7 @@ function drawCurve(c, arr, somF, clF, which){
   const v0 = which==='mu' ? 1 : 0; c.moveTo(X(0),Y(v0));
   arr.forEach((v,i) => c.lineTo(X(TGRID[i]), Y(v)));
   c.stroke();
-  const cur = which==='mu' ? (HT.dim===3 ? mu3(HT.t) : mu2(HT.t)) : lookup(arr, HT.t);
+  const cur = lookup(arr, HT.t);
   c.fillStyle=C.fermion; c.beginPath(); c.arc(X(HT.t), Y(cur), 5, 0, 7); c.fill();
   c.restore();
   c.strokeStyle=C.muted; c.lineWidth=1; c.beginPath(); c.moveTo(L,T); c.lineTo(L,H-B); c.lineTo(W-R,H-B); c.stroke();
