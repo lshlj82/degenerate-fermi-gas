@@ -24,7 +24,7 @@ Created by **Claude Opus 5.5**, based on the lecture notes by **Sang Hoon Lee** 
 | T<sub>F</sub> | 2.3 × 10<sup>9</sup> K | 6.6 × 10<sup>11</sup> K |
 | Becomes relativistic at | about 3 M<sub>⊙</sub> | about 12 M<sub>⊙</sub> |
 
-The relativistic case, where U<sub>kinetic</sub> also scales as 1/R and no stable radius exists, is explained alongside.
+The relativistic case, where U<sub>kinetic</sub> also scales as 1/R and no stable radius exists, is explained alongside. A second figure uses the exact kinetic energy of the Fermi sea, ε = √((pc)² + (mc²)²) − mc², which goes from 1/R² for a large star to 1/R for a compact one. Moving the mass slider shows the minimum moving in and becoming shallower, then disappearing above the critical mass (about 1.7 M<sub>⊙</sub> for a white dwarf and 6.8 M<sub>⊙</sub> for a neutron star in this model), with the nonrelativistic total and the ultrarelativistic limit C/R drawn for comparison.
 
 **A little bit of heat.** The density of states g(ε) ∝ √ε, the occupied region g(ε) n̄<sub>FD</sub>(ε) at an adjustable temperature, and the resulting shift of μ below ε<sub>F</sub>. The demo solves the number and energy integrals numerically and compares them with the Sommerfeld expansion:
 
@@ -66,7 +66,7 @@ python3 -m http.server 8000
 ## Caveats
 
 - Conduction-electron densities and measured bulk moduli are typical handbook values; different sources differ by a few percent.
-- The star model is the lecture's: a uniform-density sphere at T = 0 with nonrelativistic particles. A fuller relativistic treatment gives the Chandrasekhar limit of about 1.4 M<sub>⊙</sub> for white dwarfs, and real neutron stars also require general relativity and nuclear forces.
+- The star model is the lecture's: a uniform-density sphere at T = 0 with nonrelativistic particles (the second figure keeps the uniform sphere but uses the exact relativistic kinetic energy; its critical mass, 1.71 M<sub>⊙</sub> with M<sub>⊙</sub> = 2 × 10<sup>30</sup> kg, is the uniform-sphere analogue of the Chandrasekhar mass). A fuller relativistic treatment gives the Chandrasekhar limit of about 1.4 M<sub>⊙</sub> for white dwarfs, and real neutron stars also require general relativity and nuclear forces.
 - The interior temperatures quoted for comparison (about 10<sup>7</sup> K for a white dwarf and 2 × 10<sup>6</sup> K for a neutron star) are the rough values used in the lecture.
 
 ## Credits

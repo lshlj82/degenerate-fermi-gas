@@ -263,6 +263,38 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <p>Problem 7.22. If the particles are highly relativistic, \(\varepsilon = pc = (hc/2L)\sqrt{n_x^2+n_y^2+n_z^2}\), and the same counting gives</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \mu = \varepsilon_F = hc\left(\frac{3N}{8\pi V}\right)^{1/3}, \)</span><span class="eqp">\( \displaystyle U = \frac34 N\mu \propto \frac1R \)</span></div>
     <p>Now both \(U_{\text{kinetic}}\) and \(U_{\text{grav}}\) scale as \(1/R\), so \(U_{\text{total}} = C/R\) has no stable equilibrium radius, whatever the sign of \(C\). Since \(\varepsilon_F \propto M^{4/3}\), the average kinetic energy reaches \(mc^2\) at about 3 solar masses for a white dwarf and about 12 for a neutron star in this simple model.</p>
+    <p>The figure below uses the exact energy of each particle, \(\varepsilon = \sqrt{(pc)^2 + (mc^2)^2} - mc^2\), for the whole Fermi sea, so the kinetic energy goes as \(1/R^2\) when the star is large and as \(1/R\) when it is squeezed. Gravity always wins at small enough \(R\) once \(M\) passes a critical mass (about \(1.7\,M_\odot\) for a white dwarf and \(6.8\,M_\odot\) for a neutron star in this model): the minimum first moves in and gets shallower, then disappears, and the total energy falls without limit as \(R \to 0\).</p>
+  </div>
+
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="rCanvas" aria-label="Relativistic kinetic, gravitational and total energy of the star as a function of radius"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch line" style="background:var(--fermion)"></span>\(U_{\text{kinetic}}\), relativistic</span>
+        <span><span class="swatch line" style="background:var(--res)"></span>\(U_{\text{grav}}\)</span>
+        <span><span class="swatch line" style="background:var(--ink)"></span>Total</span>
+        <span><span class="swatch dash" style="border-color:var(--muted)"></span>Total, nonrelativistic</span>
+        <span><span class="swatch dash" style="border-color:var(--hot)"></span>Ultrarelativistic limit \(C/R\)</span>
+      </div>
+      <p class="verdict" id="rVerdict"></p>
+    </div>
+    <div class="panel">
+      <div class="ctl btns" role="group" aria-label="Kind of star">
+        <button type="button" data-rstar="wd" aria-pressed="true">White dwarf</button>
+        <button type="button" data-rstar="ns">Neutron star</button>
+      </div>
+      <div class="ctl">
+        <label for="mR"><span class="lt">Mass \(M\)</span> <output id="mROut"></output></label>
+        <input type="range" id="mR" min="0.2" max="3" step="0.01" value="1">
+        <small>Push the mass past the critical value and watch the minimum disappear.</small>
+      </div>
+      <dl class="stats">
+        <dt>Critical mass</dt><dd id="rMc">–</dd>
+        <dt>\(R_{\text{eq}}\), relativistic</dt><dd id="rR">–</dd>
+        <dt>\(R_{\text{eq}}\), nonrelativistic</dt><dd id="rRnr">–</dd>
+        <dt>\(p_F/mc\) at \(R_{\text{eq}}\)</dt><dd id="rX">–</dd>
+      </dl>
+    </div>
   </div>
   <p class="prose note">A fuller relativistic treatment brings the white-dwarf limit down to the Chandrasekhar mass of about 1.4 \(M_\odot\). Real neutron stars also need general relativity and nuclear forces, and have radii of roughly 10 to 15 km.</p>
 </section>
@@ -651,6 +683,73 @@ function starRender(){
 document.querySelectorAll('[data-star]').forEach(b => b.addEventListener('click', () => { S.kind = b.dataset.star; starRender(); }));
 $('mS').addEventListener('input', e => { S.M = +e.target.value; starRender(); });
 
+/* ---------- relativistic star: exact kinetic energy of a T = 0 Fermi sea ---------- */
+const RS = {kind:'wd', M:{wd:1, ns:4}};
+const RRANGE = {wd:[0.2,3], ns:[1,12]};
+const HB = h/(2*Math.PI);
+// kinetic energy density = m⁴c⁵/(8π²ħ³) · fk(x), x = p_F/(mc)
+function fk(x){ if (x < 0.05) return 0.8*Math.pow(x,5)*(1 - 5*x*x/28); return x*(1+2*x*x)*Math.sqrt(1+x*x) - Math.asinh(x) - 8/3*x*x*x; }
+function relStar(kind, Msun){
+  const s = STAR[kind], M = Msun*MSUN, N = M/s.perN, m = s.m;
+  const nr = starCalc(kind, Msun);
+  const Bc = nr.Bc, pre = Math.pow(m,4)*Math.pow(c0,5)/(8*Math.PI*Math.PI*HB*HB*HB);
+  const Ukin = R => { const V = 4/3*Math.PI*R*R*R, x = h*Math.pow(3*N/(8*Math.PI*V), 1/3)/(m*c0); return V*pre*fk(x); };
+  const xAt = R => h*Math.pow(9*N/(32*Math.PI*Math.PI), 1/3)/(R*m*c0);
+  const K = 0.75*N*c0*h*Math.pow(9*N/(32*Math.PI*Math.PI), 1/3);   // U_kin → K/R as R → 0
+  const kc = 0.75*c0*h*Math.pow(9/(32*Math.PI*Math.PI), 1/3)/Math.pow(s.perN, 4/3);
+  const Mc = Math.pow(kc/(0.6*G), 1.5)/MSUN;
+  // equilibrium: scan a log grid for a local minimum of U, then refine
+  const U = R => Ukin(R) - Bc/R;
+  let Req = null;
+  if (Msun < Mc){ const lo = Math.log(nr.R*1e-4), hi = Math.log(nr.R*3); let best = null, prev = Infinity;
+    for (let i=0;i<=1200;i++){ const R = Math.exp(lo + (hi-lo)*i/1200), u = U(R); if (best === null || u < best.u) best = {R, u}; prev = u; }
+    let a = best.R/1.02, b = best.R*1.02; for (let k=0;k<80;k++){ const m1 = a+(b-a)/3, m2 = b-(b-a)/3; U(m1) < U(m2) ? b = m2 : a = m1; } Req = (a+b)/2; }
+  return {nr, Bc, K, Ukin, U, Mc, Req, x: Req ? xAt(Req) : null};
+}
+function relRender(){
+  document.querySelectorAll('[data-rstar]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.rstar===RS.kind)));
+  const Msun = RS.M[RS.kind], sl = $('mR');
+  [sl.min, sl.max] = RRANGE[RS.kind]; sl.value = Msun;
+  $('mROut').innerHTML = Msun.toFixed(2) + ' \u2009<i>M</i><sub>⊙</sub>';
+  const r = relStar(RS.kind, Msun), km = R => (R/1e3 >= 1000 ? Math.round(R/1e3).toLocaleString('en-US') : (R/1e3).toFixed(1)) + ' km';
+  $('rMc').innerHTML = r.Mc.toFixed(2) + ' <i>M</i><sub>⊙</sub>';
+  $('rR').innerHTML = r.Req ? km(r.Req) : 'none';
+  $('rRnr').innerHTML = km(r.nr.R);
+  $('rX').innerHTML = r.Req ? (r.x < 0.1 ? r.x.toFixed(3) : r.x.toFixed(2)) : '–';
+    $('rVerdict').innerHTML = !r.Req ? 'Above the critical mass. The kinetic energy can only grow as 1/<i>R</i>, which is not enough to stop gravity: the total energy keeps falling as the star shrinks, so there is no equilibrium radius and the star collapses.'
+    : r.x > 3 ? 'Close to the critical mass. The particles are highly relativistic at equilibrium, so the minimum is pulled in to a much smaller radius than the nonrelativistic estimate and is shallow; a little more mass and it is gone.'
+    : r.x > 0.6 ? 'Below the critical mass, but the Fermi momentum is already comparable to <i>mc</i>, so the minimum sits noticeably inside the nonrelativistic estimate.'
+    : 'Well below the critical mass. The particles are nonrelativistic at equilibrium and the minimum matches the nonrelativistic one; only at much smaller radii does the kinetic energy switch over to 1/<i>R</i>.';
+  const c = rCtx; if (!c) return;
+  const W=640,H=380,L=56,R=16,T=18,B=48;
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  const xmax = 2.5*r.nr.R, Umin = -r.Bc*r.Bc/(4*r.nr.A), ylo = 2.2*Umin, yhi = -2.2*Umin;
+  const X = x => L + x/xmax*(W-L-R), Y = u => H-B - (u-ylo)/(yhi-ylo)*(H-T-B);
+  c.strokeStyle=C.band; c.lineWidth=1; c.beginPath(); c.moveTo(L,Y(0)); c.lineTo(W-R,Y(0)); c.stroke();
+  c.fillStyle=C.muted; c.font='12px '+SANS;
+  const raw = xmax/1e3/5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1,2,2.5,5,10].map(k=>k*mag).find(k => k >= raw)*1e3;
+  for (let x=0;x<=xmax*1.0001;x+=step){ c.textAlign='center'; c.fillText((x/1e3).toLocaleString('en-US'), X(x), H-B+16); c.strokeStyle=C.band; c.beginPath(); c.moveTo(X(x),T); c.lineTo(X(x),H-B); c.stroke(); }
+  c.textAlign='center'; c.fillText('radius (km)', (L+W-R)/2, H-8);
+  c.save(); c.translate(16,(H-B+T)/2); c.rotate(-Math.PI/2); c.fillText('energy', 0, 0); c.restore();
+  c.textAlign='right'; c.fillText('0', L-6, Y(0)+4);
+  c.save(); c.beginPath(); c.rect(L,T,W-L-R,H-T-B); c.clip();
+  const curve = (fn, col, w, dash) => { c.strokeStyle=col; c.lineWidth=w; c.setLineDash(dash||[]); c.beginPath(); let st=false;
+    for (let i=1;i<=800;i++){ const x = xmax*i/800, yy = Y(Math.max(ylo*3, Math.min(yhi*3, fn(x)))); st ? c.lineTo(X(x),yy) : (c.moveTo(X(x),yy), st=true); } c.stroke(); c.setLineDash([]); };
+  curve(x => (r.K - r.Bc)/x, C.hot, 1.6, [3,4]);
+  curve(x => r.nr.A/(x*x) - r.Bc/x, C.muted, 1.6, [6,4]);
+  curve(r.Ukin, C.fermion, 2.2);
+  curve(x => -r.Bc/x, C.res, 2.2);
+  curve(r.U, C.ink, 2.8);
+  if (r.Req){ const ue = r.U(r.Req); c.strokeStyle=C.hot; c.setLineDash([4,4]); c.lineWidth=1.2; c.beginPath(); c.moveTo(X(r.Req),T); c.lineTo(X(r.Req),H-B); c.stroke(); c.setLineDash([]);
+    c.fillStyle=C.hot; c.beginPath(); c.arc(X(r.Req), Y(ue), 5.5, 0, 7); c.fill(); c.restore();
+    c.fillStyle=C.hot; rich(c, Math.min(X(r.Req)+8, W-R-60), Math.min(Y(ue)+22, H-B-6), 16, [['R','i'],['eq','sub']], 'left'); }
+  else { c.restore(); const y0 = Math.min(H-B-30, Y(ylo*0.85)); c.strokeStyle=C.hot; c.fillStyle=C.hot; c.lineWidth=2;
+    const xa = L+150, xb = L+40; c.beginPath(); c.moveTo(xa,y0); c.lineTo(xb+10,y0); c.stroke(); c.beginPath(); c.moveTo(xb,y0); c.lineTo(xb+12,y0-6); c.lineTo(xb+12,y0+6); c.closePath(); c.fill();
+    c.font='600 13px '+SANS; c.textAlign='left'; c.fillText('collapse: no minimum', xa+8, y0+4); }
+}
+document.querySelectorAll('[data-rstar]').forEach(b => b.addEventListener('click', () => { RS.kind = b.dataset.rstar; relRender(); }));
+$('mR').addEventListener('input', e => { RS.M[RS.kind] = +e.target.value; relRender(); });
+
 /* ================= NONZERO T (numerics in units of eps_F) ================= */
 const fd = (e, mu, t) => { const x = (e-mu)/t; return x > 40 ? Math.exp(-x) : 1/(Math.exp(x)+1); };
 function simpson(f, a, b, n){ if (b<=a) return 0; const hh=(b-a)/n; let s=f(a)+f(b); for (let i=1;i<n;i++) s += (i%2?4:2)*f(a+i*hh); return s*hh/3; }
@@ -785,17 +884,18 @@ document.querySelectorAll('[data-dim]').forEach(b => b.addEventListener('click',
 $('tS').addEventListener('input', e => { HT.t = +e.target.value; heatRender(); });
 
 /* ================= LAYOUT ================= */
-let nCtx, bCtx, sCtx, gCtx, muCtx, cvCtx;
+let nCtx, bCtx, sCtx, rCtx, gCtx, muCtx, cvCtx;
 function layout(){
   nCtx = fit($('nCanvas'), 600, 600);
   bCtx = fit($('bCanvas'), 640, 340);
   sCtx = fit($('sCanvas'), 640, 380);
+  rCtx = fit($('rCanvas'), 640, 380);
   gCtx = fit($('gCanvas'), 640, 360);
   muCtx = fit($('muCanvas'), 440, 300);
   cvCtx = fit($('cvCanvas'), 440, 300);
   redrawAll();
 }
-function redrawAll(){ nRender(); metalRender(); starRender(); heatRender(); }
+function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); heatRender(); }
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
