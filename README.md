@@ -26,6 +26,8 @@ Created by **Claude Opus 5.5**, based on the lecture notes by **Sang Hoon Lee** 
 
 The relativistic case, where U<sub>kinetic</sub> also scales as 1/R and no stable radius exists, is explained alongside. A second figure uses the exact kinetic energy of the Fermi sea, ε = √((pc)² + (mc²)²) − mc², which goes from 1/R² for a large star to 1/R for a compact one. Moving the mass slider shows the minimum moving in and becoming shallower, then disappearing above the critical mass (about 1.7 M<sub>⊙</sub> for a white dwarf and 6.8 M<sub>⊙</sub> for a neutron star in this model), with the nonrelativistic total and the ultrarelativistic limit C/R drawn for comparison.
 
+**Where the density of states comes from.** An animated figure for 1D, 2D and 3D. Shells of equal width Δn in n-space hold a number of states that is constant, ∝ n or ∝ n². Mapping them onto the energy axis with ε<sub>n</sub> ∝ n² stretches each shell by Δε ∝ n Δn, so the states per unit energy become g(ε) ∝ 1/√ε, constant or √ε. A slider scrubs the mapping, and thinner shells make the histogram approach the smooth curve.
+
 **A little bit of heat.** The density of states g(ε) ∝ √ε, the occupied region g(ε) n̄<sub>FD</sub>(ε) at an adjustable temperature, and the resulting shift of μ below ε<sub>F</sub>. The demo solves the number and energy integrals numerically and compares them with the Sommerfeld expansion:
 
 ```

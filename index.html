@@ -306,6 +306,47 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <p>At small but nonzero \(T\), electrons deep in the sea can’t absorb thermal energy: every nearby state is already full. Only those within about \(k_{\mathrm{B}}T\) of the Fermi energy can, and there are about \(N k_{\mathrm{B}}T/\varepsilon_F\) of them, each gaining about \(k_{\mathrm{B}}T\). So the extra energy goes as \(N(k_{\mathrm{B}}T)^2/\varepsilon_F\), and the heat capacity is proportional to \(T\), vanishing as \(T \to 0\) in agreement with the third law and with experiments on metals at low temperatures.</p>
     <p>To be quantitative, rewrite the energy integral in terms of \(\varepsilon\) to find the density of states, the number of single-particle states per unit energy:</p>
     <div class="eq"><span class="boxed">\( \displaystyle g(\varepsilon) = \frac{\pi (8m)^{3/2}}{2h^3}\, V\sqrt{\varepsilon} = \frac{3N}{2\varepsilon_F^{3/2}}\sqrt{\varepsilon} \)</span></div>
+  </div>
+
+  <h3>Where the density of states comes from</h3>
+  <div class="prose">
+    <p>In \(n\)-space the states sit on a lattice, one per unit volume, so the number of states in a thin shell between \(n\) and \(n+dn\) grows like the shell’s size: constant in 1D, \(\propto n\) in 2D (a quarter circle), \(\propto n^2\) in 3D (an eighth of a sphere). But the energy goes as \(\varepsilon_n \propto n^2\), so equal steps in \(n\) become ever wider steps in \(\varepsilon\): \(d\varepsilon \propto n\,dn\). The same number of states is spread over a wider energy interval, and the number per unit energy is</p>
+    <div class="eq">\( \displaystyle g(\varepsilon) = \frac{dN_{\text{states}}}{d\varepsilon} \propto \frac{n^{d-1}\,dn}{n\,dn} = n^{d-2} \propto \varepsilon^{d/2-1}: \qquad \frac{1}{\sqrt{\varepsilon}}\ \text{(1D)}, \qquad \text{constant (2D)}, \qquad \sqrt{\varepsilon}\ \text{(3D)}. \)</div>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="dCanvas" aria-label="Shells of states in n-space mapped onto the energy axis, giving the density of states in one, two and three dimensions"></canvas></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--hot)"></span>States in a shell of width \(\Delta n\) (top), and the same states per unit energy (bottom)</span>
+        <span><span class="swatch line" style="background:var(--fermion)"></span>\(g(\varepsilon)\)</span>
+      </div>
+      <p class="verdict" id="dVerdict"></p>
+    </div>
+    <div class="panel">
+      <div class="ctl btns" role="group" aria-label="Dimension">
+        <button type="button" data-ddim="1">1D</button>
+        <button type="button" data-ddim="2">2D</button>
+        <button type="button" data-ddim="3" aria-pressed="true">3D</button>
+      </div>
+      <div class="ctl">
+        <label for="dBins"><span class="lt">Shells</span> <output id="dBinsOut"></output></label>
+        <input type="range" id="dBins" min="3" max="24" step="1" value="4">
+        <small>Thinner shells make the histogram approach the smooth curve.</small>
+      </div>
+      <div class="ctl">
+        <label for="dMap"><span class="lt">Map \(n \to \varepsilon_n \propto n^2\)</span> <output id="dMapOut"></output></label>
+        <input type="range" id="dMap" min="0" max="1" step="0.01" value="1">
+      </div>
+      <div class="ctl btns"><button type="button" id="dPlay">Play the mapping</button></div>
+      <dl class="stats">
+        <dt>States per shell</dt><dd id="dCount">–</dd>
+        <dt>Shell width in \(\varepsilon\)</dt><dd id="dWidth">–</dd>
+        <dt>\(g(\varepsilon)\)</dt><dd id="dG">–</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="prose">
     <p>At any temperature, multiply by the probability that each state is occupied:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle N = \int_0^\infty g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle U = \int_0^\infty \varepsilon\, g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle \bar{n}_{\mathrm{FD}} = \frac{1}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1} \)</span></div>
     <p>Because \(\bar{n}_{\mathrm{FD}}\) is symmetric about \(\mu\) but \(g(\varepsilon)\) increases with \(\varepsilon\), keeping the area (that is, \(N\)) fixed forces \(\mu\) to drop below \(\varepsilon_F\) as the gas warms. The demo solves these integrals numerically and compares them with the Sommerfeld expansion.</p>
@@ -750,6 +791,108 @@ function relRender(){
 document.querySelectorAll('[data-rstar]').forEach(b => b.addEventListener('click', () => { RS.kind = b.dataset.rstar; relRender(); }));
 $('mR').addEventListener('input', e => { RS.M[RS.kind] = +e.target.value; relRender(); });
 
+
+/* ================= WHERE g(ε) COMES FROM ================= */
+// n-space shells [n_k, n_k + Δn] with n_max = 1 and ε = n² (units of the largest energy shown).
+// States in a shell: C_d ∫ n^{d-1} dn, with C_1 = 1, C_2 = π/2, C_3 = π/2 (per unit n-volume; any constant would do).
+const DS = {d:3, bins:4, map:1, playing:false, raf:0};
+function dShells(){
+  const d = DS.d, B = DS.bins, Cd = d===1 ? 1 : Math.PI/2, sh = [];
+  for (let k=0;k<B;k++){
+    const n0 = 1/B*k, n1 = 1/B*(k+1);
+    const cnt = Cd*(Math.pow(n1,d) - Math.pow(n0,d))/d, e0 = n0*n0, e1 = n1*n1;
+    sh.push({n0, n1, cnt, e0, e1, dens: cnt/(e1-e0)}); }
+  return {sh, gfun: e => (d===1 ? 0.5/Math.sqrt(Math.max(e,1e-9)) : d===2 ? Math.PI/4 : Math.PI/4*Math.sqrt(Math.max(e,0)))};
+}
+// math on the canvas: tokens [text, style] with styles from rich(), plus ['sqrt', tokens] drawn with a radical sign and a bar
+function mathW(c, size, toks){ let w = 0; for (const t of toks){ if (t[0]==='sqrt') w += size*0.62 + mathW(c, size, t[1]) + size*0.08; else { c.font = mFont(t[1], size); w += c.measureText(t[0]).width; } } return w; }
+function mFont(st, size){ return st==='i' ? 'italic '+size+'px '+SERIF : st==='isub' ? 'italic '+(size*0.7)+'px '+SERIF : st==='sup' ? (size*0.7)+'px '+SERIF : size+'px '+SERIF; }
+function mathText(c, x, y, size, toks, align, col){
+  const w = mathW(c, size, toks); let cx = align==='right' ? x-w : align==='center' ? x-w/2 : x;
+  const draw = (toks, halo) => { for (const t of toks){
+      if (t[0]==='sqrt'){ const iw = mathW(c, size, t[1]), x0 = cx, top = y - size*0.86;
+        c.beginPath(); c.moveTo(x0, y-size*0.32); c.lineTo(x0+size*0.13, y-size*0.4); c.lineTo(x0+size*0.3, y+size*0.1); c.lineTo(x0+size*0.56, top); c.lineTo(x0+size*0.62+iw+size*0.04, top);
+        c.lineWidth = halo ? 5 : Math.max(1.1, size*0.07); c.strokeStyle = halo ? C.surface : col; c.lineJoin='round'; c.stroke();
+        cx += size*0.62; draw(t[1], halo); cx += size*0.08; continue; }
+      c.font = mFont(t[1], size); const dy = t[1]==='isub' ? size*0.25 : t[1]==='sup' ? -size*0.38 : 0;
+      if (halo){ c.lineWidth = 5; c.strokeStyle = C.surface; c.lineJoin='round'; c.strokeText(t[0], cx, y+dy); } else { c.fillStyle = col; c.fillText(t[0], cx, y+dy); }
+      cx += c.measureText(t[0]).width; } };
+  c.save(); c.textAlign = 'left'; draw(toks, true); cx = align==='right' ? x-w : align==='center' ? x-w/2 : x; draw(toks, false); c.restore(); }
+const GEPS = [['g','i'],['(','r'],['ε','i'],[')','r']];
+function dRender(){
+  document.querySelectorAll('[data-ddim]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.ddim===DS.d)));
+  $('dBinsOut').textContent = DS.bins; $('dMapOut').textContent = Math.round(DS.map*100)+'%';
+  if (DS.shownD !== DS.d){ DS.shownD = DS.d;
+    $('dCount').innerHTML = ['constant','\\(\\propto n\\)','\\(\\propto n^2\\)'][DS.d-1];
+    $('dWidth').innerHTML = '\\(\\Delta\\varepsilon \\propto n\\,\\Delta n\\)';
+    $('dG').innerHTML = ['\\(\\propto 1/\\sqrt{\\varepsilon}\\)','constant','\\(\\propto \\sqrt{\\varepsilon}\\)'][DS.d-1];
+    $('dVerdict').innerHTML = DS.d===1 ? 'In 1D every shell holds the same number of states, but the shells stretch out in energy, so the states thin out: \\(g(\\varepsilon) \\propto 1/\\sqrt{\\varepsilon}\\).'
+      : DS.d===2 ? 'In 2D the number of states per shell grows like \\(n\\), exactly as fast as the shells stretch in energy, so \\(g(\\varepsilon)\\) is constant.'
+      : 'In 3D the number of states per shell grows like \\(n^2\\), faster than the shells stretch, so \\(g(\\varepsilon) \\propto \\sqrt{\\varepsilon}\\): this is the 3D result above.';
+    const els = ['dCount','dWidth','dG','dVerdict'].map($);
+    const go = () => { if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetClear && MathJax.typesetClear(els); MathJax.typesetPromise(els).catch(()=>{}); } };
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(go); else setTimeout(go, 800);
+  }
+  const c = dCtx; if (!c) return;
+  const W=640,H=520; c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  const {sh, gfun} = dShells(), m = DS.map, ease = m<0.5 ? 2*m*m : 1-Math.pow(-2*m+2,2)/2;
+  // panel geometry: top = n-space, bottom = energy
+  const L=70, Rr=24, tT=26, tB=208, bT=290, bB=470;
+  const Xn = n => L + n*(W-L-Rr)*0.62, Xe = e => L + e*(W-L-Rr);
+  const cmax = Math.max(...sh.map(s=>s.cnt));
+  // bottom scale: fixed by the smooth curve so that changing the number of shells keeps the axis
+  const gref = DS.d===1 ? gfun(0.25)*2 : DS.d===2 ? gfun(0.5)*1.6 : gfun(1)*1.12;
+  const Yt = v => tB - v/cmax*(tB-tT-18), Yb = v => bB - Math.min(v/gref,1.15)*(bB-bT-14);
+  const axis = (x0,y0,x1,y1,label,ylab,yl2) => { c.strokeStyle=C.ink; c.fillStyle=C.ink; c.lineWidth=1.4;
+    c.beginPath(); c.moveTo(x0,y0); c.lineTo(x1,y0); c.moveTo(x0,y0); c.lineTo(x0,y1); c.stroke();
+    c.beginPath(); c.moveTo(x1+8,y0); c.lineTo(x1,y0-4); c.lineTo(x1,y0+4); c.fill(); c.beginPath(); c.moveTo(x0,y1-8); c.lineTo(x0-4,y1); c.lineTo(x0+4,y1); c.fill();
+    rich(c, x1+12, y0+6, 18, label, 'left'); c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText(ylab, 8, y1+4); if (yl2) c.fillText(yl2, 8, y1+19); };
+  axis(L, tB, Xn(1)+24, tT, [['n','i']], 'states per', 'shell Δn');
+  axis(L, bB, W-Rr-26, bT, [['ε','i'],['n','isub']], 'states per', 'unit energy');
+  if (DS.d===1){ c.fillStyle=C.hot; c.font='600 13px '+SANS; c.textAlign='left'; c.fillText('constant', Xn(1)+40, tT+30); }
+  else mathText(c, Xn(1)+40, tT+32, 17, DS.d===2 ? [['∝ ','r'],['n','i']] : [['∝ ','r'],['n','i'],['2','sup']], 'left', C.hot);
+  // smooth curve in the bottom panel, fading in at the end of the mapping
+  const fade = Math.max(0, Math.min(1, (m-0.75)/0.25));
+  if (fade>0){ c.save(); c.globalAlpha = fade; c.strokeStyle=C.fermion; c.lineWidth=2.6; c.beginPath();
+    for (let i=0;i<=300;i++){ const e = 0.0005 + (1-0.0005)*i/300, y = Yb(gfun(e)); i ? c.lineTo(Xe(e), y) : c.moveTo(Xe(e), y); } c.stroke();
+    c.restore(); c.save(); c.globalAlpha = fade;
+    const lab = DS.d===1 ? GEPS.concat([[' ∝ 1/','r'],['sqrt',[['ε','i']]]]) : DS.d===2 ? GEPS.concat([[' = constant','r']]) : GEPS.concat([[' ∝ ','r'],['sqrt',[['ε','i']]]]);
+    mathText(c, W-Rr-30, DS.d===1 ? Yb(gfun(0.75))-16 : DS.d===2 ? Yb(gfun(0.5))-14 : bT+24, 18, lab, 'right', C.fermion); c.restore(); }
+  // bars: each shell drawn in n-space (top) and, as it is carried over, in energy (bottom)
+  const gap = sh.length>10 ? 0.12 : 0.22;
+  sh.forEach((s,k) => {
+    const w = s.n1-s.n0, a = s.n0 + w*gap/2, b = s.n1 - w*gap/2;
+    const tx0 = Xn(a), tx1 = Xn(b), ty = Yt(s.cnt);
+    c.fillStyle=C.hot; c.strokeStyle=C.ink; c.lineWidth=1; c.fillRect(tx0, ty, tx1-tx0, tB-ty); c.strokeRect(tx0, ty, tx1-tx0, tB-ty);
+    if (m <= 0) return;
+    // target bar: the full interval [e0, e1] (narrow gap kept for visibility), height = states per unit energy
+    const we = s.e1-s.e0, ea = s.e0 + Math.min(we*gap/2, 0.004), eb = s.e1 - Math.min(we*gap/2, 0.004);
+    const bx0 = Xe(ea), bx1 = Xe(eb), by = Yb(s.dens);
+    // the moving piece: starts as a copy of the top bar, ends as the bottom bar
+    const x0 = tx0 + (bx0-tx0)*ease, x1 = tx1 + (bx1-tx1)*ease, yTop = ty + (by - ty)*ease, yBase = tB + (bB - tB)*ease;
+    c.save(); c.globalAlpha = 0.25 + 0.75*Math.min(1, ease*1.5);
+    c.fillStyle=C.hot; c.fillRect(x0, yTop, x1-x0, yBase-yTop); c.strokeStyle=C.ink; c.strokeRect(x0, yTop, x1-x0, yBase-yTop); c.restore();
+    if (s.dens/gref > 1.15 && ease>0.95){ c.fillStyle=C.surface; c.fillRect(x0-1, bT+4, x1-x0+2, 5); }   // clipped bar marker
+    // arrows from the top bar to its place on the energy axis
+    if (sh.length <= 10){ c.save(); c.globalAlpha = Math.min(1, m*3)*0.85; c.strokeStyle=C.fermion; c.fillStyle=C.fermion; c.lineWidth=1.3;
+      const sx = (tx0+tx1)/2, sy = tB+4, ex = (bx0+bx1)/2, ey = bB-4 - (bB-bT-30)*0 - 2;
+      const tx = sx + (ex-sx)*Math.min(1,m*1.4), ty2 = sy + (ey-sy)*Math.min(1,m*1.4);
+      c.beginPath(); c.moveTo(sx, sy); c.lineTo(tx, ty2); c.stroke();
+      const ang = Math.atan2(ty2-sy, tx-sx); c.beginPath(); c.moveTo(tx, ty2); c.lineTo(tx-8*Math.cos(ang-0.4), ty2-8*Math.sin(ang-0.4)); c.lineTo(tx-8*Math.cos(ang+0.4), ty2-8*Math.sin(ang+0.4)); c.fill(); c.restore(); }
+  });
+  if (sh.length <= 10 && m>0.05) mathText(c, Xe(0.66), (tB+bT)/2 + 10, 18, [['ε','i'],['n','isub'],[' ∝ ','r'],['n','i'],['2','sup']], 'left', C.fermion);
+}
+function dPlay(){ if (DS.playing){ DS.playing=false; cancelAnimationFrame(DS.raf); $('dPlay').textContent='Play the mapping'; return; }
+  if (reduceMotion){ DS.map=1; $('dMap').value=1; dRender(); return; }
+  DS.playing=true; $('dPlay').textContent='Pause'; if (DS.map>=1) DS.map=0; let last=performance.now();
+  const step = now => { if (!DS.playing) return; DS.map=Math.min(1, DS.map+(now-last)/2600); last=now; $('dMap').value=DS.map; dRender();
+    if (DS.map>=1){ DS.playing=false; $('dPlay').textContent='Play the mapping'; return; } DS.raf=requestAnimationFrame(step); };
+  DS.raf=requestAnimationFrame(step); }
+document.querySelectorAll('[data-ddim]').forEach(b => b.addEventListener('click', () => { DS.d=+b.dataset.ddim; if (!DS.playing) { DS.map=0; $('dMap').value=0; } dRender(); if (!DS.playing) dPlay(); }));
+$('dBins').addEventListener('input', e => { DS.bins=+e.target.value; dRender(); });
+$('dMap').addEventListener('input', e => { if (DS.playing) dPlay(); DS.map=+e.target.value; dRender(); });
+$('dPlay').addEventListener('click', dPlay);
+
 /* ================= NONZERO T (numerics in units of eps_F) ================= */
 const fd = (e, mu, t) => { const x = (e-mu)/t; return x > 40 ? Math.exp(-x) : 1/(Math.exp(x)+1); };
 function simpson(f, a, b, n){ if (b<=a) return 0; const hh=(b-a)/n; let s=f(a)+f(b); for (let i=1;i<n;i++) s += (i%2?4:2)*f(a+i*hh); return s*hh/3; }
@@ -884,18 +1027,19 @@ document.querySelectorAll('[data-dim]').forEach(b => b.addEventListener('click',
 $('tS').addEventListener('input', e => { HT.t = +e.target.value; heatRender(); });
 
 /* ================= LAYOUT ================= */
-let nCtx, bCtx, sCtx, rCtx, gCtx, muCtx, cvCtx;
+let nCtx, bCtx, sCtx, rCtx, dCtx, gCtx, muCtx, cvCtx;
 function layout(){
   nCtx = fit($('nCanvas'), 600, 600);
   bCtx = fit($('bCanvas'), 640, 340);
   sCtx = fit($('sCanvas'), 640, 380);
   rCtx = fit($('rCanvas'), 640, 380);
+  dCtx = fit($('dCanvas'), 640, 520);
   gCtx = fit($('gCanvas'), 640, 360);
   muCtx = fit($('muCanvas'), 440, 300);
   cvCtx = fit($('cvCanvas'), 440, 300);
   redrawAll();
 }
-function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); heatRender(); }
+function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); heatRender(); }
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
