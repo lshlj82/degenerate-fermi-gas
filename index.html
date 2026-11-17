@@ -2,6 +2,20 @@
 <html lang="en-US">
 <head>
 <meta charset="utf-8">
+<!-- lang-toggle:head -->
+<script>(function(){var l='en';try{if(localStorage.getItem('lshlj82-demo-lang')==='ko')l='ko'}catch(e){}window.LANG=l;document.documentElement.dataset.lang=l;window.tr=function(en,ko){return window.LANG==='ko'&&ko!=null?ko:en};})();</script>
+<style>
+#langBtn{position:fixed;z-index:21;top:calc(env(safe-area-inset-top,0px) + 12px);right:calc(env(safe-area-inset-right,0px) + 60px);
+  min-width:40px;height:40px;padding:0 10px;border-radius:20px;display:grid;place-items:center;cursor:pointer;font:600 14px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  background:var(--lb-bg,rgba(255,255,255,.92));color:var(--lb-fg,#1d2633);border:1px solid var(--lb-bd,rgba(20,30,45,.18));box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#langBtn:hover{border-color:currentColor}
+#langBtn:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+:root[data-theme="dark"] #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}}
+:root[data-lang="ko"] body{word-break:keep-all}
+@media print{#langBtn{display:none}}
+</style>
+<!-- lang-toggle:head-end -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Degenerate Fermi Gases, Interactively</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,25 +133,25 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
 <div class="wrap">
 
 <header class="hero">
-  <p class="credit">An interactive demo created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee (Chapter 7, Section 7.3, Degenerate Fermi Gases)</p>
-  <h1>Degenerate Fermi Gases</h1>
-  <p class="lede">Fill a box with fermions and they stack up, one per state, into a sea whose surface is the Fermi energy. That simple rule explains why metals resist compression, why white dwarfs and neutron stars don’t collapse, and why the heat capacity of a metal vanishes as \(T \to 0\).</p>
+  <p class="credit" data-k="k1">An interactive demo created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee (Chapter 7, Section 7.3, Degenerate Fermi Gases)</p>
+  <h1 data-k="k2">Degenerate Fermi Gases</h1>
+  <p class="lede" data-k="k3">Fill a box with fermions and they stack up, one per state, into a sea whose surface is the Fermi energy. That simple rule explains why metals resist compression, why white dwarfs and neutron stars don’t collapse, and why the heat capacity of a metal vanishes as \(T \to 0\).</p>
 </header>
 
 <!-- ============ ZERO T / N-SPACE ============ -->
 <section id="sea" aria-labelledby="h-sea">
-  <h2 id="h-sea">Filling the Fermi sea</h2>
+  <h2 id="h-sea" data-k="k4">Filling the Fermi sea</h2>
   <div class="prose">
-    <p>The most familiar degenerate gas is the conduction electrons inside a chunk of metal. At room temperature an electron’s quantum volume is \(v_Q \approx (4.3\ \mathrm{nm})^3\), while a typical metal has about one conduction electron per \((0.2\ \mathrm{nm})^3\). So \(V/N \ll v_Q\): the opposite of the Boltzmann limit, even though room temperature isn’t especially cold.</p>
-    <p>At \(T = 0\) the Fermi–Dirac distribution becomes a step function. Every state below \(\mu\) is occupied and every state above it is empty, and the Fermi energy is defined as \(\varepsilon_F \equiv \mu(T=0)\). Build the gas by adding one electron at a time into the lowest available state. For a box of side \(L\), the allowed energies are</p>
+    <p data-k="k5">The most familiar degenerate gas is the conduction electrons inside a chunk of metal. At room temperature an electron’s quantum volume is \(v_Q \approx (4.3\ \mathrm{nm})^3\), while a typical metal has about one conduction electron per \((0.2\ \mathrm{nm})^3\). So \(V/N \ll v_Q\): the opposite of the Boltzmann limit, even though room temperature isn’t especially cold.</p>
+    <p data-k="k6">At \(T = 0\) the Fermi–Dirac distribution becomes a step function. Every state below \(\mu\) is occupied and every state above it is empty, and the Fermi energy is defined as \(\varepsilon_F \equiv \mu(T=0)\). Build the gas by adding one electron at a time into the lowest available state. For a box of side \(L\), the allowed energies are</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \varepsilon = \frac{|\vec{p}|^2}{2m} = \frac{h^2}{8mL^2}\left(n_x^2 + n_y^2 + n_z^2\right), \)</span><span class="eqp">\( \displaystyle n_x, n_y, n_z = 1, 2, 3, \ldots \)</span></div>
-    <p>so the energy grows with the squared distance from the origin in “\(n\)-space.” Each lattice point takes two electrons (spin up and down). In three dimensions the filled region is an eighth of a sphere. Drag the view to turn it, or switch to the flat two-dimensional version, a quarter of a disk.</p>
+    <p data-k="k7">so the energy grows with the squared distance from the origin in “\(n\)-space.” Each lattice point takes two electrons (spin up and down). In three dimensions the filled region is an eighth of a sphere. Drag the view to turn it, or switch to the flat two-dimensional version, a quarter of a disk.</p>
   </div>
 
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="nCanvas" tabindex="0" style="touch-action:none" aria-label="Lattice of allowed states in n-space, filled with electrons from the origin outward. In 3D, drag or use the arrow keys to rotate."></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k8">
         <span><span class="swatch" style="background:var(--fermion)"></span>Spin up</span>
         <span><span class="swatch" style="background:var(--down)"></span>Spin down</span>
         <span><span class="swatch dash" style="border-color:var(--hot)"></span>Continuum estimate of \(n_{\max}\)</span>
@@ -146,88 +160,88 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl btns" role="group" aria-label="View">
-        <button type="button" data-ndim="3" aria-pressed="true">3D view</button>
-        <button type="button" data-ndim="2">2D slice</button>
+        <button type="button" data-ndim="3" aria-pressed="true" data-k="k9">3D view</button>
+        <button type="button" data-ndim="2" data-k="k10">2D slice</button>
       </div>
       <div class="ctl">
-        <label for="nE"><span class="lt">Electrons \(N\)</span> <output id="nEOut"></output></label>
+        <label for="nE"><span data-k="k11"><span class="lt">Electrons \(N\)</span></span> <output id="nEOut"></output></label>
         <input type="range" id="nE" min="0" max="1000" step="1" value="400">
       </div>
       <div class="ctl btns">
-        <button type="button" id="add1">Add an electron</button>
-        <button type="button" id="add10">Add 10</button>
-        <button type="button" id="empty">Empty the box</button>
+        <button type="button" id="add1" data-k="k12">Add an electron</button>
+        <button type="button" id="add10" data-k="k13">Add 10</button>
+        <button type="button" id="empty" data-k="k14">Empty the box</button>
         <button type="button" id="spin" aria-pressed="false">Pause rotation</button>
       </div>
       <dl class="stats">
-        <dt>\(\varepsilon_F\), exact count</dt><dd id="efExact">–</dd>
-        <dt>\(\varepsilon_F\), continuum</dt><dd id="efCont">–</dd>
-        <dt>\(U/(N\varepsilon_F)\), exact</dt><dd id="uExact">–</dd>
-        <dt>Continuum value</dt><dd id="uCont">0.6</dd>
+        <dt data-k="k15">\(\varepsilon_F\), exact count</dt><dd id="efExact">–</dd>
+        <dt data-k="k16">\(\varepsilon_F\), continuum</dt><dd id="efCont">–</dd>
+        <dt data-k="k17">\(U/(N\varepsilon_F)\), exact</dt><dd id="uExact">–</dd>
+        <dt data-k="k18">Continuum value</dt><dd id="uCont">0.6</dd>
       </dl>
-      <p class="cap" id="cap3" style="margin:.75rem 0 0">Energies in units of \(h^2/8mL^2\). The continuum results for 3D are \(\varepsilon_F = (3N/\pi)^{2/3}\) and \(U = \tfrac35 N\varepsilon_F\); they get better as \(N\) grows.</p>
-      <p class="cap" id="cap2" style="margin:.75rem 0 0" hidden>Energies in units of \(h^2/8mL^2\). The continuum results for 2D are \(\varepsilon_F = 2N/\pi\) and \(U = \tfrac12 N\varepsilon_F\); they get better as \(N\) grows.</p>
+      <p class="cap" id="cap3" style="margin:.75rem 0 0" data-k="k19">Energies in units of \(h^2/8mL^2\). The continuum results for 3D are \(\varepsilon_F = (3N/\pi)^{2/3}\) and \(U = \tfrac35 N\varepsilon_F\); they get better as \(N\) grows.</p>
+      <p class="cap" id="cap2" style="margin:.75rem 0 0" hidden data-k="k20">Energies in units of \(h^2/8mL^2\). The continuum results for 2D are \(\varepsilon_F = 2N/\pi\) and \(U = \tfrac12 N\varepsilon_F\); they get better as \(N\) grows.</p>
     </div>
   </div>
 
-  <h3>The three-dimensional results</h3>
+  <h3 data-k="k21">The three-dimensional results</h3>
   <div class="prose">
-    <p>Counting the lattice points inside an eighth-sphere of radius \(n_{\max}\), with two spin orientations each,</p>
+    <p data-k="k22">Counting the lattice points inside an eighth-sphere of radius \(n_{\max}\), with two spin orientations each,</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle N = 2 \cdot \frac18 \cdot \frac43 \pi n_{\max}^3 = \frac{\pi n_{\max}^3}{3}, \)</span><span class="eqp">\( \displaystyle n_{\max} = \left(\frac{3N}{\pi}\right)^{1/3} \)</span></div>
     <div class="eq"><span class="boxed">\( \displaystyle \varepsilon_F = \frac{h^2 n_{\max}^2}{8mL^2} = \frac{h^2}{8m}\left(\frac{3N}{\pi V}\right)^{2/3} \)</span></div>
-    <p>This is an intensive quantity: it depends only on the number density \(N/V\). Integrating \(\varepsilon(\vec n)\) over the eighth-sphere in spherical coordinates gives the total energy and the average energy per electron:</p>
+    <p data-k="k23">This is an intensive quantity: it depends only on the number density \(N/V\). Integrating \(\varepsilon(\vec n)\) over the eighth-sphere in spherical coordinates gives the total energy and the average energy per electron:</p>
     <div class="eq multi chain"><span class="eqp">\( \displaystyle U = 2 \cdot \frac{\pi}{2}\int_0^{n_{\max}} \varepsilon(n)\, n^2\, dn \)</span><span class="eqp">\( \displaystyle = \frac{\pi h^2}{40 m L^2}\, n_{\max}^5 \)</span><span class="eqp">\( \displaystyle = \frac35 N \varepsilon_F, \)</span><span class="eqp sep">\( \displaystyle \frac{U}{N} = \frac35\varepsilon_F \)</span></div>
   </div>
 </section>
 
 <!-- ============ METALS ============ -->
 <section id="metals" aria-labelledby="h-metals">
-  <h2 id="h-metals">Electrons in metals</h2>
+  <h2 id="h-metals" data-k="k24">Electrons in metals</h2>
   <div class="prose">
-    <p>Because \(U\) depends on \(V\) through \(\varepsilon_F \propto V^{-2/3}\), the electrons push outward. This degeneracy pressure has nothing to do with electrostatic repulsion between the electrons; it exists purely by virtue of the exclusion principle. Compressing the gas shortens every wavelength, which raises every energy:</p>
+    <p data-k="k25">Because \(U\) depends on \(V\) through \(\varepsilon_F \propto V^{-2/3}\), the electrons push outward. This degeneracy pressure has nothing to do with electrostatic repulsion between the electrons; it exists purely by virtue of the exclusion principle. Compressing the gas shortens every wavelength, which raises every energy:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle P = -\left(\frac{\partial U}{\partial V}\right)_{S,N} = \frac{2}{5}\frac{N\varepsilon_F}{V} = \frac{2U}{3V}, \)</span><span class="eqp">\( \displaystyle B = -V\left(\frac{\partial P}{\partial V}\right)_T = \frac{10}{9}\frac{U}{V} \)</span></div>
-    <p>The pressure itself is largely canceled by the electrostatic forces that hold the electrons inside the metal, but the bulk modulus is not, and the free-electron formula agrees with experiment within a factor of 3 or so for most metals. Pick a metal to check.</p>
+    <p data-k="k26">The pressure itself is largely canceled by the electrostatic forces that hold the electrons inside the metal, but the bulk modulus is not, and the free-electron formula agrees with experiment within a factor of 3 or so for most metals. Pick a metal to check.</p>
   </div>
 
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="bCanvas" aria-label="Free-electron bulk modulus compared with measured values for several metals"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k27">
         <span><span class="swatch" style="background:var(--fermion)"></span>Free-electron prediction \(B = \tfrac{10}{9}U/V\)</span>
         <span><span class="swatch" style="background:var(--res)"></span>Measured (typical handbook value)</span>
       </div>
-      <p class="cap">The number under each metal is measured ÷ predicted. Most land within a factor of 3.</p>
+      <p class="cap" data-k="k28">The number under each metal is measured ÷ predicted. Most land within a factor of 3.</p>
     </div>
     <div class="panel">
       <div class="ctl btns" role="group" aria-label="Metal" id="metalBtns"></div>
       <dl class="stats">
-        <dt>Density \(N/V\)</dt><dd id="mN">–</dd>
+        <dt data-k="k29">Density \(N/V\)</dt><dd id="mN">–</dd>
         <dt>\(\varepsilon_F\)</dt><dd id="mEF">–</dd>
         <dt>\(T_F = \varepsilon_F/k_{\mathrm{B}}\)</dt><dd id="mTF">–</dd>
-        <dt>\(\varepsilon_F / k_{\mathrm{B}}T\) at 300 K</dt><dd id="mRatio">–</dd>
+        <dt data-k="k30">\(\varepsilon_F / k_{\mathrm{B}}T\) at 300 K</dt><dd id="mRatio">–</dd>
         <dt class="sep"></dt>
-        <dt>Pressure \(P\)</dt><dd id="mP">–</dd>
-        <dt>\(B\), free electrons</dt><dd id="mB">–</dd>
-        <dt>\(B\), measured</dt><dd id="mBexp">–</dd>
+        <dt data-k="k31">Pressure \(P\)</dt><dd id="mP">–</dd>
+        <dt data-k="k32">\(B\), free electrons</dt><dd id="mB">–</dd>
+        <dt data-k="k33">\(B\), measured</dt><dd id="mBexp">–</dd>
       </dl>
     </div>
   </div>
-  <p class="prose note" style="margin-top:1.25rem">With \(\varepsilon_F\) a few eV and \(k_{\mathrm{B}}T \approx 1/40\ \mathrm{eV}\) at room temperature, \(T \approx 0\) is an excellent approximation for metals. The Fermi temperature is purely hypothetical here, since metals melt and evaporate long before reaching it.</p>
+  <p class="prose note" style="margin-top:1.25rem" data-k="k34">With \(\varepsilon_F\) a few eV and \(k_{\mathrm{B}}T \approx 1/40\ \mathrm{eV}\) at room temperature, \(T \approx 0\) is an excellent approximation for metals. The Fermi temperature is purely hypothetical here, since metals melt and evaporate long before reaching it.</p>
 </section>
 
 <!-- ============ STARS ============ -->
 <section id="stars" aria-labelledby="h-stars">
-  <h2 id="h-stars">Stars held up by the exclusion principle</h2>
+  <h2 id="h-stars" data-k="k35">Stars held up by the exclusion principle</h2>
   <div class="prose">
-    <p>Problems 7.23 and 7.24. A white dwarf is essentially a degenerate electron gas, with nuclei mixed in to balance the charge and provide the gravitational attraction. Treat it as a uniform sphere with one proton and one neutron per electron, so \(N = M/2m_p\). The gravitational energy (from assembling the sphere shell by shell) and the kinetic energy of the electrons are</p>
+    <p data-k="k36">Problems 7.23 and 7.24. A white dwarf is essentially a degenerate electron gas, with nuclei mixed in to balance the charge and provide the gravitational attraction. Treat it as a uniform sphere with one proton and one neutron per electron, so \(N = M/2m_p\). The gravitational energy (from assembling the sphere shell by shell) and the kinetic energy of the electrons are</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle U_{\text{grav}} = -\frac35\frac{GM^2}{R}, \)</span><span class="eqp">\( \displaystyle U_{\text{kinetic}} = \frac35 N\varepsilon_F = (0.0088)\,\frac{h^2 M^{5/3}}{m_e m_p^{5/3} R^2} \)</span></div>
-    <p>The total, \(A/R^2 - B/R\), has a minimum at \(R_{\text{eq}} = 2A/B \propto M^{-1/3}\): heavier white dwarfs are smaller. A neutron star is the same calculation with \(N = M/m_n\) and the neutron mass in place of \(m_e\).</p>
+    <p data-k="k37">The total, \(A/R^2 - B/R\), has a minimum at \(R_{\text{eq}} = 2A/B \propto M^{-1/3}\): heavier white dwarfs are smaller. A neutron star is the same calculation with \(N = M/m_n\) and the neutron mass in place of \(m_e\).</p>
   </div>
 
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="sCanvas" aria-label="Gravitational, kinetic and total energy of the star as a function of radius"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k38">
         <span><span class="swatch line" style="background:var(--fermion)"></span>\(U_{\text{kinetic}} \propto 1/R^2\)</span>
         <span><span class="swatch line" style="background:var(--res)"></span>\(U_{\text{grav}} \propto -1/R\)</span>
         <span><span class="swatch line" style="background:var(--ink)"></span>Total</span>
@@ -236,40 +250,40 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl btns" role="group" aria-label="Kind of star">
-        <button type="button" data-star="wd" aria-pressed="true">White dwarf</button>
-        <button type="button" data-star="ns">Neutron star</button>
+        <button type="button" data-star="wd" aria-pressed="true" data-k="k39">White dwarf</button>
+        <button type="button" data-star="ns" data-k="k40">Neutron star</button>
       </div>
       <div class="ctl">
-        <label for="mS"><span class="lt">Mass \(M\)</span> <output id="mSOut"></output></label>
+        <label for="mS"><span data-k="k41"><span class="lt">Mass \(M\)</span></span> <output id="mSOut"></output></label>
         <input type="range" id="mS" min="0.2" max="3" step="0.01" value="1">
-        <small>In units of \(M_\odot \approx 2 \times 10^{30}\ \mathrm{kg}\), the value used in the lecture.</small>
+        <span data-k="k42"><small>In units of \(M_\odot \approx 2 \times 10^{30}\ \mathrm{kg}\), the value used in the lecture.</small></span>
       </div>
       <dl class="stats">
-        <dt>Radius \(R_{\text{eq}}\)</dt><dd id="sR">–</dd>
-        <dt>Density \(\rho\)</dt><dd id="sRho">–</dd>
-        <dt>Compared with water</dt><dd id="sWater">–</dd>
+        <dt data-k="k43">Radius \(R_{\text{eq}}\)</dt><dd id="sR">–</dd>
+        <dt data-k="k44">Density \(\rho\)</dt><dd id="sRho">–</dd>
+        <dt data-k="k45">Compared with water</dt><dd id="sWater">–</dd>
         <dt>\(\varepsilon_F\)</dt><dd id="sEF">–</dd>
         <dt>\(T_F\)</dt><dd id="sTF">–</dd>
-        <dt>Typical interior \(T\)</dt><dd id="sT">–</dd>
+        <dt data-k="k46">Typical interior \(T\)</dt><dd id="sT">–</dd>
         <dt class="sep"></dt>
         <dt>\(mc^2 \big/ \tfrac35\varepsilon_F\)</dt><dd id="sRel">–</dd>
-        <dt>Becomes relativistic at</dt><dd id="sMrel">–</dd>
+        <dt data-k="k47">Becomes relativistic at</dt><dd id="sMrel">–</dd>
       </dl>
     </div>
   </div>
 
-  <h3>Why relativity ends the story</h3>
+  <h3 data-k="k48">Why relativity ends the story</h3>
   <div class="prose">
-    <p>Problem 7.22. If the particles are highly relativistic, \(\varepsilon = pc = (hc/2L)\sqrt{n_x^2+n_y^2+n_z^2}\), and the same counting gives</p>
+    <p data-k="k49">Problem 7.22. If the particles are highly relativistic, \(\varepsilon = pc = (hc/2L)\sqrt{n_x^2+n_y^2+n_z^2}\), and the same counting gives</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \mu = \varepsilon_F = hc\left(\frac{3N}{8\pi V}\right)^{1/3}, \)</span><span class="eqp">\( \displaystyle U = \frac34 N\mu \propto \frac1R \)</span></div>
-    <p>Now both \(U_{\text{kinetic}}\) and \(U_{\text{grav}}\) scale as \(1/R\), so \(U_{\text{total}} = C/R\) has no stable equilibrium radius, whatever the sign of \(C\). Since \(\varepsilon_F \propto M^{4/3}\), the average kinetic energy reaches \(mc^2\) at about 3 solar masses for a white dwarf and about 12 for a neutron star in this simple model.</p>
-    <p>The figure below uses the exact energy of each particle, \(\varepsilon = \sqrt{(pc)^2 + (mc^2)^2} - mc^2\), for the whole Fermi sea, so the kinetic energy goes as \(1/R^2\) when the star is large and as \(1/R\) when it is squeezed. Gravity always wins at small enough \(R\) once \(M\) passes a critical mass (about \(1.7\,M_\odot\) for a white dwarf and \(6.8\,M_\odot\) for a neutron star in this model): the minimum first moves in and gets shallower, then disappears, and the total energy falls without limit as \(R \to 0\).</p>
+    <p data-k="k50">Now both \(U_{\text{kinetic}}\) and \(U_{\text{grav}}\) scale as \(1/R\), so \(U_{\text{total}} = C/R\) has no stable equilibrium radius, whatever the sign of \(C\). Since \(\varepsilon_F \propto M^{4/3}\), the average kinetic energy reaches \(mc^2\) at about 3 solar masses for a white dwarf and about 12 for a neutron star in this simple model.</p>
+    <p data-k="k51">The figure below uses the exact energy of each particle, \(\varepsilon = \sqrt{(pc)^2 + (mc^2)^2} - mc^2\), for the whole Fermi sea, so the kinetic energy goes as \(1/R^2\) when the star is large and as \(1/R\) when it is squeezed. Gravity always wins at small enough \(R\) once \(M\) passes a critical mass (about \(1.7\,M_\odot\) for a white dwarf and \(6.8\,M_\odot\) for a neutron star in this model): the minimum first moves in and gets shallower, then disappears, and the total energy falls without limit as \(R \to 0\).</p>
   </div>
 
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="rCanvas" aria-label="Relativistic kinetic, gravitational and total energy of the star as a function of radius"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k52">
         <span><span class="swatch line" style="background:var(--fermion)"></span>\(U_{\text{kinetic}}\), relativistic</span>
         <span><span class="swatch line" style="background:var(--res)"></span>\(U_{\text{grav}}\)</span>
         <span><span class="swatch line" style="background:var(--ink)"></span>Total</span>
@@ -280,43 +294,43 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl btns" role="group" aria-label="Kind of star">
-        <button type="button" data-rstar="wd" aria-pressed="true">White dwarf</button>
-        <button type="button" data-rstar="ns">Neutron star</button>
+        <button type="button" data-rstar="wd" aria-pressed="true" data-k="k53">White dwarf</button>
+        <button type="button" data-rstar="ns" data-k="k54">Neutron star</button>
       </div>
       <div class="ctl">
-        <label for="mR"><span class="lt">Mass \(M\)</span> <output id="mROut"></output></label>
+        <label for="mR"><span data-k="k55"><span class="lt">Mass \(M\)</span></span> <output id="mROut"></output></label>
         <input type="range" id="mR" min="0.2" max="3" step="0.01" value="1">
-        <small>Push the mass past the critical value and watch the minimum disappear.</small>
+        <span data-k="k56"><small>Push the mass past the critical value and watch the minimum disappear.</small></span>
       </div>
       <dl class="stats">
-        <dt>Critical mass</dt><dd id="rMc">–</dd>
-        <dt>\(R_{\text{eq}}\), relativistic</dt><dd id="rR">–</dd>
-        <dt>\(R_{\text{eq}}\), nonrelativistic</dt><dd id="rRnr">–</dd>
-        <dt>\(p_F/mc\) at \(R_{\text{eq}}\)</dt><dd id="rX">–</dd>
+        <dt data-k="k57">Critical mass</dt><dd id="rMc">–</dd>
+        <dt data-k="k58">\(R_{\text{eq}}\), relativistic</dt><dd id="rR">–</dd>
+        <dt data-k="k59">\(R_{\text{eq}}\), nonrelativistic</dt><dd id="rRnr">–</dd>
+        <dt data-k="k60">\(p_F/mc\) at \(R_{\text{eq}}\)</dt><dd id="rX">–</dd>
       </dl>
     </div>
   </div>
-  <p class="prose note">A fuller relativistic treatment brings the white-dwarf limit down to the Chandrasekhar mass of about 1.4 \(M_\odot\). Real neutron stars also need general relativity and nuclear forces, and have radii of roughly 10 to 15 km.</p>
+  <p class="prose note" data-k="k61">A fuller relativistic treatment brings the white-dwarf limit down to the Chandrasekhar mass of about 1.4 \(M_\odot\). Real neutron stars also need general relativity and nuclear forces, and have radii of roughly 10 to 15 km.</p>
 </section>
 
 <!-- ============ NONZERO T ============ -->
 <section id="heat" aria-labelledby="h-heat">
-  <h2 id="h-heat">A little bit of heat</h2>
+  <h2 id="h-heat" data-k="k62">A little bit of heat</h2>
   <div class="prose">
-    <p>At small but nonzero \(T\), electrons deep in the sea can’t absorb thermal energy: every nearby state is already full. Only those within about \(k_{\mathrm{B}}T\) of the Fermi energy can, and there are about \(N k_{\mathrm{B}}T/\varepsilon_F\) of them, each gaining about \(k_{\mathrm{B}}T\). So the extra energy goes as \(N(k_{\mathrm{B}}T)^2/\varepsilon_F\), and the heat capacity is proportional to \(T\), vanishing as \(T \to 0\) in agreement with the third law and with experiments on metals at low temperatures.</p>
-    <p>To be quantitative, rewrite the energy integral in terms of \(\varepsilon\) to find the density of states, the number of single-particle states per unit energy:</p>
+    <p data-k="k63">At small but nonzero \(T\), electrons deep in the sea can’t absorb thermal energy: every nearby state is already full. Only those within about \(k_{\mathrm{B}}T\) of the Fermi energy can, and there are about \(N k_{\mathrm{B}}T/\varepsilon_F\) of them, each gaining about \(k_{\mathrm{B}}T\). So the extra energy goes as \(N(k_{\mathrm{B}}T)^2/\varepsilon_F\), and the heat capacity is proportional to \(T\), vanishing as \(T \to 0\) in agreement with the third law and with experiments on metals at low temperatures.</p>
+    <p data-k="k64">To be quantitative, rewrite the energy integral in terms of \(\varepsilon\) to find the density of states, the number of single-particle states per unit energy:</p>
     <div class="eq"><span class="boxed">\( \displaystyle g(\varepsilon) = \frac{\pi (8m)^{3/2}}{2h^3}\, V\sqrt{\varepsilon} = \frac{3N}{2\varepsilon_F^{3/2}}\sqrt{\varepsilon} \)</span></div>
   </div>
 
-  <h3>Where the density of states comes from</h3>
+  <h3 data-k="k65">Where the density of states comes from</h3>
   <div class="prose">
-    <p>In \(n\)-space the states sit on a lattice, one per unit volume, so the number of states in a thin shell between \(n\) and \(n+dn\) grows like the shell’s size: constant in 1D, \(\propto n\) in 2D (a quarter circle), \(\propto n^2\) in 3D (an eighth of a sphere). But the energy goes as \(\varepsilon_n \propto n^2\), so equal steps in \(n\) become ever wider steps in \(\varepsilon\): \(d\varepsilon \propto n\,dn\). The same number of states is spread over a wider energy interval. In the figure each bar on top is carried to its energy \(\varepsilon_n\) and tipped over, so <b>its height, the number of states in the shell, becomes a length along the energy axis</b>. Compare that length with the spacing of the energies, \(\varepsilon_{n+1}-\varepsilon_n \propto n\): in 1D the lengths stay the same and the states become <b>sparse</b>; in 2D both grow like \(n\) and the density stays the same; in 3D the lengths grow like \(n^2\), the bars overlap and <b>pile up</b>, and the states become denser. The number of states per unit energy is</p>
+    <p data-k="k66">In \(n\)-space the states sit on a lattice, one per unit volume, so the number of states in a thin shell between \(n\) and \(n+dn\) grows like the shell’s size: constant in 1D, \(\propto n\) in 2D (a quarter circle), \(\propto n^2\) in 3D (an eighth of a sphere). But the energy goes as \(\varepsilon_n \propto n^2\), so equal steps in \(n\) become ever wider steps in \(\varepsilon\): \(d\varepsilon \propto n\,dn\). The same number of states is spread over a wider energy interval. In the figure each bar on top is carried to its energy \(\varepsilon_n\) and tipped over, so <b>its height, the number of states in the shell, becomes a length along the energy axis</b>. Compare that length with the spacing of the energies, \(\varepsilon_{n+1}-\varepsilon_n \propto n\): in 1D the lengths stay the same and the states become <b>sparse</b>; in 2D both grow like \(n\) and the density stays the same; in 3D the lengths grow like \(n^2\), the bars overlap and <b>pile up</b>, and the states become denser. The number of states per unit energy is</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle g(\varepsilon) = \frac{dN_{\text{states}}}{d\varepsilon} \propto \frac{n^{d-1}\,dn}{n\,dn} = n^{d-2} \propto \varepsilon^{d/2-1}: \)</span><span class="eqp">\( \displaystyle \frac{1}{\sqrt{\varepsilon}}\ \text{(1D)}, \qquad \text{constant (2D)}, \qquad \sqrt{\varepsilon}\ \text{(3D)}. \)</span></div>
   </div>
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="dCanvas" aria-label="Shells of states in n-space mapped onto the energy axis, giving the density of states in one, two and three dimensions"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k67">
         <span><span class="swatch" style="background:var(--hot)"></span>One shell of width \(\Delta n\): its height on top (number of states) is tipped over to lie along the energy axis below</span>
         <span><span class="swatch line" style="background:var(--fermion)"></span>\(g(\varepsilon)\)</span>
       </div>
@@ -329,33 +343,33 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
         <button type="button" data-ddim="3" aria-pressed="true">3D</button>
       </div>
       <div class="ctl">
-        <label for="dBins"><span class="lt">Values of \(n\) shown</span> <output id="dBinsOut"></output></label>
+        <label for="dBins"><span data-k="k68"><span class="lt">Values of \(n\) shown</span></span> <output id="dBinsOut"></output></label>
         <input type="range" id="dBins" min="2" max="6" step="1" value="3">
-        <small>Each bar is the shell of states around one value of \(n\).</small>
+        <span data-k="k69"><small>Each bar is the shell of states around one value of \(n\).</small></span>
       </div>
       <div class="ctl">
-        <label for="dMap"><span class="lt">Map \(n \to \varepsilon_n \propto n^2\)</span> <output id="dMapOut"></output></label>
+        <label for="dMap"><span data-k="k70"><span class="lt">Map \(n \to \varepsilon_n \propto n^2\)</span></span> <output id="dMapOut"></output></label>
         <input type="range" id="dMap" min="0" max="1" step="0.01" value="1">
       </div>
       <div class="ctl btns"><button type="button" id="dPlay">Play the mapping</button></div>
       <dl class="stats">
-        <dt>States per shell</dt><dd id="dCount">–</dd>
-        <dt>Spacing of \(\varepsilon_n\)</dt><dd id="dWidth">–</dd>
+        <dt data-k="k71">States per shell</dt><dd id="dCount">–</dd>
+        <dt data-k="k72">Spacing of \(\varepsilon_n\)</dt><dd id="dWidth">–</dd>
         <dt>\(g(\varepsilon)\)</dt><dd id="dG">–</dd>
       </dl>
     </div>
   </div>
 
   <div class="prose">
-    <p>At any temperature, multiply by the probability that each state is occupied:</p>
+    <p data-k="k73">At any temperature, multiply by the probability that each state is occupied:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle N = \int_0^\infty g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle U = \int_0^\infty \varepsilon\, g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle \bar{n}_{\mathrm{FD}} = \frac{1}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1} \)</span></div>
-    <p>Because \(\bar{n}_{\mathrm{FD}}\) is symmetric about \(\mu\) but \(g(\varepsilon)\) increases with \(\varepsilon\), keeping the area (that is, \(N\)) fixed forces \(\mu\) to drop below \(\varepsilon_F\) as the gas warms. The demo solves these integrals numerically and compares them with the Sommerfeld expansion.</p>
+    <p data-k="k74">Because \(\bar{n}_{\mathrm{FD}}\) is symmetric about \(\mu\) but \(g(\varepsilon)\) increases with \(\varepsilon\), keeping the area (that is, \(N\)) fixed forces \(\mu\) to drop below \(\varepsilon_F\) as the gas warms. The demo solves these integrals numerically and compares them with the Sommerfeld expansion.</p>
   </div>
 
   <div class="fig">
     <div>
       <div class="canvas-holder"><canvas id="gCanvas" aria-label="Density of states times the Fermi-Dirac occupancy, compared with the zero-temperature step"></canvas></div>
-      <div class="legend">
+      <div class="legend" data-k="k75">
         <span><span class="swatch dash" style="border-color:var(--muted)"></span>\(g(\varepsilon)\)</span>
         <span><span class="swatch" style="background:var(--sea)"></span>Filled at \(T=0\)</span>
         <span><span class="swatch line" style="background:var(--fermion)"></span>\(g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\) at this \(T\)</span>
@@ -363,8 +377,8 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
     <div class="panel">
       <div class="ctl btns" role="group" aria-label="Dimension">
-        <button type="button" data-dim="3" aria-pressed="true">3D gas</button>
-        <button type="button" data-dim="2">2D gas</button>
+        <button type="button" data-dim="3" aria-pressed="true" data-k="k76">3D gas</button>
+        <button type="button" data-dim="2" data-k="k77">2D gas</button>
       </div>
       <div class="ctl">
         <label for="tS"><span class="lt">\(k_{\mathrm{B}}T/\varepsilon_F = T/T_F\)</span> <output id="tSOut"></output></label>
@@ -372,14 +386,14 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
         <small id="cuNote"></small>
       </div>
       <dl class="stats">
-        <dt>\(\mu/\varepsilon_F\), exact</dt><dd id="hMu">–</dd>
-        <dt>Sommerfeld</dt><dd id="hMuS">–</dd>
+        <dt data-k="k78">\(\mu/\varepsilon_F\), exact</dt><dd id="hMu">–</dd>
+        <dt data-k="k79">Sommerfeld</dt><dd id="hMuS">–</dd>
         <dt class="sep"></dt>
-        <dt>\(U/(N\varepsilon_F)\), exact</dt><dd id="hU">–</dd>
-        <dt>Sommerfeld</dt><dd id="hUS">–</dd>
+        <dt data-k="k80">\(U/(N\varepsilon_F)\), exact</dt><dd id="hU">–</dd>
+        <dt data-k="k81">Sommerfeld</dt><dd id="hUS">–</dd>
         <dt class="sep"></dt>
-        <dt>\(C_V/(Nk_{\mathrm{B}})\), exact</dt><dd id="hC">–</dd>
-        <dt>Sommerfeld</dt><dd id="hCS">–</dd>
+        <dt data-k="k82">\(C_V/(Nk_{\mathrm{B}})\), exact</dt><dd id="hC">–</dd>
+        <dt data-k="k83">Sommerfeld</dt><dd id="hCS">–</dd>
       </dl>
     </div>
   </div>
@@ -387,44 +401,44 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
   <div class="two">
     <div>
       <div class="canvas-holder"><canvas id="muCanvas" aria-label="Chemical potential versus temperature"></canvas></div>
-      <p class="cap">Chemical potential. It falls below zero once the gas is hot enough to behave classically.</p>
+      <p class="cap" data-k="k84">Chemical potential. It falls below zero once the gas is hot enough to behave classically.</p>
     </div>
     <div>
       <div class="canvas-holder"><canvas id="cvCanvas" aria-label="Heat capacity versus temperature"></canvas></div>
-      <p class="cap">Heat capacity. Linear in \(T\) at first, then leveling off at the classical equipartition value.</p>
+      <p class="cap" data-k="k85">Heat capacity. Linear in \(T\) at first, then leveling off at the classical equipartition value.</p>
     </div>
   </div>
-  <div class="legend">
+  <div class="legend" data-k="k86">
     <span><span class="swatch line" style="background:var(--fermion)"></span>Exact (numerical)</span>
     <span><span class="swatch dash" style="border-color:var(--approx)"></span>Sommerfeld, \(k_{\mathrm{B}}T \ll \varepsilon_F\)</span>
     <span><span class="swatch dash" style="border-color:var(--res)"></span>Classical limit, \(k_{\mathrm{B}}T \gg \varepsilon_F\)</span>
   </div>
 
-  <h3>The Sommerfeld expansion</h3>
+  <h3 data-k="k87">The Sommerfeld expansion</h3>
   <div class="prose">
-    <p>Integrate by parts so that \(d\bar{n}_{\mathrm{FD}}/d\varepsilon\), sharply peaked at \(\mu\), appears in the integrand. With \(x = (\varepsilon-\mu)/k_{\mathrm{B}}T\), extend the lower limit to \(-\infty\) and expand \(\varepsilon^{3/2}\) about \(\mu\). Three integrals are needed:</p>
+    <p data-k="k88">Integrate by parts so that \(d\bar{n}_{\mathrm{FD}}/d\varepsilon\), sharply peaked at \(\mu\), appears in the integrand. With \(x = (\varepsilon-\mu)/k_{\mathrm{B}}T\), extend the lower limit to \(-\infty\) and expand \(\varepsilon^{3/2}\) about \(\mu\). Three integrals are needed:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{e^x}{(e^x+1)^2}\,dx = 1, \)</span><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{x\,e^x}{(e^x+1)^2}\,dx = 0, \)</span><span class="eqp">\( \displaystyle \int_{-\infty}^{\infty}\frac{x^2 e^x}{(e^x+1)^2}\,dx = \frac{\pi^2}{3} \)</span></div>
-    <p>They give</p>
+    <p data-k="k89">They give</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \frac{\mu}{\varepsilon_F} = 1 - \frac{\pi^2}{12}\left(\frac{k_{\mathrm{B}}T}{\varepsilon_F}\right)^2 + \cdots, \)</span><span class="eqp">\( \displaystyle U = \frac35 N\varepsilon_F + \frac{\pi^2}{4}\frac{N(k_{\mathrm{B}}T)^2}{\varepsilon_F} + \cdots \)</span></div>
     <div class="eq"><span class="boxed h">\( \displaystyle C_V = \left(\frac{\partial U}{\partial T}\right)_V = \frac{\pi^2 N k_{\mathrm{B}}^2 T}{2\varepsilon_F} \)</span></div>
-    <p>That is a lot of work for a factor of \(\pi^2/4\) already guessed by dimensional analysis, but it is typical of how physicists make controlled approximations.</p>
+    <p data-k="k90">That is a lot of work for a factor of \(\pi^2/4\) already guessed by dimensional analysis, but it is typical of how physicists make controlled approximations.</p>
   </div>
 
-  <h3>The two-dimensional gas</h3>
+  <h3 data-k="k91">The two-dimensional gas</h3>
   <div class="prose">
-    <p>Problems 7.28 and 7.31. For fermions confined to an area \(A = L^2\), a quarter-disk in \(n\)-space gives</p>
+    <p data-k="k92">Problems 7.28 and 7.31. For fermions confined to an area \(A = L^2\), a quarter-disk in \(n\)-space gives</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle \varepsilon_F = \frac{h^2}{4\pi m}\frac{N}{A}, \)</span><span class="eqp">\( \displaystyle \frac{U}{N} = \frac12\varepsilon_F, \)</span><span class="eqp">\( \displaystyle g(\varepsilon) = \frac{4\pi m A}{h^2} = \frac{N}{\varepsilon_F} \)</span></div>
-    <p>The density of states is a constant, so the number integral can be done exactly:</p>
+    <p data-k="k93">The density of states is a constant, so the number integral can be done exactly:</p>
     <div class="eq">\[ \mu = k_{\mathrm{B}}T \ln\!\left[e^{\varepsilon_F/k_{\mathrm{B}}T} - 1\right] \]</div>
-    <p>For \(k_{\mathrm{B}}T \ll \varepsilon_F\) this is \(\mu \approx \varepsilon_F\), and for \(k_{\mathrm{B}}T \gg \varepsilon_F\) it becomes \(\mu \approx k_{\mathrm{B}}T\ln(\varepsilon_F/k_{\mathrm{B}}T) = -k_{\mathrm{B}}T\ln(2A/NA_Q)\), the ordinary ideal gas result with the quantum area \(A_Q = h^2/2\pi m k_{\mathrm{B}}T\) and \(Z_{\text{int}} = 2\) for spin. The energy integral still needs the Sommerfeld approach, giving \(C_V = \pi^2 N k_{\mathrm{B}}^2 T/3\varepsilon_F\) at low temperature and \(C_V = Nk_{\mathrm{B}}\), the classical equipartition value for two degrees of freedom, at high temperature. Switch the demo to <em>2D gas</em> to compare.</p>
+    <p data-k="k94">For \(k_{\mathrm{B}}T \ll \varepsilon_F\) this is \(\mu \approx \varepsilon_F\), and for \(k_{\mathrm{B}}T \gg \varepsilon_F\) it becomes \(\mu \approx k_{\mathrm{B}}T\ln(\varepsilon_F/k_{\mathrm{B}}T) = -k_{\mathrm{B}}T\ln(2A/NA_Q)\), the ordinary ideal gas result with the quantum area \(A_Q = h^2/2\pi m k_{\mathrm{B}}T\) and \(Z_{\text{int}} = 2\) for spin. The energy integral still needs the Sommerfeld approach, giving \(C_V = \pi^2 N k_{\mathrm{B}}^2 T/3\varepsilon_F\) at low temperature and \(C_V = Nk_{\mathrm{B}}\), the classical equipartition value for two degrees of freedom, at high temperature. Switch the demo to <em>2D gas</em> to compare.</p>
   </div>
 </section>
 </div>
 
 <footer>
   <div class="wrap">
-    <p>Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on quantum statistics (Section 7.3, Degenerate Fermi Gases, with Problems 7.22 to 7.24, 7.28, 7.29 and 7.31).</p>
-    <p>Constants: \(h = 6.626 \times 10^{-34}\ \mathrm{J\,s}\), \(k_{\mathrm{B}} = 1.381 \times 10^{-23}\ \mathrm{J/K}\), \(G = 6.674 \times 10^{-11}\ \mathrm{N\,m^2/kg^2}\). Metal data are typical handbook values. Equations typeset with MathJax.</p>
+    <p data-k="k95">Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on quantum statistics (Section 7.3, Degenerate Fermi Gases, with Problems 7.22 to 7.24, 7.28, 7.29 and 7.31).</p>
+    <p data-k="k96">Constants: \(h = 6.626 \times 10^{-34}\ \mathrm{J\,s}\), \(k_{\mathrm{B}} = 1.381 \times 10^{-23}\ \mathrm{J/K}\), \(G = 6.674 \times 10^{-11}\ \mathrm{N\,m^2/kg^2}\). Metal data are typical handbook values. Equations typeset with MathJax.</p>
   </div>
 </footer>
 
@@ -496,9 +510,9 @@ function nRender(){
   document.querySelectorAll('[data-ndim]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.ndim===NV.dim)));
   $('nE').max = NV.dim===3 ? NV.max3 : NV.max2; $('nE').value = NE; $('nEOut').textContent = NE;
   $('spin').hidden = NV.dim!==3;
-  $('spin').textContent = NV.spinning ? 'Pause rotation' : 'Rotate';
+  $('spin').textContent = NV.spinning ? tr('Pause rotation','회전 멈춤') : tr('Rotate','회전');
   $('cap3').hidden = NV.dim!==3; $('cap2').hidden = NV.dim!==2;
-  $('nHint').textContent = NV.dim===3 ? 'Drag to rotate, or focus the picture and use the arrow keys. Only occupied lattice points are drawn.' : '';
+  $('nHint').textContent = NV.dim===3 ? tr('Drag to rotate, or focus the picture and use the arrow keys. Only occupied lattice points are drawn.','끌어서 돌리거나, 그림을 선택하고 화살표 키를 쓰세요. 차 있는 격자점만 그렸습니다.') : '';
   const list = NV.dim===3 ? points3 : points, eIdx = NV.dim===3 ? 3 : 2;
   const st = fillStats(list, NE, eIdx);
   $('efExact').textContent = NE ? st.efx : '–';
@@ -619,6 +633,7 @@ $('empty').addEventListener('click', () => setN(0));
 
 /* ================= METALS ================= */
 // n in m^-3; measured bulk moduli in GPa (typical handbook values)
+const MNK = {Lithium:'리튬',Sodium:'나트륨',Potassium:'칼륨',Copper:'구리',Silver:'은',Gold:'금',Aluminum:'알루미늄'};
 const METALS = [
   {k:'Li', name:'Lithium', n:4.70e28, B:11},
   {k:'Na', name:'Sodium', n:2.65e28, B:6.3},
@@ -630,7 +645,7 @@ const METALS = [
 ];
 METALS.forEach(m => { m.ef = h*h/(8*me)*Math.pow(3*m.n/Math.PI, 2/3); m.P = 0.4*m.n*m.ef/1e9; m.Bf = (10/9)*0.6*m.n*m.ef/1e9; });
 let metalSel = 'Cu';
-$('metalBtns').innerHTML = METALS.map(m => '<button type="button" data-metal="'+m.k+'" title="'+m.name+'">'+m.name+'</button>').join('');
+$('metalBtns').innerHTML = METALS.map(m => '<button type="button" data-metal="'+m.k+'" title="'+tr(m.name,MNK[m.name])+'">'+tr(m.name,MNK[m.name])+'</button>').join('');
 document.querySelectorAll('[data-metal]').forEach(b => b.addEventListener('click', () => { metalSel = b.dataset.metal; metalRender(); }));
 function metalRender(){
   const m = METALS.find(x => x.k===metalSel);
@@ -649,7 +664,7 @@ function metalRender(){
   const Y = v => H-B - (Math.log10(v)-lo)/(hi-lo)*(H-T-B);
   c.font='12px '+SANS; c.fillStyle=C.muted; c.textAlign='right';
   [1,3,10,30,100,300].forEach(v => { c.strokeStyle=C.band; c.lineWidth=1; c.beginPath(); c.moveTo(L,Y(v)); c.lineTo(W-R,Y(v)); c.stroke(); c.fillText(v, L-6, Y(v)+4); });
-  c.save(); c.translate(14,(H-B+T)/2); c.rotate(-Math.PI/2); c.textAlign='center'; c.fillText('bulk modulus (GPa, log scale)',0,0); c.restore();
+  c.save(); c.translate(14,(H-B+T)/2); c.rotate(-Math.PI/2); c.textAlign='center'; c.fillText(tr('bulk modulus (GPa, log scale)','부피 탄성률 (GPa, 로그 눈금)'),0,0); c.restore();
   const gw = (W-L-R)/METALS.length;
   METALS.forEach((mm,i) => {
     const x0 = L + i*gw, bw = gw*0.3, sel = mm.k===metalSel;
@@ -691,9 +706,9 @@ function starRender(){
   $('sRel').textContent = r.rel.toFixed(1);
   $('sMrel').innerHTML = r.Mrel.toFixed(1) + ' <i>M</i><sub>⊙</sub>';
   let v;
-  if (r.rel > 2) v = 'Nonrelativistic and stable. ' + (S.kind==='wd' ? 'The electrons’ average kinetic energy is well below <i>m</i><sub>e</sub><i>c</i><sup>2</sup>' : 'The neutrons’ average kinetic energy is far below <i>m</i><sub>n</sub><i>c</i><sup>2</sup>') + ', and <i>T<sub>F</sub></i> is far above the actual temperature, so <i>T</i> ≈ 0 is valid.';
-  else if (r.rel > 1) v = 'Approaching the relativistic regime. The nonrelativistic formula is becoming unreliable.';
-  else v = 'Relativistic. In this regime the kinetic energy scales as 1/<i>R</i> like gravity, so the model has no stable radius: the star would collapse further.';
+  if (r.rel > 2) v = tr('Nonrelativistic and stable. ','비상대론적이고 안정합니다. ') + (S.kind==='wd' ? tr('The electrons’ average kinetic energy is well below <i>m</i><sub>e</sub><i>c</i><sup>2</sup>','전자의 평균 운동 에너지가 <i>m</i><sub>e</sub><i>c</i><sup>2</sup>보다 훨씬 작고') : tr('The neutrons’ average kinetic energy is far below <i>m</i><sub>n</sub><i>c</i><sup>2</sup>','중성자의 평균 운동 에너지가 <i>m</i><sub>n</sub><i>c</i><sup>2</sup>보다 훨씬 작고')) + tr(', and <i>T<sub>F</sub></i> is far above the actual temperature, so <i>T</i> ≈ 0 is valid.',', <i>T<sub>F</sub></i>가 실제 온도보다 훨씬 높으므로 <i>T</i> ≈ 0이 성립합니다.');
+  else if (r.rel > 1) v = tr('Approaching the relativistic regime. The nonrelativistic formula is becoming unreliable.','상대론적 영역에 다가가고 있습니다. 비상대론적 공식을 믿기 어려워집니다.');
+  else v = tr('Relativistic. In this regime the kinetic energy scales as 1/<i>R</i> like gravity, so the model has no stable radius: the star would collapse further.','상대론적입니다. 이 영역에서는 운동 에너지가 중력처럼 1/<i>R</i>에 비례하므로 모형에 안정한 반지름이 없습니다: 별은 더 수축할 것입니다.');
   $('sVerdict').innerHTML = v;
   const c = sCtx; if (!c) return;
   const W=640,H=380,L=56,R=16,T=18,B=48;
@@ -707,8 +722,8 @@ function starRender(){
   c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center';
   const step = S.kind==='wd' ? 5e6 : 1e4;
   for (let x=0;x<=xmax+1;x+=step){ c.textAlign = x+step > xmax+1 ? 'right' : 'center'; c.fillText((x/1e3).toLocaleString('en-US'), Math.min(X(x), W-R), H-B+16); c.strokeStyle=C.band; c.beginPath(); c.moveTo(X(x),T); c.lineTo(X(x),H-B); c.stroke(); }
-  c.textAlign='center'; c.fillText('radius (km)', (L+W-R)/2, H-8);
-  c.save(); c.translate(16,(H-B+T)/2); c.rotate(-Math.PI/2); c.fillText('energy', 0, 0); c.restore();
+  c.textAlign='center'; c.fillText(tr('radius (km)','반지름 (km)'), (L+W-R)/2, H-8);
+  c.save(); c.translate(16,(H-B+T)/2); c.rotate(-Math.PI/2); c.fillText(tr('energy','에너지'), 0, 0); c.restore();
   c.textAlign='right'; c.fillText('0', L-6, Y(0)+4);
   c.save(); c.beginPath(); c.rect(L,T,W-L-R,H-T-B); c.clip();
   const curve = (f, col, w) => { c.strokeStyle=col; c.lineWidth=w; c.beginPath(); let st=false;
@@ -757,10 +772,10 @@ function relRender(){
   $('rR').innerHTML = r.Req ? km(r.Req) : 'none';
   $('rRnr').innerHTML = km(r.nr.R);
   $('rX').innerHTML = r.Req ? (r.x < 0.1 ? r.x.toFixed(3) : r.x.toFixed(2)) : '–';
-    $('rVerdict').innerHTML = !r.Req ? 'Above the critical mass. The kinetic energy can only grow as 1/<i>R</i>, which is not enough to stop gravity: the total energy keeps falling as the star shrinks, so there is no equilibrium radius and the star collapses.'
-    : r.x > 3 ? 'Close to the critical mass. The particles are highly relativistic at equilibrium, so the minimum is pulled in to a much smaller radius than the nonrelativistic estimate and is shallow; a little more mass and it is gone.'
-    : r.x > 0.6 ? 'Below the critical mass, but the Fermi momentum is already comparable to <i>mc</i>, so the minimum sits noticeably inside the nonrelativistic estimate.'
-    : 'Well below the critical mass. The particles are nonrelativistic at equilibrium and the minimum matches the nonrelativistic one; only at much smaller radii does the kinetic energy switch over to 1/<i>R</i>.';
+    $('rVerdict').innerHTML = !r.Req ? tr('Above the critical mass. The kinetic energy can only grow as 1/<i>R</i>, which is not enough to stop gravity: the total energy keeps falling as the star shrinks, so there is no equilibrium radius and the star collapses.','임계 질량보다 큽니다. 운동 에너지는 1/<i>R</i>처럼만 커질 수 있어 중력을 막기에 부족합니다: 별이 줄어들수록 전체 에너지가 계속 내려가므로 평형 반지름이 없고 별은 붕괴합니다.')
+    : r.x > 3 ? tr('Close to the critical mass. The particles are highly relativistic at equilibrium, so the minimum is pulled in to a much smaller radius than the nonrelativistic estimate and is shallow; a little more mass and it is gone.','임계 질량에 가깝습니다. 평형에서 입자가 매우 상대론적이므로 최솟값이 비상대론적 추정보다 훨씬 작은 반지름으로 끌려가고 얕습니다. 질량이 조금만 더 커지면 사라집니다.')
+    : r.x > 0.6 ? tr('Below the critical mass, but the Fermi momentum is already comparable to <i>mc</i>, so the minimum sits noticeably inside the nonrelativistic estimate.','임계 질량보다 작지만 페르미 운동량이 이미 <i>mc</i>와 비슷하므로, 최솟값이 비상대론적 추정보다 눈에 띄게 안쪽에 있습니다.')
+    : tr('Well below the critical mass. The particles are nonrelativistic at equilibrium and the minimum matches the nonrelativistic one; only at much smaller radii does the kinetic energy switch over to 1/<i>R</i>.','임계 질량보다 훨씬 작습니다. 평형에서 입자가 비상대론적이고 최솟값이 비상대론적 결과와 일치합니다. 훨씬 작은 반지름에서야 운동 에너지가 1/<i>R</i>로 바뀝니다.');
   const c = rCtx; if (!c) return;
   const W=640,H=380,L=56,R=16,T=18,B=48;
   c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
@@ -770,8 +785,8 @@ function relRender(){
   c.fillStyle=C.muted; c.font='12px '+SANS;
   const raw = xmax/1e3/5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1,2,2.5,5,10].map(k=>k*mag).find(k => k >= raw)*1e3;
   for (let x=0;x<=xmax*1.0001;x+=step){ c.textAlign='center'; c.fillText((x/1e3).toLocaleString('en-US'), X(x), H-B+16); c.strokeStyle=C.band; c.beginPath(); c.moveTo(X(x),T); c.lineTo(X(x),H-B); c.stroke(); }
-  c.textAlign='center'; c.fillText('radius (km)', (L+W-R)/2, H-8);
-  c.save(); c.translate(16,(H-B+T)/2); c.rotate(-Math.PI/2); c.fillText('energy', 0, 0); c.restore();
+  c.textAlign='center'; c.fillText(tr('radius (km)','반지름 (km)'), (L+W-R)/2, H-8);
+  c.save(); c.translate(16,(H-B+T)/2); c.rotate(-Math.PI/2); c.fillText(tr('energy','에너지'), 0, 0); c.restore();
   c.textAlign='right'; c.fillText('0', L-6, Y(0)+4);
   c.save(); c.beginPath(); c.rect(L,T,W-L-R,H-T-B); c.clip();
   const curve = (fn, col, w, dash) => { c.strokeStyle=col; c.lineWidth=w; c.setLineDash(dash||[]); c.beginPath(); let st=false;
@@ -786,7 +801,7 @@ function relRender(){
     c.fillStyle=C.hot; rich(c, Math.min(X(r.Req)+8, W-R-60), Math.min(Y(ue)+22, H-B-6), 16, [['R','i'],['eq','sub']], 'left'); }
   else { c.restore(); const y0 = Math.min(H-B-30, Y(ylo*0.85)); c.strokeStyle=C.hot; c.fillStyle=C.hot; c.lineWidth=2;
     const xa = L+150, xb = L+40; c.beginPath(); c.moveTo(xa,y0); c.lineTo(xb+10,y0); c.stroke(); c.beginPath(); c.moveTo(xb,y0); c.lineTo(xb+12,y0-6); c.lineTo(xb+12,y0+6); c.closePath(); c.fill();
-    c.font='600 13px '+SANS; c.textAlign='left'; c.fillText('collapse: no minimum', xa+8, y0+4); }
+    c.font='600 13px '+SANS; c.textAlign='left'; c.fillText(tr('collapse: no minimum','붕괴: 최솟값 없음'), xa+8, y0+4); }
 }
 document.querySelectorAll('[data-rstar]').forEach(b => b.addEventListener('click', () => { RS.kind = b.dataset.rstar; relRender(); }));
 $('mR').addEventListener('input', e => { RS.M[RS.kind] = +e.target.value; relRender(); });
@@ -820,12 +835,12 @@ function dRender(){
   document.querySelectorAll('[data-ddim]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.ddim===DS.d)));
   $('dBinsOut').textContent = DS.bins; $('dMapOut').textContent = Math.round(DS.map*100)+'%';
   if (DS.shownD !== DS.d){ DS.shownD = DS.d;
-    $('dCount').innerHTML = ['constant','\\(\\propto n\\)','\\(\\propto n^2\\)'][DS.d-1];
+    $('dCount').innerHTML = [tr('constant','일정'),'\\(\\propto n\\)','\\(\\propto n^2\\)'][DS.d-1];
     $('dWidth').innerHTML = '\\(\\varepsilon_{n+1}-\\varepsilon_n \\propto n\\)';
-    $('dG').innerHTML = ['\\(\\propto 1/\\sqrt{\\varepsilon}\\)','constant','\\(\\propto \\sqrt{\\varepsilon}\\)'][DS.d-1];
-    $('dVerdict').innerHTML = DS.d===1 ? 'In 1D every bar has the same length, but the energies \\(\\varepsilon_n\\) spread apart: the states become <b>sparse</b>, so \\(g(\\varepsilon) \\propto 1/\\sqrt{\\varepsilon}\\).'
-      : DS.d===2 ? 'In 2D the bars grow like \\(n\\), as fast as the spacing of the energies: the states stay <b>equally dense</b>, so \\(g(\\varepsilon)\\) is constant.'
-      : 'In 3D the bars grow like \\(n^2\\), faster than the spacing of the energies, so they overlap and <b>pile up</b>: the states become denser, \\(g(\\varepsilon) \\propto \\sqrt{\\varepsilon}\\), the 3D result above.';
+    $('dG').innerHTML = ['\\(\\propto 1/\\sqrt{\\varepsilon}\\)',tr('constant','일정'),'\\(\\propto \\sqrt{\\varepsilon}\\)'][DS.d-1];
+    $('dVerdict').innerHTML = DS.d===1 ? tr('In 1D every bar has the same length, but the energies \\(\\varepsilon_n\\) spread apart: the states become <b>sparse</b>, so \\(g(\\varepsilon) \\propto 1/\\sqrt{\\varepsilon}\\).','1차원에서는 막대의 길이가 모두 같지만 에너지 \\(\\varepsilon_n\\)이 서로 멀어집니다: 상태가 <b>듬성해지므로</b> \\(g(\\varepsilon) \\propto 1/\\sqrt{\\varepsilon}\\)입니다.')
+      : DS.d===2 ? tr('In 2D the bars grow like \\(n\\), as fast as the spacing of the energies: the states stay <b>equally dense</b>, so \\(g(\\varepsilon)\\) is constant.','2차원에서는 막대가 에너지 간격과 똑같이 \\(n\\)처럼 길어집니다: 상태가 <b>같은 밀도</b>를 유지하므로 \\(g(\\varepsilon)\\)는 일정합니다.')
+      : tr('In 3D the bars grow like \\(n^2\\), faster than the spacing of the energies, so they overlap and <b>pile up</b>: the states become denser, \\(g(\\varepsilon) \\propto \\sqrt{\\varepsilon}\\), the 3D result above.','3차원에서는 막대가 에너지 간격보다 빠른 \\(n^2\\)처럼 길어져 겹치고 <b>쌓입니다</b>: 상태가 빽빽해지므로 위의 3차원 결과인 \\(g(\\varepsilon) \\propto \\sqrt{\\varepsilon}\\)입니다.');
     const els = ['dCount','dWidth','dG','dVerdict'].map($);
     const go = () => { if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetClear && MathJax.typesetClear(els); MathJax.typesetPromise(els).catch(()=>{}); } };
     if (window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(go); else setTimeout(go, 800);
@@ -846,9 +861,9 @@ function dRender(){
     c.beginPath(); c.moveTo(x1+8,y0); c.lineTo(x1,y0-4); c.lineTo(x1,y0+4); c.fill(); c.beginPath(); c.moveTo(x0,y1-8); c.lineTo(x0-4,y1); c.lineTo(x0+4,y1); c.fill();
     rich(c, x1+12, y0+6, 18, label, 'left'); c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText(ylab, 8, y1+10); if (yl2) c.fillText(yl2, 8, y1+25); };
   const xEnd = W-Rr-36;
-  axis(L, tB, Xn(B+0.6), tT, [['n','i']], 'number of', 'states');
-  axis(L, bB, xEnd, bT, [['ε','i'],['n','isub']], 'number of', 'states');
-  if (d===1){ c.fillStyle=C.hot; c.font='600 13px '+SANS; c.textAlign='left'; c.fillText('constant', Xn(B+0.6)+40, tB-sh[0].cnt*sy+4); }
+  axis(L, tB, Xn(B+0.6), tT, [['n','i']], tr('number of','상태'), tr('states','수'));
+  axis(L, bB, xEnd, bT, [['ε','i'],['n','isub']], tr('number of','상태'), tr('states','수'));
+  if (d===1){ c.fillStyle=C.hot; c.font='600 13px '+SANS; c.textAlign='left'; c.fillText(tr('constant','일정'), Xn(B+0.6)+40, tB-sh[0].cnt*sy+4); }
   else mathText(c, Xn(B+0.6)+40, tT+40, 17, d===2 ? [['∝ ','r'],['n','i']] : [['∝ ','r'],['n','i'],['2','sup']], 'left', C.hot);
   sh.forEach(s => { c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center'; c.fillText(String(s.n), Xn(s.n), tB+15); });
   // stacking: a tipped bar that overlaps the previous one is laid on top of it, so overlapping bars pile up like a staircase
@@ -884,11 +899,11 @@ function dRender(){
     c.fillRect(-th/2, -h/2, th, h); c.strokeRect(-th/2, -h/2, th, h); c.restore();
   });
 }
-function dPlay(){ if (DS.playing){ DS.playing=false; cancelAnimationFrame(DS.raf); $('dPlay').textContent='Play the mapping'; return; }
+function dPlay(){ if (DS.playing){ DS.playing=false; cancelAnimationFrame(DS.raf); $('dPlay').textContent=tr('Play the mapping','옮기기 재생'); return; }
   if (reduceMotion){ DS.map=1; $('dMap').value=1; dRender(); return; }
-  DS.playing=true; $('dPlay').textContent='Pause'; if (DS.map>=1) DS.map=0; let last=performance.now();
+  DS.playing=true; $('dPlay').textContent=tr('Pause','일시 정지'); if (DS.map>=1) DS.map=0; let last=performance.now();
   const step = now => { if (!DS.playing) return; DS.map=Math.min(1, DS.map+(now-last)/2600); last=now; $('dMap').value=DS.map; dRender();
-    if (DS.map>=1){ DS.playing=false; $('dPlay').textContent='Play the mapping'; return; } DS.raf=requestAnimationFrame(step); };
+    if (DS.map>=1){ DS.playing=false; $('dPlay').textContent=tr('Play the mapping','옮기기 재생'); return; } DS.raf=requestAnimationFrame(step); };
   DS.raf=requestAnimationFrame(step); }
 document.querySelectorAll('[data-ddim]').forEach(b => b.addEventListener('click', () => { DS.d=+b.dataset.ddim; if (!DS.playing) { DS.map=0; $('dMap').value=0; } dRender(); if (!DS.playing) dPlay(); }));
 $('dBins').addEventListener('input', e => { DS.bins=+e.target.value; dRender(); });
@@ -948,7 +963,7 @@ function heatRender(){
   document.querySelectorAll('[data-dim]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.dim===HT.dim)));
   $('tSOut').textContent = t.toFixed(3);
   const TK = t*81600;
-  $('cuNote').innerHTML = 'For copper (<i>T<sub>F</sub></i> ≈ 81,600 K) this is <i>T</i> ≈ ' + (TK >= 1e4 ? Math.round(TK/1000).toLocaleString('en-US')+',000' : Math.round(TK).toLocaleString('en-US')) + ' K.';
+  $('cuNote').innerHTML = tr('For copper (<i>T<sub>F</sub></i> ≈ 81,600 K) this is <i>T</i> ≈ ','구리(<i>T<sub>F</sub></i> ≈ 81,600 K)에서는 <i>T</i> ≈ ') + (TK >= 1e4 ? Math.round(TK/1000).toLocaleString('en-US')+',000' : Math.round(TK).toLocaleString('en-US')) + tr(' K.',' K입니다.');
   const mu = lookup(tab.mus, t);
   const U = lookup(tab.us, t), Cv = lookup(tab.cs, t);
   $('hMu').textContent = signed(mu,4); $('hMuS').textContent = signed(som.mu(t),4);
@@ -988,10 +1003,10 @@ function drawDos(mu){
     c.strokeStyle=C.hot; c.setLineDash([4,4]); c.lineWidth=1.5; c.beginPath(); c.moveTo(X(mu),T+24); c.lineTo(X(mu),H-B); c.stroke(); c.setLineDash([]);
     c.fillStyle=C.hot; rich(c, X(mu)-5, T+38, 16, [['μ','i']], 'right');
   } else {
-    c.fillStyle=C.hot; rich(c, L+8, T+38, 15, [['μ','i'],[' < 0 (off the left edge)','s']], 'left');
+    c.fillStyle=C.hot; rich(c, L+8, T+38, 15, [['μ','i'],[tr(' < 0 (off the left edge)',' < 0 (왼쪽 경계 밖)'),'s']], 'left');
   }
   c.strokeStyle=C.muted; c.lineWidth=1; c.beginPath(); c.moveTo(L,T); c.lineTo(L,H-B); c.lineTo(W-R,H-B); c.stroke();
-  c.fillStyle=C.muted; rich(c, L+8, T+14, 15, [['g','i'],['(','r'],['ε','i'],[')','r'],['  states per energy','s']], 'left');
+  c.fillStyle=C.muted; rich(c, L+8, T+14, 15, [['g','i'],['(','r'],['ε','i'],[')','r'],[tr('  states per energy','  에너지당 상태 수'),'s']], 'left');
 }
 function drawCurve(c, arr, somF, clF, which){
   if (!c) return;
@@ -1042,6 +1057,7 @@ function layout(){
   redrawAll();
 }
 function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); heatRender(); }
+window.addEventListener('langchange', () => { document.querySelectorAll('[data-metal]').forEach(b => { const m = METALS.find(x => x.k===b.dataset.metal); b.textContent = b.title = tr(m.name, MNK[m.name]); }); $('dPlay').textContent = DS.playing ? tr('Pause','일시 정지') : tr('Play the mapping','옮기기 재생'); DS.shownD = null; redrawAll(); });
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -1056,13 +1072,142 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll)
   const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
   const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
   const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
-  const sync = () => { const dark = current() === "dark", label = dark ? "Switch to light mode" : "Switch to dark mode";
+  const sync = () => { const dark = current() === "dark", label = dark ? tr("Switch to light mode","밝은 화면으로 전환") : tr("Switch to dark mode","어두운 화면으로 전환");
     btn.innerHTML = dark ? SUN : MOON; btn.setAttribute("aria-label", label); btn.title = label; };
   btn.addEventListener("click", () => { const next = current() === "dark" ? "light" : "dark"; root.dataset.theme = next;
     try { localStorage.setItem("netsci-theme", next); } catch (e) {} sync(); });
   mq.addEventListener("change", sync);
+  window.addEventListener("langchange", sync);
   sync();
 })();
 </script>
+<!-- lang-toggle:body -->
+<script>
+window.I18N_KO={
+"__title": "축퇴된 페르미 기체",
+"k1": "이상훈 교수의 강의 노트(7장 7.3절, 축퇴된 페르미 기체)를 바탕으로 Claude Opus 5.5가 만든 인터랙티브 데모",
+"k2": "축퇴된 페르미 기체",
+"k3": "상자에 페르미온을 채우면 상태마다 하나씩 쌓여 바다를 이루고, 그 수면이 페르미 에너지입니다. 이 단순한 규칙이 금속이 압축에 버티는 이유, 백색왜성과 중성자별이 무너지지 않는 이유, 금속의 열용량이 \\(T \\to 0\\)에서 사라지는 이유를 설명합니다.",
+"k4": "페르미 바다 채우기",
+"k5": "가장 친숙한 축퇴 기체는 금속 덩어리 속의 전도 전자입니다. 상온에서 전자의 양자 부피는 \\(v_Q \\approx (4.3\\ \\mathrm{nm})^3\\)인 반면, 보통의 금속에는 \\((0.2\\ \\mathrm{nm})^3\\)마다 전도 전자가 약 하나 있습니다. 따라서 \\(V/N \\ll v_Q\\)입니다: 상온이 특별히 차갑지 않은데도 볼츠만 극한의 정반대입니다.",
+"k6": "\\(T = 0\\)에서 페르미–디랙 분포는 계단 함수가 됩니다. \\(\\mu\\)보다 낮은 상태는 모두 차 있고 높은 상태는 모두 비어 있으며, 페르미 에너지는 \\(\\varepsilon_F \\equiv \\mu(T=0)\\)으로 정의합니다. 전자를 하나씩 비어 있는 가장 낮은 상태에 넣으며 기체를 만들어 보세요. 한 변이 \\(L\\)인 상자에서 허용되는 에너지는",
+"k7": "이므로 에너지는 “\\(n\\) 공간”의 원점에서 잰 거리의 제곱에 비례합니다. 격자점마다 전자가 두 개(스핀 위와 아래) 들어갑니다. 3차원에서 차 있는 영역은 구의 8분의 1입니다. 그림을 끌어 돌리거나, 평평한 2차원 판인 원판의 4분의 1로 바꿔 보세요.",
+"k8": "<span><span class=\"swatch\" style=\"background:var(--fermion)\"><\/span>스핀 위<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--down)\"><\/span>스핀 아래<\/span>\n        <span><span class=\"swatch dash\" style=\"border-color:var(--hot)\"><\/span>\\(n_{\\max}\\)의 연속체 추정<\/span>",
+"k9": "3차원 보기",
+"k10": "2차원 단면",
+"k11": "<span class=\"lt\">전자 수 \\(N\\)<\/span>",
+"k12": "전자 하나 추가",
+"k13": "10개 추가",
+"k14": "상자 비우기",
+"k15": "\\(\\varepsilon_F\\), 정확한 셈",
+"k16": "\\(\\varepsilon_F\\), 연속체",
+"k17": "\\(U/(N\\varepsilon_F)\\), 정확한 값",
+"k18": "연속체 값",
+"k19": "에너지는 \\(h^2/8mL^2\\) 단위입니다. 3차원의 연속체 결과는 \\(\\varepsilon_F = (3N/\\pi)^{2/3}\\), \\(U = \\tfrac35 N\\varepsilon_F\\)이며, \\(N\\)이 커질수록 잘 맞습니다.",
+"k20": "에너지는 \\(h^2/8mL^2\\) 단위입니다. 2차원의 연속체 결과는 \\(\\varepsilon_F = 2N/\\pi\\), \\(U = \\tfrac12 N\\varepsilon_F\\)이며, \\(N\\)이 커질수록 잘 맞습니다.",
+"k21": "3차원의 결과",
+"k22": "반지름 \\(n_{\\max}\\)인 구 8분의 1 안의 격자점을 스핀 방향 두 가지씩 세면,",
+"k23": "이것은 세기 성질로, 수밀도 \\(N/V\\)에만 의존합니다. 구 8분의 1에 대해 \\(\\varepsilon(\\vec n)\\)을 구면 좌표로 적분하면 전체 에너지와 전자 하나당 평균 에너지를 얻습니다:",
+"k24": "금속 속의 전자",
+"k25": "\\(U\\)가 \\(\\varepsilon_F \\propto V^{-2/3}\\)을 통해 \\(V\\)에 의존하므로 전자들은 바깥으로 밉니다. 이 축퇴 압력은 전자 사이의 정전기적 반발과 아무 관계가 없으며, 순전히 배타 원리 때문에 생깁니다. 기체를 압축하면 모든 파장이 짧아져 모든 에너지가 올라갑니다:",
+"k26": "압력 자체는 전자를 금속 안에 붙잡아 두는 정전기력과 대부분 상쇄되지만 부피 탄성률은 그렇지 않으며, 자유 전자 공식은 대부분의 금속에서 실험값과 3배 정도 이내로 일치합니다. 금속을 골라 확인해 보세요.",
+"k27": "<span><span class=\"swatch\" style=\"background:var(--fermion)\"><\/span>자유 전자 예측 \\(B = \\tfrac{10}{9}U/V\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--res)\"><\/span>측정값 (보통의 핸드북 값)<\/span>",
+"k28": "금속마다 아래의 숫자는 측정값 ÷ 예측값입니다. 대부분 3배 이내에 듭니다.",
+"k29": "밀도 \\(N/V\\)",
+"k30": "300 K에서 \\(\\varepsilon_F / k_{\\mathrm{B}}T\\)",
+"k31": "압력 \\(P\\)",
+"k32": "\\(B\\), 자유 전자",
+"k33": "\\(B\\), 측정값",
+"k34": "\\(\\varepsilon_F\\)가 몇 eV이고 상온에서 \\(k_{\\mathrm{B}}T \\approx 1/40\\ \\mathrm{eV}\\)이므로, 금속에서 \\(T \\approx 0\\)은 아주 좋은 근사입니다. 금속은 페르미 온도에 이르기 훨씬 전에 녹고 증발하므로, 여기서 페르미 온도는 순전히 가상의 값입니다.",
+"k35": "배타 원리가 떠받치는 별",
+"k36": "문제 7.23과 7.24. 백색왜성은 본질적으로 축퇴된 전자 기체이며, 전하를 맞추고 중력을 주는 원자핵이 섞여 있습니다. 전자 하나당 양성자 하나와 중성자 하나가 있는 균일한 구로 보면 \\(N = M/2m_p\\)입니다. 중력 에너지(구를 껍질마다 쌓아 구함)와 전자의 운동 에너지는",
+"k37": "합 \\(A/R^2 - B/R\\)은 \\(R_{\\text{eq}} = 2A/B \\propto M^{-1/3}\\)에서 최소입니다: 무거운 백색왜성일수록 작습니다. 중성자별은 \\(N = M/m_n\\)으로 두고 \\(m_e\\) 대신 중성자 질량을 쓴 같은 계산입니다.",
+"k38": "<span><span class=\"swatch line\" style=\"background:var(--fermion)\"><\/span>\\(U_{\\text{kinetic}} \\propto 1/R^2\\)<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--res)\"><\/span>\\(U_{\\text{grav}} \\propto -1/R\\)<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--ink)\"><\/span>합<\/span>",
+"k39": "백색왜성",
+"k40": "중성자별",
+"k41": "<span class=\"lt\">질량 \\(M\\)<\/span>",
+"k42": "<small>강의에서 쓴 값인 \\(M_\\odot \\approx 2 \\times 10^{30}\\ \\mathrm{kg}\\) 단위.<\/small>",
+"k43": "반지름 \\(R_{\\text{eq}}\\)",
+"k44": "밀도 \\(\\rho\\)",
+"k45": "물과 비교",
+"k46": "전형적인 내부 \\(T\\)",
+"k47": "상대론적이 되는 질량",
+"k48": "상대론이 이야기를 끝내는 이유",
+"k49": "문제 7.22. 입자가 극상대론적이면 \\(\\varepsilon = pc = (hc/2L)\\sqrt{n_x^2+n_y^2+n_z^2}\\)이고, 같은 방식으로 세면",
+"k50": "이제 \\(U_{\\text{kinetic}}\\)과 \\(U_{\\text{grav}}\\)가 모두 \\(1/R\\)에 비례하므로, \\(U_{\\text{total}} = C/R\\)은 \\(C\\)의 부호와 상관없이 안정한 평형 반지름이 없습니다. \\(\\varepsilon_F \\propto M^{4/3}\\)이므로, 이 단순한 모형에서 평균 운동 에너지는 백색왜성은 태양 질량의 약 3배, 중성자별은 약 12배에서 \\(mc^2\\)에 이릅니다.",
+"k51": "아래 그림은 페르미 바다 전체에 대해 입자마다 정확한 에너지 \\(\\varepsilon = \\sqrt{(pc)^2 + (mc^2)^2} - mc^2\\)를 쓰므로, 운동 에너지는 별이 클 때 \\(1/R^2\\), 압축될 때 \\(1/R\\)처럼 변합니다. \\(M\\)이 임계 질량(이 모형에서 백색왜성 약 \\(1.7\\,M_\\odot\\), 중성자별 약 \\(6.8\\,M_\\odot\\))을 넘으면 충분히 작은 \\(R\\)에서 언제나 중력이 이깁니다: 최솟값이 처음에는 안쪽으로 옮겨 가며 얕아지다가 사라지고, \\(R \\to 0\\)에서 전체 에너지가 한없이 내려갑니다.",
+"k52": "<span><span class=\"swatch line\" style=\"background:var(--fermion)\"><\/span>\\(U_{\\text{kinetic}}\\), 상대론적<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--res)\"><\/span>\\(U_{\\text{grav}}\\)<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--ink)\"><\/span>합<\/span>\n        <span><span class=\"swatch dash\" style=\"border-color:var(--muted)\"><\/span>합, 비상대론적<\/span>\n        <span><span class=\"swatch dash\" style=\"border-color:var(--hot)\"><\/span>극상대론적 극한 \\(C/R\\)<\/span>",
+"k53": "백색왜성",
+"k54": "중성자별",
+"k55": "<span class=\"lt\">질량 \\(M\\)<\/span>",
+"k56": "<small>질량을 임계값 너머로 밀어 최솟값이 사라지는 것을 보세요.<\/small>",
+"k57": "임계 질량",
+"k58": "\\(R_{\\text{eq}}\\), 상대론적",
+"k59": "\\(R_{\\text{eq}}\\), 비상대론적",
+"k60": "\\(R_{\\text{eq}}\\)에서 \\(p_F/mc\\)",
+"k61": "더 완전한 상대론적 계산을 하면 백색왜성의 한계는 약 1.4 \\(M_\\odot\\)인 찬드라세카르 질량으로 내려갑니다. 실제 중성자별에는 일반 상대론과 핵력도 필요하며, 반지름은 대략 10–15 km입니다.",
+"k62": "약간의 열",
+"k63": "\\(T\\)가 작지만 0이 아니면, 바다 깊은 곳의 전자는 열에너지를 흡수할 수 없습니다: 가까운 상태가 모두 이미 차 있기 때문입니다. 페르미 에너지에서 \\(k_{\\mathrm{B}}T\\) 정도 안에 있는 전자만 흡수할 수 있으며, 그런 전자는 약 \\(N k_{\\mathrm{B}}T/\\varepsilon_F\\)개이고 각각 약 \\(k_{\\mathrm{B}}T\\)를 얻습니다. 따라서 늘어난 에너지는 \\(N(k_{\\mathrm{B}}T)^2/\\varepsilon_F\\)에 비례하고, 열용량은 \\(T\\)에 비례해 \\(T \\to 0\\)에서 사라집니다. 이는 열역학 제3법칙 및 금속의 저온 실험과 일치합니다.",
+"k64": "정량적으로 다루기 위해 에너지 적분을 \\(\\varepsilon\\)로 다시 써서 상태 밀도, 곧 에너지 단위당 단일 입자 상태의 수를 구합니다:",
+"k65": "상태 밀도는 어디서 올까",
+"k66": "\\(n\\) 공간에서 상태는 단위 부피마다 하나씩 격자 위에 놓이므로, \\(n\\)과 \\(n+dn\\) 사이의 얇은 껍질에 있는 상태 수는 껍질의 크기에 비례합니다: 1차원에서는 일정, 2차원(원의 4분의 1)에서는 \\(\\propto n\\), 3차원(구의 8분의 1)에서는 \\(\\propto n^2\\). 그런데 에너지는 \\(\\varepsilon_n \\propto n^2\\)이므로 \\(n\\)의 같은 간격이 \\(\\varepsilon\\)에서는 점점 넓은 간격이 됩니다: \\(d\\varepsilon \\propto n\\,dn\\). 같은 수의 상태가 더 넓은 에너지 구간에 퍼집니다. 그림에서 위의 막대는 각자의 에너지 \\(\\varepsilon_n\\)으로 옮겨진 뒤 넘어지므로, <b>그 높이, 곧 껍질의 상태 수가 에너지 축을 따른 길이가 됩니다<\/b>. 그 길이를 에너지 간격 \\(\\varepsilon_{n+1}-\\varepsilon_n \\propto n\\)과 비교해 보세요: 1차원에서는 길이가 그대로라 상태가 <b>듬성해지고<\/b>, 2차원에서는 둘 다 \\(n\\)처럼 커져 밀도가 그대로이며, 3차원에서는 길이가 \\(n^2\\)처럼 커져 막대가 겹치고 <b>쌓여서<\/b> 상태가 빽빽해집니다. 에너지 단위당 상태 수는",
+"k67": "<span><span class=\"swatch\" style=\"background:var(--hot)\"><\/span>폭 \\(\\Delta n\\)인 껍질 하나: 위에서의 높이(상태 수)가 넘어져 아래의 에너지 축을 따라 놓입니다<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--fermion)\"><\/span>\\(g(\\varepsilon)\\)<\/span>",
+"k68": "<span class=\"lt\">보이는 \\(n\\) 값의 수<\/span>",
+"k69": "<small>막대 하나가 \\(n\\) 값 하나 둘레의 껍질에 있는 상태들입니다.<\/small>",
+"k70": "<span class=\"lt\">\\(n \\to \\varepsilon_n \\propto n^2\\) 옮기기<\/span>",
+"k71": "껍질당 상태 수",
+"k72": "\\(\\varepsilon_n\\)의 간격",
+"k73": "어떤 온도에서든, 각 상태가 차 있을 확률을 곱합니다:",
+"k74": "\\(\\bar{n}_{\\mathrm{FD}}\\)는 \\(\\mu\\)에 대해 대칭이지만 \\(g(\\varepsilon)\\)는 \\(\\varepsilon\\)과 함께 커지므로, 넓이(곧 \\(N\\))를 고정하려면 기체가 데워질 때 \\(\\mu\\)가 \\(\\varepsilon_F\\) 아래로 내려가야 합니다. 데모는 이 적분들을 수치적으로 풀어 조머펠트 전개와 비교합니다.",
+"k75": "<span><span class=\"swatch dash\" style=\"border-color:var(--muted)\"><\/span>\\(g(\\varepsilon)\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--sea)\"><\/span>\\(T=0\\)에서 차 있는 부분<\/span>\n        <span><span class=\"swatch line\" style=\"background:var(--fermion)\"><\/span>이 \\(T\\)에서의 \\(g(\\varepsilon)\\,\\bar{n}_{\\mathrm{FD}}(\\varepsilon)\\)<\/span>",
+"k76": "3차원 기체",
+"k77": "2차원 기체",
+"k78": "\\(\\mu/\\varepsilon_F\\), 정확한 값",
+"k79": "조머펠트",
+"k80": "\\(U/(N\\varepsilon_F)\\), 정확한 값",
+"k81": "조머펠트",
+"k82": "\\(C_V/(Nk_{\\mathrm{B}})\\), 정확한 값",
+"k83": "조머펠트",
+"k84": "화학 퍼텐셜. 기체가 고전적으로 행동할 만큼 뜨거워지면 0 아래로 내려갑니다.",
+"k85": "열용량. 처음에는 \\(T\\)에 비례하다가 고전적 에너지 등분배 값에서 평평해집니다.",
+"k86": "<span><span class=\"swatch line\" style=\"background:var(--fermion)\"><\/span>정확한 값 (수치)<\/span>\n    <span><span class=\"swatch dash\" style=\"border-color:var(--approx)\"><\/span>조머펠트, \\(k_{\\mathrm{B}}T \\ll \\varepsilon_F\\)<\/span>\n    <span><span class=\"swatch dash\" style=\"border-color:var(--res)\"><\/span>고전 극한, \\(k_{\\mathrm{B}}T \\gg \\varepsilon_F\\)<\/span>",
+"k87": "조머펠트 전개",
+"k88": "부분 적분을 해서 \\(\\mu\\)에서 날카롭게 솟은 \\(d\\bar{n}_{\\mathrm{FD}}/d\\varepsilon\\)이 피적분 함수에 나타나게 합니다. \\(x = (\\varepsilon-\\mu)/k_{\\mathrm{B}}T\\)로 두고 아래끝을 \\(-\\infty\\)로 넓힌 뒤 \\(\\varepsilon^{3/2}\\)을 \\(\\mu\\) 둘레로 전개합니다. 적분 세 개가 필요합니다:",
+"k89": "그 결과는",
+"k90": "차원 분석으로 이미 짐작한 \\(\\pi^2/4\\)라는 인자 하나를 위해 꽤 많은 일을 했지만, 이것이 물리학자들이 통제된 근사를 하는 전형적인 방식입니다.",
+"k91": "2차원 기체",
+"k92": "문제 7.28과 7.31. 넓이 \\(A = L^2\\)에 갇힌 페르미온에 대해, \\(n\\) 공간의 원판 4분의 1에서",
+"k93": "상태 밀도가 상수이므로 개수 적분을 정확히 계산할 수 있습니다:",
+"k94": "\\(k_{\\mathrm{B}}T \\ll \\varepsilon_F\\)이면 \\(\\mu \\approx \\varepsilon_F\\)이고, \\(k_{\\mathrm{B}}T \\gg \\varepsilon_F\\)이면 \\(\\mu \\approx k_{\\mathrm{B}}T\\ln(\\varepsilon_F/k_{\\mathrm{B}}T) = -k_{\\mathrm{B}}T\\ln(2A/NA_Q)\\)가 되는데, 이것은 양자 넓이 \\(A_Q = h^2/2\\pi m k_{\\mathrm{B}}T\\)와 스핀에 의한 \\(Z_{\\text{int}} = 2\\)를 쓴 보통의 이상 기체 결과입니다. 에너지 적분에는 여전히 조머펠트 방법이 필요하며, 낮은 온도에서 \\(C_V = \\pi^2 N k_{\\mathrm{B}}^2 T/3\\varepsilon_F\\), 높은 온도에서 자유도 둘에 대한 고전적 에너지 등분배 값 \\(C_V = Nk_{\\mathrm{B}}\\)를 줍니다. 데모를 <em>2차원 기체<\/em>로 바꿔 비교해 보세요.",
+"k95": "양자 통계에 관한 이상훈 교수의 강의 노트(7.3절, 축퇴된 페르미 기체, 문제 7.22–7.24, 7.28, 7.29, 7.31 포함)를 바탕으로 Claude Opus 5.5가 만들었습니다.",
+"k96": "상수: \\(h = 6.626 \\times 10^{-34}\\ \\mathrm{J\\,s}\\), \\(k_{\\mathrm{B}} = 1.381 \\times 10^{-23}\\ \\mathrm{J/K}\\), \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{N\\,m^2/kg^2}\\). 금속 자료는 보통의 핸드북 값입니다. 수식은 MathJax로 조판했습니다."
+};
+(function(){
+  // English / 한국어 switch shared by the course demos; the choice is remembered across pages
+  var KEY='lshlj82-demo-lang', root=document.documentElement, KO=window.I18N_KO||{}, EN={};
+  var els=[].slice.call(document.querySelectorAll('[data-k]'));
+  els.forEach(function(e){EN[e.getAttribute('data-k')]=e.innerHTML;});
+  var titleEN=document.title;
+  var btn=document.createElement('button');btn.id='langBtn';btn.type='button';document.body.appendChild(btn);
+  function typeset(list){
+    if(!list.length)return;
+    if(window.MathJax&&MathJax.typesetPromise){var go=function(){MathJax.typesetPromise(list).catch(function(){});};
+      if(MathJax.startup&&MathJax.startup.promise)MathJax.startup.promise.then(go);else go();}
+    if(window.renderMathInElement&&window.KATEX_OPTS)list.forEach(function(e){try{renderMathInElement(e,window.KATEX_OPTS)}catch(_){}}); 
+  }
+  function apply(l,first){
+    window.LANG=l;root.dataset.lang=l;root.lang=l;var changed=[];
+    els.forEach(function(e){var k=e.getAttribute('data-k'),s=(l==='ko'&&KO[k]!=null)?KO[k]:EN[k];if(e.innerHTML!==s){e.innerHTML=s;changed.push(e);}});
+    document.title=(l==='ko'&&KO.__title)?KO.__title:titleEN;
+    btn.textContent=l==='ko'?'EN':'한국어';btn.setAttribute('aria-label',l==='ko'?'View in English':'한국어로 보기');btn.title=btn.getAttribute('aria-label');
+    btn.setAttribute('lang',l==='ko'?'en':'ko');
+    if(!first)typeset(changed);
+    window.dispatchEvent(new CustomEvent('langchange',{detail:{lang:l}}));
+  }
+  btn.addEventListener('click',function(){var n=window.LANG==='ko'?'en':'ko';try{localStorage.setItem(KEY,n)}catch(e){}apply(n,false);});
+  apply(window.LANG||'en',true);
+})();
+</script>
+<!-- lang-toggle:body-end -->
 </body>
 </html>
