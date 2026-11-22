@@ -364,6 +364,55 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     </div>
   </div>
 
+  <h3 data-k="k97">A theater analogy</h3>
+  <div class="prose">
+    <p data-k="k98">Picture the single-particle states as the seats of a theater and the electrons as its audience. The stage is the lowest energy, and each row further back is one step higher. How many seats a row has is the density of states: in a 3D box the rows get longer toward the back, as in a real auditorium (\(g \propto \sqrt{\varepsilon}\)); in 2D every row has the same length; in 1D the rows even get shorter. Every spatial state is a <b>two-seat bench</b>, one seat for spin up and one for spin down, and no seat takes two people. That is the exclusion principle.</p>
+    <p data-k="k99">Whether a seat is taken is the Fermi–Dirac occupancy \(\bar{n}_{\mathrm{FD}}(\varepsilon)\) of its row. At \(T = 0\) everyone sits as close to the stage as possible: the benches are full up to the Fermi energy and empty behind it. Warm the hall a little and only the people near the back of the crowd can move, to empty rows just behind; someone in the front rows would have to jump much more than \(k_{\mathrm{B}}T\) to find a free seat. The audience \(N\) is fixed, so the chemical potential \(\mu\), the row where a seat is taken with probability 1/2, shifts to keep everyone seated.</p>
+  </div>
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="thCanvas" aria-label="A theater whose rows are energy levels and whose seats are single-particle states, filled with an audience of electrons according to the Fermi-Dirac distribution"></canvas></div>
+      <div class="legend" data-k="k100">
+        <span><span class="swatch" style="background:var(--fermion)"></span>Spin up</span>
+        <span><span class="swatch" style="background:var(--down)"></span>Spin down</span>
+        <span><span class="swatch" style="background:transparent;border:2px solid var(--hot)"></span>Seated behind \(\varepsilon_F\)</span>
+        <span><span class="swatch" style="background:transparent;border:2px dashed var(--hot)"></span>Empty seat in front of \(\varepsilon_F\)</span>
+      </div>
+      <p class="verdict" id="thVerdict"></p>
+    </div>
+    <div class="panel">
+      <div class="ctl btns" role="group" aria-label="Dimension">
+        <button type="button" data-tdim="1">1D</button>
+        <button type="button" data-tdim="2">2D</button>
+        <button type="button" data-tdim="3" aria-pressed="true">3D</button>
+      </div>
+      <div class="ctl btns" role="group" aria-label="Seats">
+        <button type="button" data-tpair="1" aria-pressed="true" data-k="k101">Two-seat benches (spin ½)</button>
+        <button type="button" data-tpair="0" data-k="k102">Single seats (spinless)</button>
+      </div>
+      <div class="ctl">
+        <label for="thT"><span data-k="k103"><span class="lt">Temperature \(k_{\mathrm{B}}T/\varepsilon_F\)</span></span> <output id="thTOut"></output></label>
+        <input type="range" id="thT" min="0" max="0.4" step="0.005" value="0.1">
+      </div>
+      <div class="ctl btns">
+        <button type="button" id="thShuffle" data-k="k104">New audience</button>
+        <button type="button" id="thLive" aria-pressed="false">Let them move</button>
+      </div>
+      <dl class="stats">
+        <dt data-k="k105">Audience \(N\)</dt><dd id="thN">–</dd>
+        <dt>\(\mu/\varepsilon_F\)</dt><dd id="thMu">–</dd>
+        <dt class="sep"></dt>
+        <dt data-k="k106">Seated behind \(\varepsilon_F\)</dt><dd id="thExc">–</dd>
+        <dt data-k="k107">Empty seats in front of \(\varepsilon_F\)</dt><dd id="thHole">–</dd>
+        <dt class="sep"></dt>
+        <dt data-k="k108">Full benches</dt><dd id="thFull">–</dd>
+        <dt data-k="k109">Half-full benches</dt><dd id="thHalf">–</dd>
+      </dl>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k110">Rows are equally spaced in energy. The right-hand strip plots the fraction of each row’s seats that are taken against the Fermi–Dirac curve.</p>
+    </div>
+  </div>
+  <p class="prose note" style="margin-top:1.25rem" data-k="k111">Things to try. Compare 1D, 2D and 3D at the same temperature: in 3D the rows behind the Fermi energy are longer than those in front, so the people moving back find room easily and \(\mu\) drops below \(\varepsilon_F\); in 1D the rows behind are shorter and \(\mu\) rises; in 2D it hardly moves. Switch to single seats and the same audience reaches much further back: spin doubles the number of electrons that fit below a given energy. And with two-seat benches, half-full benches show up only near \(\mu\). Far in front both seats are taken, far behind both are empty, because each seat is filled independently with probability \(\bar{n}_{\mathrm{FD}}\).</p>
+
   <div class="prose">
     <p data-k="k73">At any temperature, multiply by the probability that each state is occupied:</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle N = \int_0^\infty g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle U = \int_0^\infty \varepsilon\, g(\varepsilon)\,\bar{n}_{\mathrm{FD}}(\varepsilon)\,d\varepsilon, \)</span><span class="eqp">\( \displaystyle \bar{n}_{\mathrm{FD}} = \frac{1}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1} \)</span></div>
@@ -1047,8 +1096,119 @@ function drawCurve(c, arr, somF, clF, which){
 document.querySelectorAll('[data-dim]').forEach(b => b.addEventListener('click', () => { HT.dim = +b.dataset.dim; heatRender(); }));
 $('tS').addEventListener('input', e => { HT.t = +e.target.value; heatRender(); });
 
+/* ================= THEATER ANALOGY ================= */
+const TH = {d:3, pair:1, t:0.1, live:false, timer:0, u:[]};
+const TROWS = 24;
+const TCFG = {3:{b:3, N:80}, 2:{b:6, N:72}, 1:{b:12, N:66}};
+function thBenches(d){ const b = TCFG[d].b; return Array.from({length:TROWS}, (_,i) => { const r = i+1; return d===3 ? Math.round(b*Math.sqrt(r)) : d===2 ? b : Math.round(b/Math.sqrt(r)); }); }
+function thSeats(){ const B = thBenches(TH.d); return B.map(x => TH.pair ? 2*x : x); }
+function thMu(S, N, kT){
+  let lo = -80, hi = 120;
+  for (let it=0; it<90; it++){ const m=(lo+hi)/2; let s=0; S.forEach((n,i) => { s += n*fd(i+1, m, kT); }); if (s < N) lo = m; else hi = m; }
+  return (lo+hi)/2;
+}
+const TEF = {};
+function thEF(){ const k = TH.d+'_'+TH.pair; if (TEF[k]==null) TEF[k] = thMu(thSeats(), TCFG[TH.d].N, 0.03); return TEF[k]; }
+function thRand(){ TH.u = Array.from({length:TROWS}, () => Array.from({length:40}, () => Math.random())); }
+thRand();
+function thState(){
+  const S = thSeats(), N = TCFG[TH.d].N, ef = thEF(), kT = Math.max(TH.t, 0.002)*ef, mu = thMu(S, N, kT);
+  const exp = S.map((n,i) => n*fd(i+1, mu, kT));
+  const k = exp.map(Math.floor); let left = N - k.reduce((a,b)=>a+b,0);
+  exp.map((e,i) => [e-k[i], i]).sort((a,b) => b[0]-a[0]).forEach(([f,i]) => { if (left > 0 && k[i] < S[i]){ k[i]++; left--; } });
+  const occ = S.map((n,i) => { const ord = Array.from({length:n}, (_,j) => j).sort((a,b) => TH.u[i][a]-TH.u[i][b]); const o = new Array(n).fill(false); ord.slice(0,k[i]).forEach(j => o[j]=true); return o; });
+  return {S, N, ef, kT, mu, k, occ};
+}
+function thRender(){
+  const c = thCtx; if (!c) return;
+  document.querySelectorAll('[data-tdim]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.tdim===TH.d)));
+  document.querySelectorAll('[data-tpair]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.tpair===TH.pair)));
+  $('thTOut').textContent = TH.t.toFixed(3);
+  const st = thState(), {S, ef, mu, kT, occ} = st, B = thBenches(TH.d);
+  const W=640, H=650, top=30, stageH=44, bot=H-stageH-14, rowH=(bot-top)/TROWS;
+  const tx0=12, tx1=438, px0=470, px1=626, unitW=(tx1-tx0)/15;
+  const Y = e => bot - (e-0.5)*rowH;              // row r occupies (Y(r+.5), Y(r-.5))
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  // stage
+  const smid=(tx0+tx1)/2, sw=Math.max(...B.slice(0,3))*unitW+30;
+  c.fillStyle=C.band; c.strokeStyle=C.rule; c.lineWidth=1; c.beginPath();
+  c.moveTo(smid-sw/2-20, H-8); c.lineTo(smid-sw/2, bot+8); c.lineTo(smid+sw/2, bot+8); c.lineTo(smid+sw/2+20, H-8); c.closePath(); c.fill(); c.stroke();
+  c.fillStyle=C.muted; c.font='600 12px '+SANS; c.textAlign='center'; c.fillText(tr('STAGE · lowest energy','무대 · 가장 낮은 에너지'), smid, H-20);
+  c.font='12px '+SANS; c.textAlign='left'; c.fillText(tr('back rows: higher energy ↑','뒷줄: 더 높은 에너지 ↑'), tx0, top-12);
+  // Fermi level and mu lines across the hall
+  const yF = Y(ef), yM = Y(mu);
+  c.strokeStyle=C.ink; c.lineWidth=1.2; c.beginPath(); c.moveTo(tx0, yF); c.lineTo(px1, yF); c.stroke();
+  if (mu > 0.3 && mu < TROWS+0.5){ c.strokeStyle=C.hot; c.setLineDash([5,4]); c.lineWidth=1.6; c.beginPath(); c.moveTo(tx0, yM); c.lineTo(px1, yM); c.stroke(); c.setLineDash([]); }
+  // seats
+  const seatW = Math.min(10.5, unitW*0.36), seatH = Math.min(15, rowH*0.72);
+  let full=0, half=0, exc=0, hole=0;
+  for (let i=0; i<TROWS; i++){
+    const e = i+1, yc = Y(e), n = B[i], x0 = smid - n*unitW/2;
+    const behind = e > ef + 0.05, front = e < ef - 0.05;
+    for (let j=0; j<n; j++){
+      const bx = x0 + j*unitW + unitW/2;
+      const seatsHere = TH.pair ? [[bx - seatW/2 - 1, 0],[bx + seatW/2 + 1, 1]] : [[bx, 0]];
+      if (TH.pair){ c.fillStyle=C.band; c.strokeStyle=C.rule; c.lineWidth=1; c.beginPath(); c.roundRect ? c.roundRect(bx - seatW - 3.5, yc - seatH/2 - 2.5, 2*seatW + 7, seatH + 5, 3) : c.rect(bx - seatW - 3.5, yc - seatH/2 - 2.5, 2*seatW + 7, seatH + 5); c.fill(); c.stroke(); }   // the two-seat bench
+      let nOcc = 0;
+      seatsHere.forEach(([sx, s]) => {
+        const idx = TH.pair ? 2*j+s : j, on = occ[i][idx];
+        if (on) nOcc++;
+        c.fillStyle=C.bg; c.strokeStyle=C.rule; c.lineWidth=1;
+        c.beginPath(); c.rect(sx - seatW/2, yc - seatH/2, seatW, seatH); c.fill(); c.stroke();
+        if (on){
+          const col = TH.pair ? (s ? C.down : C.fermion) : C.fermion, hr = seatW*0.27;
+          c.fillStyle=col; c.beginPath(); c.arc(sx, yc - seatH/2 + hr + 1, hr, 0, 7); c.fill();
+          c.beginPath(); c.moveTo(sx - seatW*0.42, yc + seatH/2 - 1); c.lineTo(sx - seatW*0.42, yc + 1); c.quadraticCurveTo(sx, yc - seatH*0.12, sx + seatW*0.42, yc + 1); c.lineTo(sx + seatW*0.42, yc + seatH/2 - 1); c.closePath(); c.fill();
+          if (behind){ exc++; c.strokeStyle=C.hot; c.lineWidth=2; c.strokeRect(sx - seatW/2 - 1.5, yc - seatH/2 - 1.5, seatW + 3, seatH + 3); }
+        } else if (front){
+          hole++; c.strokeStyle=C.hot; c.lineWidth=1.6; c.setLineDash([3,2]); c.strokeRect(sx - seatW/2 - 1.5, yc - seatH/2 - 1.5, seatW + 3, seatH + 3); c.setLineDash([]);
+        }
+      });
+      if (TH.pair){ if (nOcc===2) full++; else if (nOcc===1) half++; }
+    }
+  }
+  // occupancy strip
+  const PX = f => px0 + f*(px1-px0);
+  c.strokeStyle=C.band; c.lineWidth=1; [0,0.5,1].forEach(f => { c.beginPath(); c.moveTo(PX(f), top); c.lineTo(PX(f), bot); c.stroke(); });
+  c.strokeStyle=C.muted; c.beginPath(); c.moveTo(px0, top); c.lineTo(px0, bot); c.lineTo(px1, bot); c.stroke();
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center'; ['0','½','1'].forEach((s,q) => c.fillText(s, PX(q/2), bot+15));
+  c.fillText(tr('seats taken','차 있는 비율'), (px0+px1)/2, bot+31);
+  c.strokeStyle=C.fermion; c.lineWidth=2.4; c.beginPath();
+  for (let q=0; q<=300; q++){ const e = 0.5 + TROWS*q/300, y = Y(e), x = PX(fd(e, mu, kT)); q ? c.lineTo(x,y) : c.moveTo(x,y); } c.stroke();
+  c.fillStyle=C.ink; for (let i=0; i<TROWS; i++){ c.beginPath(); c.arc(PX(st.k[i]/S[i]), Y(i+1), 3.2, 0, 7); c.fill(); }
+  c.fillStyle=C.fermion; rich(c, px0+4, top-10, 15, [['n̄','i'],['FD','sub'],['(','r'],['ε','i'],[')','r']], 'left');
+  c.fillStyle=C.ink; rich(c, tx0, yF + (yM > yF + 1 ? -5 : 15), 15, [['ε','i'],['F','isub']], 'left');
+  if (mu > 0.3 && mu < TROWS+0.5){ c.fillStyle=C.hot; rich(c, px1, yM + (yM > yF + 1 ? 15 : -5), 15, [['μ','i']], 'right'); }
+  // readouts
+  $('thN').textContent = st.N; $('thMu').textContent = (mu/ef).toFixed(3);
+  $('thExc').textContent = exc; $('thHole').textContent = hole;
+  $('thFull').textContent = TH.pair ? full : '–'; $('thHalf').textContent = TH.pair ? half : '–';
+  const dm = (mu-ef)/ef, rowsF = Math.round(ef - 0.5);
+  let v;
+  if (TH.t < 0.004) v = TH.pair && Math.abs(ef - rowsF - 0.5) < 0.05
+      ? tr(`T = 0: every bench up to row ${rowsF} is full and every seat behind it is empty.`, `T = 0: ${rowsF}번째 줄까지 모든 자리가 차 있고 그 뒤는 모두 비어 있습니다.`)
+      : tr(`T = 0: the audience fills the hall from the stage, up to row ${Math.round(ef)}.`, `T = 0: 관객이 무대부터 ${Math.round(ef)}번째 줄까지 채웁니다.`);
+  else {
+    const en = Math.abs(dm) < 0.005 ? 'stays at' : dm < 0 ? 'drops below' : 'rises above';
+    const ko = Math.abs(dm) < 0.005 ? 'ε_F와 거의 같습니다' : dm < 0 ? 'ε_F보다 낮아졌습니다' : 'ε_F보다 높아졌습니다';
+    v = tr(`${exc} people moved behind the Fermi energy and ${hole} seats in front opened up; μ ${en} ε_F (μ/ε_F = ${(mu/ef).toFixed(3)}).`,
+           `${exc}명이 페르미 에너지 뒤로 옮겨 가고 앞쪽에 빈자리 ${hole}개가 생겼습니다. μ는 ${ko} (μ/ε_F = ${(mu/ef).toFixed(3)}).`);
+  }
+  $('thVerdict').textContent = v;
+}
+function thLive(on){
+  TH.live = on; $('thLive').setAttribute('aria-pressed', String(on)); $('thLive').textContent = on ? tr('Stop','멈추기') : tr('Let them move','자리 바꾸기');
+  clearInterval(TH.timer);
+  if (on) TH.timer = setInterval(() => { TH.u.forEach(row => { for (let j=0;j<row.length;j++) if (Math.random() < 0.12) row[j] = Math.random(); }); thRender(); }, 450);
+}
+document.querySelectorAll('[data-tdim]').forEach(b => b.addEventListener('click', () => { TH.d = +b.dataset.tdim; thRender(); }));
+document.querySelectorAll('[data-tpair]').forEach(b => b.addEventListener('click', () => { TH.pair = +b.dataset.tpair; thRender(); }));
+$('thT').addEventListener('input', e => { TH.t = +e.target.value; thRender(); });
+$('thShuffle').addEventListener('click', () => { thRand(); thRender(); });
+$('thLive').addEventListener('click', () => thLive(!TH.live));
+
 /* ================= LAYOUT ================= */
-let nCtx, bCtx, sCtx, rCtx, dCtx, gCtx, muCtx, cvCtx;
+let nCtx, bCtx, sCtx, rCtx, dCtx, gCtx, muCtx, cvCtx, thCtx;
 function layout(){
   nCtx = fit($('nCanvas'), 600, 600);
   bCtx = fit($('bCanvas'), 640, 340);
@@ -1056,12 +1216,13 @@ function layout(){
   rCtx = fit($('rCanvas'), 640, 380);
   dCtx = fit($('dCanvas'), 640, 680);
   gCtx = fit($('gCanvas'), 640, 360);
+  thCtx = fit($('thCanvas'), 640, 650);
   muCtx = fit($('muCanvas'), 440, 300);
   cvCtx = fit($('cvCanvas'), 440, 300);
   redrawAll();
 }
-function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); heatRender(); }
-window.addEventListener('langchange', () => { document.querySelectorAll('[data-metal]').forEach(b => { const m = METALS.find(x => x.k===b.dataset.metal); b.textContent = b.title = tr(m.name, MNK[m.name]); }); $('dPlay').textContent = DS.playing ? tr('Pause','일시 정지') : tr('Play the mapping','옮기기 재생'); DS.shownD = null; redrawAll(); });
+function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); thRender(); heatRender(); }
+window.addEventListener('langchange', () => { document.querySelectorAll('[data-metal]').forEach(b => { const m = METALS.find(x => x.k===b.dataset.metal); b.textContent = b.title = tr(m.name, MNK[m.name]); }); $('dPlay').textContent = DS.playing ? tr('Pause','일시 정지') : tr('Play the mapping','옮기기 재생'); DS.shownD = null; $('thLive').textContent = TH.live ? tr('Stop','멈추기') : tr('Let them move','자리 바꾸기'); redrawAll(); });
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -1184,6 +1345,21 @@ window.I18N_KO={
 "k93": "상태 밀도가 상수이므로 개수 적분을 정확히 계산할 수 있습니다:",
 "k94": "\\(k_{\\mathrm{B}}T \\ll \\varepsilon_F\\)이면 \\(\\mu \\approx \\varepsilon_F\\)이고, \\(k_{\\mathrm{B}}T \\gg \\varepsilon_F\\)이면 \\(\\mu \\approx k_{\\mathrm{B}}T\\ln(\\varepsilon_F/k_{\\mathrm{B}}T) = -k_{\\mathrm{B}}T\\ln(2A/NA_Q)\\)가 되는데, 이것은 양자 넓이 \\(A_Q = h^2/2\\pi m k_{\\mathrm{B}}T\\)와 스핀에 의한 \\(Z_{\\text{int}} = 2\\)를 쓴 보통의 이상 기체 결과입니다. 에너지 적분에는 여전히 조머펠트 방법이 필요하며, 낮은 온도에서 \\(C_V = \\pi^2 N k_{\\mathrm{B}}^2 T/3\\varepsilon_F\\), 높은 온도에서 자유도 둘에 대한 고전적 에너지 등분배 값 \\(C_V = Nk_{\\mathrm{B}}\\)를 줍니다. 데모를 <em>2차원 기체<\/em>로 바꿔 비교해 보세요.",
 "k95": "양자 통계에 관한 이상훈 교수의 강의 노트(7.3절, 축퇴된 페르미 기체, 문제 7.22–7.24, 7.28, 7.29, 7.31 포함)를 바탕으로 Claude Opus 5.5가 만들었습니다.",
+"k97": "극장 비유",
+"k98": "단일 입자 상태를 극장의 좌석으로, 전자를 관객으로 생각해 봅시다. 무대가 가장 낮은 에너지이고, 한 줄 뒤로 갈 때마다 에너지가 한 단계씩 높아집니다. 한 줄에 좌석이 몇 개인지가 바로 상태 밀도입니다: 3차원 상자에서는 실제 공연장처럼 뒤로 갈수록 줄이 길어지고(\\(g \\propto \\sqrt{\\varepsilon}\\)), 2차원에서는 모든 줄의 길이가 같으며, 1차원에서는 오히려 줄이 짧아집니다. 공간 상태 하나는 <b>2인석</b> 하나로, 스핀 위와 스핀 아래 자리가 하나씩 있고, 한 자리에 두 사람이 앉을 수는 없습니다. 이것이 배타 원리입니다.",
+"k99": "어떤 자리에 사람이 앉아 있을지는 그 줄의 페르미–디랙 점유율 \\(\\bar{n}_{\\mathrm{FD}}(\\varepsilon)\\)이 정합니다. \\(T = 0\\)에서는 모두가 무대에 최대한 가까이 앉으므로, 페르미 에너지까지는 좌석이 꽉 차고 그 뒤로는 비어 있습니다. 극장을 조금 데우면 관객 무리의 뒤쪽에 앉은 사람들만 바로 뒤의 빈 줄로 옮겨 갈 수 있습니다. 앞줄에 앉은 사람이 빈자리를 찾으려면 \\(k_{\\mathrm{B}}T\\)보다 훨씬 크게 뛰어야 하기 때문입니다. 관객 수 \\(N\\)은 정해져 있으므로, 자리가 차 있을 확률이 1/2인 줄, 곧 화학 퍼텐셜 \\(\\mu\\)가 움직여 모두가 앉을 수 있게 맞춥니다.",
+"k100": "<span><span class=\"swatch\" style=\"background:var(--fermion)\"><\/span>스핀 위<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--down)\"><\/span>스핀 아래<\/span>\n        <span><span class=\"swatch\" style=\"background:transparent;border:2px solid var(--hot)\"><\/span>\\(\\varepsilon_F\\) 뒤에 앉은 사람<\/span>\n        <span><span class=\"swatch\" style=\"background:transparent;border:2px dashed var(--hot)\"><\/span>\\(\\varepsilon_F\\) 앞의 빈자리<\/span>",
+"k101": "2인석 (스핀 ½)",
+"k102": "1인석 (스핀 없음)",
+"k103": "<span class=\"lt\">온도 \\(k_{\\mathrm{B}}T/\\varepsilon_F\\)<\/span>",
+"k104": "새 관객",
+"k105": "관객 수 \\(N\\)",
+"k106": "\\(\\varepsilon_F\\) 뒤에 앉은 사람",
+"k107": "\\(\\varepsilon_F\\) 앞의 빈자리",
+"k108": "꽉 찬 2인석",
+"k109": "반만 찬 2인석",
+"k110": "줄 사이의 에너지 간격은 모두 같습니다. 오른쪽 띠는 각 줄에서 차 있는 좌석의 비율을 페르미–디랙 곡선과 함께 그린 것입니다.",
+"k111": "이렇게 해 보세요. 같은 온도에서 1차원, 2차원, 3차원을 비교해 보세요: 3차원에서는 페르미 에너지 뒤의 줄이 앞의 줄보다 길어서 뒤로 옮기는 사람들이 쉽게 자리를 찾으므로 \\(\\mu\\)가 \\(\\varepsilon_F\\) 아래로 내려갑니다. 1차원에서는 뒤의 줄이 짧아서 \\(\\mu\\)가 올라가고, 2차원에서는 거의 그대로입니다. 1인석으로 바꾸면 같은 관객이 훨씬 뒤까지 앉게 됩니다: 스핀 덕분에 주어진 에너지 아래에 들어가는 전자 수가 두 배가 됩니다. 또 2인석에서 반만 찬 자리는 \\(\\mu\\) 근처에서만 보입니다. 각 자리가 확률 \\(\\bar{n}_{\\mathrm{FD}}\\)로 따로따로 채워지므로, 훨씬 앞쪽은 두 자리가 모두 차 있고 훨씬 뒤쪽은 둘 다 비어 있기 때문입니다.",
 "k96": "상수: \\(h = 6.626 \\times 10^{-34}\\ \\mathrm{J\\,s}\\), \\(k_{\\mathrm{B}} = 1.381 \\times 10^{-23}\\ \\mathrm{J/K}\\), \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{N\\,m^2/kg^2}\\). 금속 자료는 보통의 핸드북 값입니다. 수식은 MathJax로 조판했습니다."
 };
 (function(){
