@@ -486,11 +486,109 @@ button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; st
     <p data-k="k94">For \(k_{\mathrm{B}}T \ll \varepsilon_F\) this is \(\mu \approx \varepsilon_F\), and for \(k_{\mathrm{B}}T \gg \varepsilon_F\) it becomes \(\mu \approx k_{\mathrm{B}}T\ln(\varepsilon_F/k_{\mathrm{B}}T) = -k_{\mathrm{B}}T\ln(2A/NA_Q)\), the ordinary ideal gas result with the quantum area \(A_Q = h^2/2\pi m k_{\mathrm{B}}T\) and \(Z_{\text{int}} = 2\) for spin. The energy integral still needs the Sommerfeld approach, giving \(C_V = \pi^2 N k_{\mathrm{B}}^2 T/3\varepsilon_F\) at low temperature and \(C_V = Nk_{\mathrm{B}}\), the classical equipartition value for two degrees of freedom, at high temperature. Switch the demo to <em>2D gas</em> to compare.</p>
   </div>
 </section>
+
+<!-- ============ SEMICONDUCTORS ============ -->
+<section id="semi" aria-labelledby="h-semi">
+  <h2 id="h-semi" data-k="k112">Semiconductors: a gap in the sea</h2>
+  <div class="prose">
+    <p data-k="k113">Problem 7.33. The attraction of the ions in a crystal groups the allowed electron energies into <b>bands</b> separated by <b>gaps</b>. In a conductor the Fermi energy lies inside a band, and the electrons near it are the “free” particles of the previous sections. In an insulator it lies inside a gap: at \(T = 0\) the band below, the <em>valence band</em>, is completely full and the band above, the <em>conduction band</em>, is empty, so there are no empty states close to the occupied ones and nothing can move. A <b>semiconductor</b> is an insulator whose gap is narrow enough for a few electrons to jump across at room temperature, leaving <em>holes</em> behind.</p>
+    <p data-k="k114">Model the conduction band with the free-gas density of states measured from its bottom, \(g(\varepsilon) = g_0\sqrt{\varepsilon - \varepsilon_c}\), and the valence band with its mirror image below \(\varepsilon_v\). Since \(\bar{n}_{\mathrm{FD}}\) is symmetric about \(\mu\) and \(g\) is symmetric about the middle of the gap, the number of electrons in the conduction band equals the number of holes in the valence band only if \(\mu\) sits exactly in the middle of the gap, at any temperature. With the gap width \(w = \varepsilon_c - \varepsilon_v \gg k_{\mathrm{B}}T\), the occupancy in the conduction band is \(\bar{n}_{\mathrm{FD}} \approx e^{-(\varepsilon-\varepsilon_F)/k_{\mathrm{B}}T}\), and</p>
+    <div class="eq multi"><span class="eqp">\( \displaystyle N_c = g_0\int_{\varepsilon_c}^{\infty}\frac{\sqrt{\varepsilon-\varepsilon_c}}{e^{(\varepsilon-\mu)/k_{\mathrm{B}}T}+1}\,d\varepsilon \approx g_0 (k_{\mathrm{B}}T)^{3/2}\, e^{-w/2k_{\mathrm{B}}T}\int_0^\infty \sqrt{u}\,e^{-u}\,du, \)</span></div>
+    <div class="eq"><span class="boxed">\( \displaystyle \frac{N_c}{V} = \frac{2}{v_Q}\,e^{-w/2k_{\mathrm{B}}T}, \qquad v_Q = \left(\frac{h^2}{2\pi m k_{\mathrm{B}}T}\right)^{3/2} \)</span></div>
+    <p data-k="k115">For silicon, \(w \approx 1.11\ \mathrm{eV}\), and at room temperature this gives roughly \(10^{10}\) conduction electrons per cubic centimeter, against about \(8.5 \times 10^{22}\ \mathrm{cm^{-3}}\) in copper. Because of the exponential, warming silicon from 300 K to 600 K multiplies the number by about \(10^5\), which is why a semiconductor conducts much better when hot, while a metal conducts better when cold. Double the gap to about 2 eV and only a few hundred electrons per cubic centimeter are left: an insulator.</p>
+  </div>
+
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="scCanvas" aria-label="Density of states of an idealized semiconductor with the valence band, the gap and the conduction band, showing thermally excited electrons and holes"></canvas></div>
+      <div class="legend" data-k="k116">
+        <span><span class="swatch dash" style="border-color:var(--muted)"></span>\(g(\varepsilon)\)</span>
+        <span><span class="swatch" style="background:var(--sea)"></span>Filled valence band</span>
+        <span><span class="swatch" style="background:var(--fermion)"></span>Conduction electrons, \(g\,\bar{n}_{\mathrm{FD}}\)</span>
+        <span><span class="swatch" style="background:var(--hot)"></span>Holes, \(g\,(1-\bar{n}_{\mathrm{FD}})\)</span>
+      </div>
+      <p class="cap" id="scCap"></p>
+      <div class="canvas-holder" style="margin-top:1rem"><canvas id="scTCanvas" aria-label="Number of conduction electrons per cubic centimeter against temperature, on a logarithmic scale"></canvas></div>
+      <p class="verdict" id="scVerdict"></p>
+    </div>
+    <div class="panel">
+      <div class="ctl btns" role="group" aria-label="Material" id="scMats"></div>
+      <div class="ctl">
+        <label for="scW"><span data-k="k117"><span class="lt">Gap width \(w\)</span></span> <output id="scWOut"></output></label>
+        <input type="range" id="scW" min="0.1" max="6" step="0.01" value="1.11">
+      </div>
+      <div class="ctl">
+        <label for="scT"><span data-k="k118"><span class="lt">Temperature \(T\)</span></span> <output id="scTOut"></output></label>
+        <input type="range" id="scT" min="50" max="1200" step="5" value="300">
+      </div>
+      <dl class="stats">
+        <dt>\(w/k_{\mathrm{B}}T\)</dt><dd id="scRatio">–</dd>
+        <dt>\(\mu\)</dt><dd data-k="k119">middle of the gap</dd>
+        <dt class="sep"></dt>
+        <dt data-k="k120">\(N_c/V\), formula</dt><dd id="scN">–</dd>
+        <dt data-k="k121">\(N_c/V\), exact integral</dt><dd id="scNx">–</dd>
+        <dt data-k="k122">Copper, for comparison</dt><dd>8.5 × 10<sup>22</sup> cm<sup>−3</sup></dd>
+        <dt data-k="k123">Doubling \(T\) multiplies \(N_c\) by</dt><dd id="scDbl">–</dd>
+      </dl>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k124">The electron mass is used for both bands, as in the problem. Gap widths are typical values near room temperature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAULI PARAMAGNETISM ============ -->
+<section id="pauli" aria-labelledby="h-pauli">
+  <h2 id="h-pauli" data-k="k125">A paramagnetic Fermi gas</h2>
+  <div class="prose">
+    <p data-k="k126">Problem 7.36. Electrons have a magnetic moment, \(\pm\mu_{\mathrm{B}}\) along a field \(\vec B\) in the \(z\) direction, so in the field an “up” electron gains energy \(-\mu_{\mathrm{B}}B\) and a “down” electron \(+\mu_{\mathrm{B}}B\). In the paramagnets of Chapters 3 and 6 each spin could turn freely and the magnetization was \(M \approx N\mu_{\mathrm{B}}^2 B/k_{\mathrm{B}}T\) for \(\mu_{\mathrm{B}}B \ll k_{\mathrm{B}}T\). A degenerate electron gas responds far less. At most lattice points in \(n\)-space the up and down states are both filled, and their moments cancel; only “solo” electrons near the Fermi surface can flip and contribute.</p>
+    <p data-k="k127">Split the density of states \(g(\varepsilon) = \frac{3N}{2\varepsilon_F^{3/2}}\sqrt{\varepsilon}\), which already counts both spins, into two halves and shift them by the magnetic energy:</p>
+    <div class="eq multi"><span class="eqp">\( \displaystyle g_\uparrow(\varepsilon) = \frac{3N}{4\varepsilon_F^{3/2}}\sqrt{\varepsilon + \mu_{\mathrm{B}}B}, \)</span><span class="eqp">\( \displaystyle g_\downarrow(\varepsilon) = \frac{3N}{4\varepsilon_F^{3/2}}\sqrt{\varepsilon - \mu_{\mathrm{B}}B} \)</span></div>
+    <p data-k="k128">Both halves fill up to the same chemical potential. At \(T = 0\) the down electrons in the sliver between \(\varepsilon_F - \mu_{\mathrm{B}}B\) and \(\varepsilon_F + \mu_{\mathrm{B}}B\) have flipped to up, about \(\mu_{\mathrm{B}}B\,g(\varepsilon_F)/2\) of them, each changing \(N_\uparrow - N_\downarrow\) by 2, so</p>
+    <div class="eq"><span class="boxed">\( \displaystyle M = \mu_{\mathrm{B}}(N_\uparrow - N_\downarrow) = \frac{3N\mu_{\mathrm{B}}^2 B}{2\varepsilon_F}, \)</span></div>
+    <p data-k="k129">smaller than the free-spin value by a factor \(3k_{\mathrm{B}}T/2\varepsilon_F \ll 1\): the gas behaves as if only a fraction of order \(k_{\mathrm{B}}T/\varepsilon_F\) of its electrons were free to turn. At small nonzero temperature, with \(\delta \equiv \mu_{\mathrm{B}}B \ll k_{\mathrm{B}}T \ll \varepsilon_F\), integrate by parts and expand \((\varepsilon \pm \delta)^{3/2}\) about \(\mu\) as in the Sommerfeld expansion:</p>
+    <div class="eq multi chain"><span class="eqp">\( \displaystyle \int_{\mp\delta}^{\infty}\sqrt{\varepsilon\pm\delta}\,\bar{n}_{\mathrm{FD}}\,d\varepsilon \approx \frac23\left[(\mu\pm\delta)^{3/2} + \frac{\pi^2}{8}(k_{\mathrm{B}}T)^2(\mu\pm\delta)^{-1/2}\right] \)</span></div>
+    <p data-k="k130">Expanding to first order in \(\delta/\mu\) and using \(\mu/\varepsilon_F \approx 1 - \frac{\pi^2}{12}(k_{\mathrm{B}}T/\varepsilon_F)^2\),</p>
+    <div class="eq"><span class="boxed h">\( \displaystyle M \approx \frac{3N\mu_{\mathrm{B}}^2 B}{2\varepsilon_F}\left[1 - \frac{\pi^2}{12}\left(\frac{k_{\mathrm{B}}T}{\varepsilon_F}\right)^2\right] \)</span></div>
+    <p data-k="k131">The magnetization barely depends on temperature, unlike the \(1/T\) Curie law of free spins. This is Pauli paramagnetism.</p>
+  </div>
+
+  <div class="fig">
+    <div>
+      <div class="canvas-holder"><canvas id="paCanvas" aria-label="Density of states for spin-up electrons drawn upward and spin-down electrons drawn downward, shifted by the magnetic energy and filled up to the common chemical potential"></canvas></div>
+      <div class="legend" data-k="k132">
+        <span><span class="swatch" style="background:var(--fermion)"></span>Spin up, \(g_\uparrow\bar{n}_{\mathrm{FD}}\)</span>
+        <span><span class="swatch" style="background:var(--down)"></span>Spin down, \(g_\downarrow\bar{n}_{\mathrm{FD}}\)</span>
+        <span><span class="swatch" style="background:var(--hot)"></span>“Solo” electrons: the other spin state at the same \(\vec n\) is empty</span>
+        <span><span class="swatch dash" style="border-color:var(--muted)"></span>Without the field</span>
+      </div>
+      <p class="verdict" id="paVerdict"></p>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label for="paD"><span data-k="k133"><span class="lt">Field \(\delta/\varepsilon_F = \mu_{\mathrm{B}}B/\varepsilon_F\)</span></span> <output id="paDOut"></output></label>
+        <input type="range" id="paD" min="0" max="0.25" step="0.005" value="0.1">
+        <span data-k="k134"><small>Greatly exaggerated: 1 T in copper gives \(\delta/\varepsilon_F \approx 10^{-5}\).</small></span>
+      </div>
+      <div class="ctl">
+        <label for="paT"><span data-k="k135"><span class="lt">Temperature \(k_{\mathrm{B}}T/\varepsilon_F\)</span></span> <output id="paTOut"></output></label>
+        <input type="range" id="paT" min="0" max="0.3" step="0.005" value="0.05">
+      </div>
+      <dl class="stats">
+        <dt>\(N_\uparrow/N\)</dt><dd id="paUp">–</dd>
+        <dt>\(N_\downarrow/N\)</dt><dd id="paDn">–</dd>
+        <dt class="sep"></dt>
+        <dt data-k="k136">\(M/N\mu_{\mathrm{B}}\), exact</dt><dd id="paM">–</dd>
+        <dt data-k="k137">\(\tfrac{3\delta}{2\varepsilon_F}\big[1-\tfrac{\pi^2}{12}(k_{\mathrm{B}}T/\varepsilon_F)^2\big]\)</dt><dd id="paMS">–</dd>
+        <dt data-k="k138">Free spins, \(\tanh(\delta/k_{\mathrm{B}}T)\)</dt><dd id="paMC">–</dd>
+      </dl>
+      <p class="cap" style="margin:.75rem 0 0" data-k="k139">Energies in units of the zero-field Fermi energy \(\varepsilon_F\). The exact values solve for \(\mu\) at fixed \(N\) and integrate numerically.</p>
+    </div>
+  </div>
+</section>
 </div>
 
 <footer>
   <div class="wrap">
-    <p data-k="k95">Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on quantum statistics (Section 7.3, Degenerate Fermi Gases, with Problems 7.22 to 7.24, 7.28, 7.29 and 7.31).</p>
+    <p data-k="k95">Created by Claude Opus 5.5, based on the lecture notes by Sang Hoon Lee on quantum statistics (Section 7.3, Degenerate Fermi Gases, with Problems 7.22 to 7.24, 7.28, 7.29, 7.31, 7.33 and 7.36).</p>
     <p data-k="k96">Constants: \(h = 6.626 \times 10^{-34}\ \mathrm{J\,s}\), \(k_{\mathrm{B}} = 1.381 \times 10^{-23}\ \mathrm{J/K}\), \(G = 6.674 \times 10^{-11}\ \mathrm{N\,m^2/kg^2}\). Metal data are typical handbook values. Equations typeset with MathJax.</p>
   </div>
 </footer>
@@ -1207,8 +1305,143 @@ $('thT').addEventListener('input', e => { TH.t = +e.target.value; thRender(); })
 $('thShuffle').addEventListener('click', () => { thRand(); thRender(); });
 $('thLive').addEventListener('click', () => thLive(!TH.live));
 
+/* ================= SEMICONDUCTOR (Problem 7.33) ================= */
+const SCM = [{k:'Ge',en:'Germanium',ko:'저마늄',w:0.67},{k:'Si',en:'Silicon',ko:'규소',w:1.11},{k:'GaAs',en:'GaAs',ko:'갈륨비소',w:1.43},{k:'C',en:'Diamond',ko:'다이아몬드',w:5.5}];
+const SC = {w:1.11, T:300};
+function sciLog(l){ const e = Math.floor(l), m = Math.pow(10, l-e); const mm = m >= 9.95 ? 1 : m, ee = m >= 9.95 ? e+1 : e;
+  if (ee >= -2 && ee < 4) return Number(Math.pow(10,l).toPrecision(2)).toLocaleString('en-US',{maximumSignificantDigits:2});
+  return mm.toFixed(1) + ' × 10<sup>' + (ee<0?'−'+(-ee):ee) + '</sup>'; }
+// log10 of N_c/V in cm^-3: formula (nondegenerate) and exact Fermi-Dirac integral, mu at midgap
+function scLog(w, T, exact){
+  const kT = kB*T, a = w*eV/(2*kT), pre = Math.log10(2*Math.pow(2*Math.PI*me*kT/(h*h), 1.5)*1e-6);
+  if (!exact) return pre - a/Math.LN10;
+  const I = simpson(s => 2*s*s/(Math.exp(s*s) + Math.exp(-a)), 0, 7, 700);   // e^{-a} pulled out of the occupancy
+  return pre - a/Math.LN10 + Math.log10(I*2/Math.sqrt(Math.PI));
+}
+function scRender(){
+  const c = scCtx; if (!c) return;
+  document.querySelectorAll('[data-scm]').forEach(b => b.setAttribute('aria-pressed', String(Math.abs(SCM.find(m => m.k===b.dataset.scm).w - SC.w) < 0.005)));
+  $('scWOut').textContent = SC.w.toFixed(2) + ' eV'; $('scTOut').textContent = SC.T + ' K';
+  const kT = kB*SC.T/eV, w = SC.w, half = w/2, R = Math.max(0.35, 9*kT), emin = -half-R, emax = half+R;   // energies in eV from midgap (= mu)
+  const W=640,H=330,L=16,Rm=16,T=30,B=40, X = e => L + (e-emin)/(emax-emin)*(W-L-Rm);
+  const gmax = Math.sqrt(R), Y = v => H-B - v/gmax*(H-T-B);
+  const g = e => e > half ? Math.sqrt(e-half) : e < -half ? Math.sqrt(-half-e) : 0;
+  const f = e => fd(e, 0, kT);
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  // magnification for the thermally excited carriers
+  let peak = 0; for (let i=0;i<=400;i++){ const e = half + R*i/400; peak = Math.max(peak, g(e)*f(e)); }
+  const target = 0.45*gmax, mag = peak > 0 && peak < target ? Math.pow(10, Math.floor(Math.log10(target/peak))) : 1;
+  // filled valence band
+  c.fillStyle=C.sea; c.beginPath(); c.moveTo(X(emin), Y(0));
+  for (let i=0;i<=300;i++){ const e = emin + (-half-emin)*i/300; c.lineTo(X(e), Y(g(e)*f(e))); } c.lineTo(X(-half), Y(0)); c.closePath(); c.fill();
+  // holes (magnified) and electrons (magnified)
+  const area = (e0, e1, fn, col) => { c.fillStyle=col; c.globalAlpha=0.85; c.beginPath(); c.moveTo(X(e0), Y(0));
+    for (let i=0;i<=300;i++){ const e = e0 + (e1-e0)*i/300; c.lineTo(X(e), Y(Math.min(gmax*1.05, fn(e)))); } c.lineTo(X(e1), Y(0)); c.closePath(); c.fill(); c.globalAlpha=1; };
+  area(emin, -half, e => mag*g(e)*(1-f(e)), C.hot);
+  area(half, emax, e => mag*g(e)*f(e), C.fermion);
+  // g dashed
+  c.strokeStyle=C.muted; c.setLineDash([5,4]); c.lineWidth=1.5;
+  [[emin,-half],[half,emax]].forEach(([a,b]) => { c.beginPath(); for (let i=0;i<=200;i++){ const e=a+(b-a)*i/200; i?c.lineTo(X(e),Y(g(e))):c.moveTo(X(e),Y(g(e))); } c.stroke(); });
+  c.setLineDash([]);
+  // axis and markers
+  c.strokeStyle=C.muted; c.lineWidth=1; c.beginPath(); c.moveTo(L, Y(0)); c.lineTo(W-Rm, Y(0)); c.stroke();
+  c.fillStyle=C.ink; [[-half,'v'],[half,'c']].forEach(([e,s]) => { c.beginPath(); c.moveTo(X(e),Y(0)-4); c.lineTo(X(e),Y(0)+4); c.stroke(); rich(c, X(e), Y(0)+20, 16, [['ε','i'],[s,'isub']], 'center'); });
+  c.strokeStyle=C.hot; c.setLineDash([4,4]); c.beginPath(); c.moveTo(X(0), T+8); c.lineTo(X(0), Y(0)); c.stroke(); c.setLineDash([]);
+  c.fillStyle=C.hot; rich(c, X(0), Y(0)+20, 16, [['μ','i'],[' = ','r'],['ε','i'],['F','isub']], 'center');
+  // gap arrow
+  const ya = T+20; c.strokeStyle=C.ink; c.lineWidth=1; c.beginPath(); c.moveTo(X(-half), ya); c.lineTo(X(half), ya); c.stroke();
+  [[-half,1],[half,-1]].forEach(([e,d]) => { c.beginPath(); c.moveTo(X(e), ya); c.lineTo(X(e)+6*d, ya-4); c.lineTo(X(e)+6*d, ya+4); c.closePath(); c.fillStyle=C.ink; c.fill(); });
+  c.fillStyle=C.ink; c.font='13px '+SANS; c.textAlign='center'; c.fillText(tr('gap','띠틈') + ' w = ' + w.toFixed(2) + ' eV', X(0), ya-8);
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='left'; c.fillText(tr('valence band','원자가띠'), L+4, T+4); c.textAlign='right'; c.fillText(tr('conduction band','전도띠'), W-Rm-4, T+4);
+  c.textAlign='center'; c.fillText(tr('energy (eV), measured from the middle of the gap','에너지 (eV), 띠틈 가운데에서 잰 값'), (L+W-Rm)/2, H-6);
+  const ex = Math.round(Math.log10(mag));
+  $('scCap').innerHTML = mag > 1 ? tr('Electrons and holes are drawn magnified by a factor of 10<sup>'+ex+'</sup>; at their true size they would be invisible.','전자와 양공은 10<sup>'+ex+'</sup>배 확대해서 그렸습니다. 실제 크기로는 보이지 않습니다.') : tr('Electrons and holes are drawn at their true size.','전자와 양공을 실제 크기로 그렸습니다.');
+  // readouts
+  const lf = scLog(w, SC.T, false), lx = scLog(w, SC.T, true);
+  $('scRatio').textContent = (w/kT).toFixed(1);
+  $('scN').innerHTML = sciLog(lf) + ' cm<sup>−3</sup>'; $('scNx').innerHTML = sciLog(lx) + ' cm<sup>−3</sup>';
+  $('scDbl').innerHTML = sciLog(scLog(w, 2*SC.T, true) - lx);
+  const lcu = Math.log10(8.5e22), gapCu = lcu - lx;
+  let v = tr(`At ${SC.T} K: about ${sciLog(lx).replace('×','×')} conduction electrons per cm³, `, `${SC.T} K에서: cm³당 전도 전자 약 ${sciLog(lx).replace('×','×')}개, `);
+  v += gapCu > 0.5 ? tr(`10<sup>${Math.round(gapCu)}</sup> times fewer than in copper.`, `구리보다 10<sup>${Math.round(gapCu)}</sup>배 적습니다.`) : tr('comparable to a metal.', '금속과 비슷합니다.');
+  if (lx < 3) v += tr(' Practically an insulator.', ' 사실상 절연체입니다.');
+  $('scVerdict').innerHTML = v;
+  scTRender();
+}
+function scTRender(){
+  const c = scTCtx; if (!c) return;
+  const W=640,H=230,L=58,Rm=30,T=14,B=40, T0=50, T1=1200;
+  const pts = []; for (let k=0;k<=230;k++){ const t = T0 + (T1-T0)*k/230; pts.push([t, scLog(SC.w, t, true)]); }
+  const top = Math.ceil(Math.log10(8.5e22))+1, bot = Math.max(Math.floor(Math.min(...pts.map(p=>p[1]))), top-30);
+  const X = t => L + (t-T0)/(T1-T0)*(W-L-Rm), Y = l => H-B - (Math.max(l, bot)-bot)/(top-bot)*(H-T-B);
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  c.font='12px '+SANS; c.fillStyle=C.muted; c.textAlign='right';
+  const step = (top-bot) > 20 ? 5 : (top-bot) > 10 ? 3 : 2;
+  for (let l = Math.ceil(bot/step)*step; l <= top; l += step){ c.strokeStyle=C.band; c.beginPath(); c.moveTo(L, Y(l)); c.lineTo(W-Rm, Y(l)); c.stroke(); c.fillText('10' + String(l).replace('-','⁻').replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]), L-6, Y(l)+4); }
+  c.textAlign='center'; for (let t=200; t<=1200; t+=200) c.fillText(t + ' K', X(t), H-B+16);
+  c.fillText(tr('temperature','온도'), (L+W-Rm)/2, H-6);
+  c.save(); c.translate(14, (T+H-B)/2); c.rotate(-Math.PI/2); c.fillText(tr('Nc/V (cm⁻³)','Nc/V (cm⁻³)'), 0, 0); c.restore();
+  c.strokeStyle=C.res; c.setLineDash([5,4]); c.lineWidth=1.5; c.beginPath(); c.moveTo(L, Y(Math.log10(8.5e22))); c.lineTo(W-Rm, Y(Math.log10(8.5e22))); c.stroke(); c.setLineDash([]);
+  c.fillStyle=C.res; c.textAlign='left'; c.fillText(tr('copper','구리'), L+6, Y(Math.log10(8.5e22))-5);
+  c.save(); c.beginPath(); c.rect(L, T, W-L-Rm, H-T-B); c.clip();
+  c.strokeStyle=C.fermion; c.lineWidth=2.4; c.beginPath(); pts.forEach(([t,l],i) => i ? c.lineTo(X(t),Y(l)) : c.moveTo(X(t),Y(l))); c.stroke(); c.restore();
+  const lc = scLog(SC.w, SC.T, true); c.fillStyle=C.fermion; c.beginPath(); c.arc(X(SC.T), Y(lc), 5, 0, 7); c.fill();
+  c.strokeStyle=C.muted; c.lineWidth=1; c.beginPath(); c.moveTo(L,T); c.lineTo(L,H-B); c.lineTo(W-Rm,H-B); c.stroke();
+}
+(function(){ const box = $('scMats'); SCM.forEach(m => { const b = document.createElement('button'); b.type='button'; b.dataset.scm = m.k; b.textContent = tr(m.en, m.ko);
+  b.addEventListener('click', () => { SC.w = m.w; $('scW').value = m.w; scRender(); }); box.appendChild(b); }); })();
+$('scW').addEventListener('input', e => { SC.w = +e.target.value; scRender(); });
+$('scT').addEventListener('input', e => { SC.T = +e.target.value; scRender(); });
+
+/* ================= PAULI PARAMAGNETISM (Problem 7.36) ================= */
+const PA = {d:0.1, t:0.05};
+function paCounts(mu, d, t){   // N_up/N and N_down/N, energies in units of eps_F
+  if (t < 0.002) return [0.5*Math.pow(Math.max(mu+d,0),1.5), 0.5*Math.pow(Math.max(mu-d,0),1.5)];
+  const one = sh => { const smax = Math.sqrt(Math.max(mu - sh, 0) + 40*t); return simpson(s => 1.5*s*s*fd(sh + s*s, mu, t), 0, smax, 800); };
+  return [one(-d), one(d)];
+}
+function paMu(d, t){ let lo = -2, hi = 3; for (let i=0;i<60;i++){ const m=(lo+hi)/2, [u,w]=paCounts(m,d,t); if (u+w < 1) lo=m; else hi=m; } return (lo+hi)/2; }
+function paRender(){
+  const c = paCtx; if (!c) return;
+  const d = PA.d, t = PA.t, mu = paMu(d, t), [nu, nd] = paCounts(mu, d, t), mu0 = paMu(0, t);
+  $('paDOut').textContent = d.toFixed(3); $('paTOut').textContent = t.toFixed(3);
+  const W=640,H=380,L=20,R=16, emin=-0.32, emax=1.62, X = e => L + (e-emin)/(emax-emin)*(W-L-R), mid = H/2, sc = 118;
+  const gu = e => e > -d ? 0.75*Math.sqrt(e+d) : 0, gd = e => e > d ? 0.75*Math.sqrt(e-d) : 0, g0 = e => e > 0 ? 0.75*Math.sqrt(e) : 0;
+  const f = e => t < 0.002 ? (e < mu ? 1 : 0) : fd(e, mu, t), f0 = e => t < 0.002 ? (e < 1 ? 1 : 0) : fd(e, mu0, t);
+  c.clearRect(0,0,W,H); c.fillStyle=C.surface; c.fillRect(0,0,W,H);
+  const N = 600, E = i => emin + (emax-emin)*i/N;
+  const fillArea = (fn, sign, col, alpha) => { c.fillStyle=col; c.globalAlpha=alpha; c.beginPath(); c.moveTo(X(emin), mid);
+    for (let i=0;i<=N;i++){ const e=E(i); c.lineTo(X(e), mid - sign*sc*fn(e)); } c.lineTo(X(emax), mid); c.closePath(); c.fill(); c.globalAlpha=1; };
+  fillArea(e => gu(e)*f(e), 1, C.fermion, 0.75);
+  fillArea(e => gd(e)*f(e), -1, C.down, 0.75);
+  // "solo" electrons: the state with the same n and the other spin (energy 2 delta away) is empty, so nothing cancels their moment
+  fillArea(e => gu(e)*f(e)*(1 - f(e + 2*d)), 1, C.hot, 0.9);
+  fillArea(e => gd(e)*f(e)*(1 - f(e - 2*d)), -1, C.hot, 0.9);
+  // densities of states
+  const curve = (fn, sign, col, dash) => { c.strokeStyle=col; c.setLineDash(dash); c.lineWidth=1.6; c.beginPath(); for (let i=0;i<=N;i++){ const e=E(i), y = mid - sign*sc*fn(e); i?c.lineTo(X(e),y):c.moveTo(X(e),y); } c.stroke(); c.setLineDash([]); };
+  curve(g0, 1, C.muted, [4,4]); curve(g0, -1, C.muted, [4,4]); curve(gu, 1, C.fermion, []); curve(gd, -1, C.down, []);
+  c.strokeStyle=C.ink; c.lineWidth=1; c.beginPath(); c.moveTo(L, mid); c.lineTo(W-R, mid); c.stroke(); c.beginPath(); c.moveTo(X(0), 14); c.lineTo(X(0), H-14); c.stroke();
+  c.strokeStyle=C.hot; c.setLineDash([5,4]); c.lineWidth=1.4; c.beginPath(); c.moveTo(X(mu), 14); c.lineTo(X(mu), H-14); c.stroke(); c.setLineDash([]);
+  c.fillStyle=C.hot; rich(c, X(mu)+5, 30, 16, [['μ','i']], 'left');
+  c.fillStyle=C.ink; rich(c, W-R-4, mid-8, 15, [['ε','i'],[' / ','r'],['ε','i'],['F','isub']], 'right');
+  c.fillStyle=C.fermion; rich(c, L+4, 30, 15, [['g','i'],['↑','sub'],['(','r'],['ε','i'],[')','r'],[tr('  spin up','  스핀 위'),'s']], 'left');
+  c.fillStyle=C.down; rich(c, L+4, H-18, 15, [['g','i'],['↓','sub'],['(','r'],['ε','i'],[')','r'],[tr('  spin down','  스핀 아래'),'s']], 'left');
+  c.fillStyle=C.muted; c.font='12px '+SANS; c.textAlign='center'; [0,0.5,1,1.5].forEach(e => c.fillText(String(e), X(e)+(e===0?-8:0), mid+15));
+  if (d > 0){ c.fillStyle=C.muted; c.textAlign='center'; c.fillText('−δ', X(-d), mid-8); c.fillText('+δ', X(d), mid+28); }
+  // readouts
+  const M = nu - nd, MS = 1.5*d*(1 - Math.PI*Math.PI/12*t*t), MC = t < 1e-9 ? (d > 0 ? 1 : 0) : Math.tanh(d/t);
+  $('paUp').textContent = nu.toFixed(4); $('paDn').textContent = nd.toFixed(4);
+  $('paM').textContent = M.toFixed(4); $('paMS').textContent = MS.toFixed(4); $('paMC').textContent = MC.toFixed(4);
+  const pct = x => (x*100).toFixed(x < 0.1 ? 1 : 0) + '%';
+  $('paVerdict').textContent = d === 0 ? tr('No field: up and down fill identically and M = 0.', '자기장이 없으면 위와 아래가 똑같이 채워져 M = 0입니다.')
+    : tr(`Net polarization ${pct(M)}, against ${pct(MC)} for free spins at the same field and temperature: only electrons near the Fermi energy can flip.`,
+         `알짜 편극은 ${pct(M)}로, 같은 자기장과 온도의 자유 스핀(${pct(MC)})보다 훨씬 작습니다: 페르미 에너지 근처의 전자만 뒤집힐 수 있습니다.`);
+}
+$('paD').addEventListener('input', e => { PA.d = +e.target.value; paRender(); });
+$('paT').addEventListener('input', e => { PA.t = +e.target.value; paRender(); });
+
 /* ================= LAYOUT ================= */
-let nCtx, bCtx, sCtx, rCtx, dCtx, gCtx, muCtx, cvCtx, thCtx;
+let nCtx, bCtx, sCtx, rCtx, dCtx, gCtx, muCtx, cvCtx, thCtx, scCtx, scTCtx, paCtx;
 function layout(){
   nCtx = fit($('nCanvas'), 600, 600);
   bCtx = fit($('bCanvas'), 640, 340);
@@ -1217,12 +1450,15 @@ function layout(){
   dCtx = fit($('dCanvas'), 640, 680);
   gCtx = fit($('gCanvas'), 640, 360);
   thCtx = fit($('thCanvas'), 640, 650);
+  scCtx = fit($('scCanvas'), 640, 330);
+  scTCtx = fit($('scTCanvas'), 640, 230);
+  paCtx = fit($('paCanvas'), 640, 380);
   muCtx = fit($('muCanvas'), 440, 300);
   cvCtx = fit($('cvCanvas'), 440, 300);
   redrawAll();
 }
-function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); thRender(); heatRender(); }
-window.addEventListener('langchange', () => { document.querySelectorAll('[data-metal]').forEach(b => { const m = METALS.find(x => x.k===b.dataset.metal); b.textContent = b.title = tr(m.name, MNK[m.name]); }); $('dPlay').textContent = DS.playing ? tr('Pause','일시 정지') : tr('Play the mapping','옮기기 재생'); DS.shownD = null; $('thLive').textContent = TH.live ? tr('Stop','멈추기') : tr('Let them move','자리 바꾸기'); redrawAll(); });
+function redrawAll(){ nRender(); metalRender(); starRender(); relRender(); dRender(); thRender(); heatRender(); scRender(); paRender(); }
+window.addEventListener('langchange', () => { document.querySelectorAll('[data-metal]').forEach(b => { const m = METALS.find(x => x.k===b.dataset.metal); b.textContent = b.title = tr(m.name, MNK[m.name]); }); $('dPlay').textContent = DS.playing ? tr('Pause','일시 정지') : tr('Play the mapping','옮기기 재생'); DS.shownD = null; document.querySelectorAll('[data-scm]').forEach(b => { const m = SCM.find(x => x.k===b.dataset.scm); b.textContent = tr(m.en, m.ko); }); $('thLive').textContent = TH.live ? tr('Stop','멈추기') : tr('Let them move','자리 바꾸기'); redrawAll(); });
 let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 80); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); redrawAll(); });
 new MutationObserver(() => { readColors(); redrawAll(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -1344,7 +1580,7 @@ window.I18N_KO={
 "k92": "문제 7.28과 7.31. 넓이 \\(A = L^2\\)에 갇힌 페르미온에 대해, \\(n\\) 공간의 원판 4분의 1에서",
 "k93": "상태 밀도가 상수이므로 개수 적분을 정확히 계산할 수 있습니다:",
 "k94": "\\(k_{\\mathrm{B}}T \\ll \\varepsilon_F\\)이면 \\(\\mu \\approx \\varepsilon_F\\)이고, \\(k_{\\mathrm{B}}T \\gg \\varepsilon_F\\)이면 \\(\\mu \\approx k_{\\mathrm{B}}T\\ln(\\varepsilon_F/k_{\\mathrm{B}}T) = -k_{\\mathrm{B}}T\\ln(2A/NA_Q)\\)가 되는데, 이것은 양자 넓이 \\(A_Q = h^2/2\\pi m k_{\\mathrm{B}}T\\)와 스핀에 의한 \\(Z_{\\text{int}} = 2\\)를 쓴 보통의 이상 기체 결과입니다. 에너지 적분에는 여전히 조머펠트 방법이 필요하며, 낮은 온도에서 \\(C_V = \\pi^2 N k_{\\mathrm{B}}^2 T/3\\varepsilon_F\\), 높은 온도에서 자유도 둘에 대한 고전적 에너지 등분배 값 \\(C_V = Nk_{\\mathrm{B}}\\)를 줍니다. 데모를 <em>2차원 기체<\/em>로 바꿔 비교해 보세요.",
-"k95": "양자 통계에 관한 이상훈 교수의 강의 노트(7.3절, 축퇴된 페르미 기체, 문제 7.22–7.24, 7.28, 7.29, 7.31 포함)를 바탕으로 Claude Opus 5.5가 만들었습니다.",
+"k95": "양자 통계에 관한 이상훈 교수의 강의 노트(7.3절, 축퇴된 페르미 기체, 문제 7.22–7.24, 7.28, 7.29, 7.31, 7.33, 7.36 포함)를 바탕으로 Claude Opus 5.5가 만들었습니다.",
 "k97": "극장 비유",
 "k98": "단일 입자 상태를 극장의 좌석으로, 전자를 관객으로 생각해 봅시다. 무대가 가장 낮은 에너지이고, 한 줄 뒤로 갈 때마다 에너지가 한 단계씩 높아집니다. 한 줄에 좌석이 몇 개인지가 바로 상태 밀도입니다: 3차원 상자에서는 실제 공연장처럼 뒤로 갈수록 줄이 길어지고(\\(g \\propto \\sqrt{\\varepsilon}\\)), 2차원에서는 모든 줄의 길이가 같으며, 1차원에서는 오히려 줄이 짧아집니다. 공간 상태 하나는 <b>2인석</b> 하나로, 스핀 위와 스핀 아래 자리가 하나씩 있고, 한 자리에 두 사람이 앉을 수는 없습니다. 이것이 배타 원리입니다.",
 "k99": "어떤 자리에 사람이 앉아 있을지는 그 줄의 페르미–디랙 점유율 \\(\\bar{n}_{\\mathrm{FD}}(\\varepsilon)\\)이 정합니다. \\(T = 0\\)에서는 모두가 무대에 최대한 가까이 앉으므로, 페르미 에너지까지는 좌석이 꽉 차고 그 뒤로는 비어 있습니다. 극장을 조금 데우면 관객 무리의 뒤쪽에 앉은 사람들만 바로 뒤의 빈 줄로 옮겨 갈 수 있습니다. 앞줄에 앉은 사람이 빈자리를 찾으려면 \\(k_{\\mathrm{B}}T\\)보다 훨씬 크게 뛰어야 하기 때문입니다. 관객 수 \\(N\\)은 정해져 있으므로, 자리가 차 있을 확률이 1/2인 줄, 곧 화학 퍼텐셜 \\(\\mu\\)가 움직여 모두가 앉을 수 있게 맞춥니다.",
@@ -1360,6 +1596,34 @@ window.I18N_KO={
 "k109": "반만 찬 2인석",
 "k110": "줄 사이의 에너지 간격은 모두 같습니다. 오른쪽 띠는 각 줄에서 차 있는 좌석의 비율을 페르미–디랙 곡선과 함께 그린 것입니다.",
 "k111": "이렇게 해 보세요. 같은 온도에서 1차원, 2차원, 3차원을 비교해 보세요: 3차원에서는 페르미 에너지 뒤의 줄이 앞의 줄보다 길어서 뒤로 옮기는 사람들이 쉽게 자리를 찾으므로 \\(\\mu\\)가 \\(\\varepsilon_F\\) 아래로 내려갑니다. 1차원에서는 뒤의 줄이 짧아서 \\(\\mu\\)가 올라가고, 2차원에서는 거의 그대로입니다. 1인석으로 바꾸면 같은 관객이 훨씬 뒤까지 앉게 됩니다: 스핀 덕분에 주어진 에너지 아래에 들어가는 전자 수가 두 배가 됩니다. 또 2인석에서 반만 찬 자리는 \\(\\mu\\) 근처에서만 보입니다. 각 자리가 확률 \\(\\bar{n}_{\\mathrm{FD}}\\)로 따로따로 채워지므로, 훨씬 앞쪽은 두 자리가 모두 차 있고 훨씬 뒤쪽은 둘 다 비어 있기 때문입니다.",
+"k112": "반도체: 바다 속의 틈",
+"k113": "문제 7.33. 결정 속 이온의 인력 때문에 전자가 가질 수 있는 에너지는 <b>띠</b>로 묶이고, 띠 사이에는 <b>띠틈</b>이 생깁니다. 도체에서는 페르미 에너지가 띠 안에 있고, 그 근처의 전자들이 앞 절들에서 다룬 “자유” 입자입니다. 절연체에서는 페르미 에너지가 띠틈 안에 있습니다: \\(T = 0\\)에서 아래 띠인 <em>원자가띠</em>는 꽉 차 있고 위 띠인 <em>전도띠</em>는 비어 있으므로, 차 있는 상태 가까이에 빈 상태가 없어 아무것도 움직일 수 없습니다. <b>반도체</b>는 띠틈이 좁아서 상온에서 전자 몇 개가 건너뛰고 <em>양공</em>을 남길 수 있는 절연체입니다.",
+"k114": "전도띠는 그 바닥에서 잰 자유 기체의 상태 밀도 \\(g(\\varepsilon) = g_0\\sqrt{\\varepsilon - \\varepsilon_c}\\)로, 원자가띠는 \\(\\varepsilon_v\\) 아래의 거울상으로 모형화합니다. \\(\\bar{n}_{\\mathrm{FD}}\\)는 \\(\\mu\\)에 대해, \\(g\\)는 띠틈 가운데에 대해 대칭이므로, 전도띠의 전자 수가 원자가띠의 양공 수와 같으려면 온도와 상관없이 \\(\\mu\\)가 정확히 띠틈 가운데에 있어야 합니다. 띠틈 너비가 \\(w = \\varepsilon_c - \\varepsilon_v \\gg k_{\\mathrm{B}}T\\)이면 전도띠의 점유율은 \\(\\bar{n}_{\\mathrm{FD}} \\approx e^{-(\\varepsilon-\\varepsilon_F)/k_{\\mathrm{B}}T}\\)이고,",
+"k115": "규소는 \\(w \\approx 1.11\\ \\mathrm{eV}\\)이고, 상온에서 이 식은 세제곱센티미터당 전도 전자 약 \\(10^{10}\\)개를 줍니다. 구리의 약 \\(8.5 \\times 10^{22}\\ \\mathrm{cm^{-3}}\\)과 비교됩니다. 지수 함수 때문에 규소를 300 K에서 600 K로 데우면 이 수가 약 \\(10^5\\)배가 됩니다. 그래서 반도체는 뜨거울 때 전기가 훨씬 잘 통하고, 금속은 차가울 때 잘 통합니다. 띠틈을 약 2 eV로 두 배만 넓혀도 세제곱센티미터당 수백 개밖에 남지 않습니다: 절연체입니다.",
+"k116": "<span><span class=\"swatch dash\" style=\"border-color:var(--muted)\"><\/span>\\(g(\\varepsilon)\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--sea)\"><\/span>차 있는 원자가띠<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--fermion)\"><\/span>전도 전자, \\(g\\,\\bar{n}_{\\mathrm{FD}}\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--hot)\"><\/span>양공, \\(g\\,(1-\\bar{n}_{\\mathrm{FD}})\\)<\/span>",
+"k117": "<span class=\"lt\">띠틈 너비 \\(w\\)<\/span>",
+"k118": "<span class=\"lt\">온도 \\(T\\)<\/span>",
+"k119": "띠틈 가운데",
+"k120": "\\(N_c/V\\), 공식",
+"k121": "\\(N_c/V\\), 정확한 적분",
+"k122": "비교: 구리",
+"k123": "\\(T\\)를 두 배로 할 때 \\(N_c\\)의 배율",
+"k124": "문제에서처럼 두 띠 모두 전자 질량을 씁니다. 띠틈 너비는 상온 근처의 대표적인 값입니다.",
+"k125": "상자성 페르미 기체",
+"k126": "문제 7.36. 전자는 자기 모멘트를 가지므로, \\(z\\) 방향의 자기장 \\(\\vec B\\) 속에서 모멘트는 \\(\\pm\\mu_{\\mathrm{B}}\\)이고, “위” 전자는 에너지 \\(-\\mu_{\\mathrm{B}}B\\), “아래” 전자는 \\(+\\mu_{\\mathrm{B}}B\\)를 얻습니다. 3장과 6장의 상자성체에서는 스핀마다 자유롭게 돌 수 있어서, \\(\\mu_{\\mathrm{B}}B \\ll k_{\\mathrm{B}}T\\)이면 자화가 \\(M \\approx N\\mu_{\\mathrm{B}}^2 B/k_{\\mathrm{B}}T\\)였습니다. 축퇴된 전자 기체는 훨씬 덜 반응합니다. \\(n\\) 공간의 격자점 대부분에서는 위와 아래 상태가 모두 차 있어 모멘트가 상쇄되고, 페르미 면 근처의 “외톨이” 전자만 뒤집혀 기여할 수 있습니다.",
+"k127": "이미 두 스핀을 모두 센 상태 밀도 \\(g(\\varepsilon) = \\frac{3N}{2\\varepsilon_F^{3/2}}\\sqrt{\\varepsilon}\\)를 반씩 나누고 자기 에너지만큼 옮깁니다:",
+"k128": "두 반쪽은 같은 화학 퍼텐셜까지 채워집니다. \\(T = 0\\)에서는 \\(\\varepsilon_F - \\mu_{\\mathrm{B}}B\\)와 \\(\\varepsilon_F + \\mu_{\\mathrm{B}}B\\) 사이의 얇은 띠에 있던 아래 전자 약 \\(\\mu_{\\mathrm{B}}B\\,g(\\varepsilon_F)/2\\)개가 위로 뒤집혔고, 하나마다 \\(N_\\uparrow - N_\\downarrow\\)를 2씩 바꾸므로",
+"k129": "자유 스핀의 값보다 \\(3k_{\\mathrm{B}}T/2\\varepsilon_F \\ll 1\\)배 작습니다: 이 기체는 전자 가운데 \\(k_{\\mathrm{B}}T/\\varepsilon_F\\) 정도의 비율만 돌 수 있는 것처럼 행동합니다. \\(\\delta \\equiv \\mu_{\\mathrm{B}}B \\ll k_{\\mathrm{B}}T \\ll \\varepsilon_F\\)인 작지만 0이 아닌 온도에서는, 조머펠트 전개에서처럼 부분 적분을 하고 \\((\\varepsilon \\pm \\delta)^{3/2}\\)을 \\(\\mu\\) 둘레로 전개합니다:",
+"k130": "\\(\\delta/\\mu\\)의 1차까지 전개하고 \\(\\mu/\\varepsilon_F \\approx 1 - \\frac{\\pi^2}{12}(k_{\\mathrm{B}}T/\\varepsilon_F)^2\\)을 쓰면",
+"k131": "자유 스핀의 \\(1/T\\) 퀴리 법칙과 달리, 자화가 온도에 거의 의존하지 않습니다. 이것이 파울리 상자성입니다.",
+"k132": "<span><span class=\"swatch\" style=\"background:var(--fermion)\"><\/span>스핀 위, \\(g_\\uparrow\\bar{n}_{\\mathrm{FD}}\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--down)\"><\/span>스핀 아래, \\(g_\\downarrow\\bar{n}_{\\mathrm{FD}}\\)<\/span>\n        <span><span class=\"swatch\" style=\"background:var(--hot)\"><\/span>“외톨이” 전자: 같은 \\(\\vec n\\)의 반대 스핀 상태가 비어 있음<\/span>\n        <span><span class=\"swatch dash\" style=\"border-color:var(--muted)\"><\/span>자기장이 없을 때<\/span>",
+"k133": "<span class=\"lt\">자기장 \\(\\delta/\\varepsilon_F = \\mu_{\\mathrm{B}}B/\\varepsilon_F\\)<\/span>",
+"k134": "<small>크게 과장한 값입니다: 구리에서 1 T는 \\(\\delta/\\varepsilon_F \\approx 10^{-5}\\)입니다.<\/small>",
+"k135": "<span class=\"lt\">온도 \\(k_{\\mathrm{B}}T/\\varepsilon_F\\)<\/span>",
+"k136": "\\(M/N\\mu_{\\mathrm{B}}\\), 정확한 값",
+"k137": "\\(\\tfrac{3\\delta}{2\\varepsilon_F}\\big[1-\\tfrac{\\pi^2}{12}(k_{\\mathrm{B}}T/\\varepsilon_F)^2\\big]\\)",
+"k138": "자유 스핀, \\(\\tanh(\\delta/k_{\\mathrm{B}}T)\\)",
+"k139": "에너지는 자기장이 없을 때의 페르미 에너지 \\(\\varepsilon_F\\) 단위입니다. 정확한 값은 \\(N\\)을 고정해 \\(\\mu\\)를 구하고 수치 적분한 것입니다.",
 "k96": "상수: \\(h = 6.626 \\times 10^{-34}\\ \\mathrm{J\\,s}\\), \\(k_{\\mathrm{B}} = 1.381 \\times 10^{-23}\\ \\mathrm{J/K}\\), \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{N\\,m^2/kg^2}\\). 금속 자료는 보통의 핸드북 값입니다. 수식은 MathJax로 조판했습니다."
 };
 (function(){

@@ -38,6 +38,10 @@ The relativistic case, where U<sub>kinetic</sub> also scales as 1/R and no stabl
 
 Charts of μ(T) and C<sub>V</sub>(T) show the crossover from the degenerate regime to the classical limit (C<sub>V</sub> → 3/2 Nk<sub>B</sub>). A switch selects the two-dimensional gas of Problems 7.28 and 7.31, with its constant density of states, exact μ = k<sub>B</sub>T ln(e<sup>ε<sub>F</sub>/k<sub>B</sub>T</sup> − 1), and C<sub>V</sub> → Nk<sub>B</sub>.
 
+**Semiconductors (Problem 7.33).** An idealized band structure with mirror-image valence and conduction bands, g(ε) = g₀√(ε − ε_c): the chemical potential stays in the middle of the gap, and for w ≫ k_BT the conduction-electron density is N_c/V = (2/v_Q) e^(−w/2k_BT). Choose germanium, silicon, GaAs or diamond, or set the gap and temperature yourself; the figure shows the thermally excited electrons and holes (magnified, with the factor given), and a log plot of N_c/V against T compared with copper. Silicon at 300 K gives about 10¹⁰ cm⁻³, and doubling the temperature multiplies it by about 10⁵.
+
+**A paramagnetic Fermi gas (Problem 7.36).** Spin-up and spin-down halves of the density of states, shifted by ∓μ_B B and filled to a common μ. Only “solo” electrons near the Fermi energy, whose opposite-spin partner state is empty, contribute: M = (3Nμ_B²B/2ε_F)[1 − (π²/12)(k_BT/ε_F)²], far below the free-spin value. The exact numerical magnetization is compared with this formula and with tanh(μ_B B/k_BT) for free spins.
+
 ## Running it
 
 There is nothing to build or install. The whole demo is one self-contained file, `index.html`, with all CSS and JavaScript inline.
