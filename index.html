@@ -334,6 +334,7 @@ html :lang(ko) em, html[data-lang="ko"] em{font-weight:600}
   <div class="prose">
     <p data-k="k66">In \(n\)-space the states sit on a lattice, one per unit volume, so the number of states in a thin shell between \(n\) and \(n+dn\) grows like the shell’s size: constant in 1D, \(\propto n\) in 2D (a quarter circle), \(\propto n^2\) in 3D (an eighth of a sphere). But the energy goes as \(\varepsilon_n \propto n^2\), so equal steps in \(n\) become ever wider steps in \(\varepsilon\): \(d\varepsilon \propto n\,dn\). The same number of states is spread over a wider energy interval. In the figure each bar on top is carried to its energy \(\varepsilon_n\) and tipped over, so <b>its height, the number of states in the shell, becomes a length along the energy axis</b>. Compare that length with the spacing of the energies, \(\varepsilon_{n+1}-\varepsilon_n \propto n\): in 1D the lengths stay the same and the states become <b>sparse</b>; in 2D both grow like \(n\) and the density stays the same; in 3D the lengths grow like \(n^2\), the bars overlap and <b>pile up</b>, and the states become denser. The number of states per unit energy is</p>
     <div class="eq multi"><span class="eqp">\( \displaystyle g(\varepsilon) = \frac{dN_{\text{states}}}{d\varepsilon} \propto \frac{n^{d-1}\,dn}{n\,dn} = n^{d-2} \propto \varepsilon^{d/2-1}: \)</span><span class="eqp">\( \displaystyle \frac{1}{\sqrt{\varepsilon}}\ \text{(1D)}, \qquad \text{constant (2D)}, \qquad \sqrt{\varepsilon}\ \text{(3D)}. \)</span></div>
+    <p class="note" data-k="k140">Photons have \(\varepsilon = pc\) instead of \(p^2/2m\), and in 3D their density of states grows as \(\varepsilon^2\) instead of \(\sqrt{\varepsilon}\). Where that difference comes from, the orders of the derivatives in the Schrödinger and Maxwell equations, is the topic of the companion demo <a href="https://lshlj82.github.io/electron-vs-photon/">Electrons and Photons</a>.</p>
   </div>
   <div class="fig">
     <div>
@@ -1489,6 +1490,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll)
 <!-- lang-toggle:body -->
 <script>
 window.I18N_KO={
+"k140": "광자는 \\(p^2/2m\\) 대신 \\(\\varepsilon = pc\\)이고, 3차원 상태밀도도 \\(\\sqrt{\\varepsilon}\\) 대신 \\(\\varepsilon^2\\)으로 늘어납니다. 그 차이가 슈뢰딩거 방정식과 맥스웰 방정식의 미분 차수에서 어떻게 나오는지는 함께 보는 데모 <a href=\"https://lshlj82.github.io/electron-vs-photon/\">전자와 광자<\/a>에서 다룹니다.",
 "__title": "축퇴된 페르미 기체",
 "k1": "이상훈 교수의 강의 노트(7장 7.3절, 축퇴된 페르미 기체)를 바탕으로 Claude Opus 5.5가 만든 인터랙티브 데모",
 "k2": "축퇴된 페르미 기체",
